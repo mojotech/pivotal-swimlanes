@@ -1,7 +1,11 @@
 {
   "name": "react-transform-boilerplate",
-  "version": "1.0.0",
+  "version": "2.0.2",
   "description": "A new Webpack boilerplate with hot reloading React components, and error handling on module and component level.",
+  "engines": {
+    "node": "2.0.2",
+    "npm": "3.3.5"
+  },
   "scripts": {
     "clean": "rimraf dist",
     "build:webpack": "NODE_ENV=production webpack --config webpack.config.prod.js",
@@ -49,6 +53,11 @@
     "webpack-hot-middleware": "^2.0.0"
   },
   "dependencies": {
-    "react": "^0.13.0"
+    "dotenv": "^1.2.0",
+    "jquery": "^2.1.4",
+    "lodash": "^3.10.1",
+    "material-ui": "^0.12.1",
+    "react": "^0.13.0",
+    "react-tap-event-plugin": "^0.2.0"
   }
 }
