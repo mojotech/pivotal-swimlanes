@@ -67,7 +67,7 @@ const Board = React.createClass({
         .map(pullRequest => {
           return {
             title: pullRequest.title,
-            url: pullRequest.url,
+            url: pullRequest.html_url,
             authors: pullRequest.user.login
           };
         })
