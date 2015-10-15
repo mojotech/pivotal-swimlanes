@@ -30,7 +30,7 @@ const App = React.createClass({
       url: `https://www.pivotaltracker.com/services/v5/projects/${pivotalProjectId}/iterations?scope=current`,
       beforeSend: xhr => xhr.setRequestHeader('X-TrackerToken', this.props.pivotalToken)
     }).done(data =>
-      this.setState({ stories: data[0].stories })
+      this.setState({ stories: _.select(data[0].stories, story => story.story_type != 'release') })
     ).always(() =>
       this.setState({ fetchingStories: false })
     );
