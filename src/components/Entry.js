@@ -5,7 +5,8 @@ const Entry = React.createClass({
   propTypes: {
     title: React.PropTypes.string.isRequired,
     url: React.PropTypes.string.isRequired,
-    authors: React.PropTypes.string.isRequired
+    authors: React.PropTypes.string.isRequired,
+    estimate: React.PropTypes.number.isRequired
   },
 
   render() {
@@ -14,10 +15,11 @@ const Entry = React.createClass({
       entryLink: { fontSize: 12 },
       entryAuthors: { fontSize: 10 }
     };
-    const { title, url, authors } = this.props;
+    const { title, url, authors, estimate } = this.props;
 
     return (
       <Paper style={styles.entryContent}>
+        <div>{Array(estimate).join('•')}</div>
         <a href={url} target='_new' style={styles.entryLink}>{title}</a>
         <br />
         <div style={styles.entryAuthors}>{authors}</div>

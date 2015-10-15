@@ -36,7 +36,8 @@ const Board = React.createClass({
           return {
             title: story.name,
             url: story.url,
-            authors: story.owner_ids.map(id => this._mapOwnerIdToName(id)).join(', ')
+            authors: story.owner_ids.map(id => this._mapOwnerIdToName(id)).join(', '),
+            estimate: story.estimate
           };
         })
         .value();
@@ -47,7 +48,8 @@ const Board = React.createClass({
           return {
             title: story.name,
             url: story.url,
-            authors: story.owner_ids.map(id => this._mapOwnerIdToName(id)).join(', ')
+            authors: story.owner_ids.map(id => this._mapOwnerIdToName(id)).join(', '),
+            estimate: story.estimate
           };
         })
         .value();
@@ -58,7 +60,8 @@ const Board = React.createClass({
           return {
             title: story.name,
             url: story.url,
-            authors: story.owner_ids.map(id => this._mapOwnerIdToName(id)).join(', ')
+            authors: story.owner_ids.map(id => this._mapOwnerIdToName(id)).join(', '),
+            estimate: story.estimate
           };
         })
         .value();
@@ -68,7 +71,8 @@ const Board = React.createClass({
           return {
             title: pullRequest.title,
             url: pullRequest.html_url,
-            authors: pullRequest.user.login
+            authors: pullRequest.user.login,
+            estimate: 0
           };
         })
         .value();
@@ -79,7 +83,8 @@ const Board = React.createClass({
           return {
             title: story.name,
             url: story.url,
-            authors: story.owner_ids.map(id => this._mapOwnerIdToName(id)).join(', ')
+            authors: story.owner_ids.map(id => this._mapOwnerIdToName(id)).join(', '),
+            estimate: story.estimate
           };
         })
         .value();
@@ -90,7 +95,8 @@ const Board = React.createClass({
           return {
             title: story.name,
             url: story.url,
-            authors: story.owner_ids.map(id => this._mapOwnerIdToName(id)).join(', ')
+            authors: story.owner_ids.map(id => this._mapOwnerIdToName(id)).join(', '),
+            estimate: story.estimate
           };
         })
         .value();
@@ -101,7 +107,8 @@ const Board = React.createClass({
           return {
             title: story.name,
             url: story.url,
-            authors: story.owner_ids.map(id => this._mapOwnerIdToName(id)).join(', ')
+            authors: story.owner_ids.map(id => this._mapOwnerIdToName(id)).join(', '),
+            estimate: story.estimate
           };
         })
         .value();
