@@ -9,7 +9,8 @@ const SwimLane = React.createClass({
       React.PropTypes.shape({
         title: React.PropTypes.string.isRequired,
         url: React.PropTypes.string.isRequired,
-        authors: React.PropTypes.string.isRequired
+        authors: React.PropTypes.string.isRequired,
+        estimate: React.PropTypes.number.isRequired
       }).isRequired
     ).isRequired
   },
@@ -28,7 +29,11 @@ const SwimLane = React.createClass({
         <ul style={styles.entryList}>
           {_.map(entries, (entry, i) =>
             <li key={i} style={styles.entry}>
-              <Entry title={entry.title} url={entry.url} authors={entry.authors} />
+              <Entry
+                title={entry.title}
+                url={entry.url}
+                authors={entry.authors}
+                estimate={entry.estimate} />
             </li>
           )}
         </ul>
