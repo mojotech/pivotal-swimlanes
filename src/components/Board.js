@@ -37,7 +37,7 @@ const Board = React.createClass({
             title: story.name,
             url: story.url,
             authors: story.owner_ids.map(id => this._mapOwnerIdToName(id)).join(', '),
-            estimate: story.estimate
+            estimate: story.estimate || 0
           };
         })
         .value();
@@ -49,7 +49,7 @@ const Board = React.createClass({
             title: story.name,
             url: story.url,
             authors: story.owner_ids.map(id => this._mapOwnerIdToName(id)).join(', '),
-            estimate: story.estimate
+            estimate: story.estimate || 0
           };
         })
         .value();
@@ -61,7 +61,7 @@ const Board = React.createClass({
             title: story.name,
             url: story.url,
             authors: story.owner_ids.map(id => this._mapOwnerIdToName(id)).join(', '),
-            estimate: story.estimate
+            estimate: story.estimate || 0
           };
         })
         .value();
@@ -84,7 +84,7 @@ const Board = React.createClass({
             title: story.name,
             url: story.url,
             authors: story.owner_ids.map(id => this._mapOwnerIdToName(id)).join(', '),
-            estimate: story.estimate
+            estimate: story.estimate || 0
           };
         })
         .value();
@@ -96,7 +96,7 @@ const Board = React.createClass({
             title: story.name,
             url: story.url,
             authors: story.owner_ids.map(id => this._mapOwnerIdToName(id)).join(', '),
-            estimate: story.estimate
+            estimate: story.estimate || 0
           };
         })
         .value();
@@ -108,7 +108,7 @@ const Board = React.createClass({
             title: story.name,
             url: story.url,
             authors: story.owner_ids.map(id => this._mapOwnerIdToName(id)).join(', '),
-            estimate: story.estimate
+            estimate: story.estimate || 0
           };
         })
         .value();
