@@ -14,7 +14,7 @@ const Entry = React.createClass({
 
   render() {
     const styles = {
-      content: { padding: 8 },
+      content: { padding: 5 },
       link: { fontSize: 12 },
       authors: { fontSize: 10 }
     };
