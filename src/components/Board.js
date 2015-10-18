@@ -81,16 +81,14 @@ const Board = React.createClass({
         .value();
 
     return (
-      <div style={{overflowX: 'scroll'}}>
-        <div style={{whiteSpace: 'nowrap'}}>
-          <SwimLane title='Unstarted' entries={unstartedEntries} />
-          <SwimLane title='Rejected' entries={rejectedEntries} />
-          <SwimLane title='In Progress' entries={inProgressEntries} />
-          <SwimLane title='Ready for Review' entries={readyForReviewEntries} />
-          <SwimLane title='Merged' entries={mergedEntries} />
-          <SwimLane title='Delivered' entries={deliveredEntries} />
-          <SwimLane title='Accepted' entries={acceptedEntries} />
-        </div>
+      <div style={{overflow: 'scroll', whiteSpace: 'nowrap'}}>
+        <SwimLane title='Unstarted' entries={unstartedEntries} />
+        <SwimLane title='Rejected' entries={rejectedEntries} />
+        <SwimLane title='In Progress' entries={inProgressEntries} />
+        <SwimLane title='Ready for Review' entries={readyForReviewEntries} />
+        <SwimLane title='Merged' entries={mergedEntries} />
+        <SwimLane title='Delivered' entries={deliveredEntries} />
+        <SwimLane title='Accepted' entries={acceptedEntries} />
       </div>
     );
   }

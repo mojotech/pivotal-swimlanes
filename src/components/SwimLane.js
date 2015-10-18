@@ -19,7 +19,7 @@ const SwimLane = React.createClass({
   render() {
     const { title, entries } = this.props;
     const styles = {
-      container: { display: 'inline-block' },
+      container: { display: 'inline-block', verticalAlign: 'top' },
       title: { textAlign: 'center' },
       entryList: { listStyleType: 'none' },
       entry: { paddingBottom: 5 }
