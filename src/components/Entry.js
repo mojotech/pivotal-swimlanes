@@ -3,26 +3,29 @@ import { Paper } from 'material-ui';
 
 const Entry = React.createClass({
   propTypes: {
-    title: React.PropTypes.string.isRequired,
-    url: React.PropTypes.string.isRequired,
-    authors: React.PropTypes.string.isRequired,
-    estimate: React.PropTypes.number.isRequired
+    entry: React.PropTypes.shape({
+      title: React.PropTypes.string.isRequired,
+      url: React.PropTypes.string.isRequired,
+      authors: React.PropTypes.string.isRequired,
+      kind: React.PropTypes.oneOf(['story', 'bug', 'chore']),
+      estimate: React.PropTypes.number.isRequired
+    }).isRequired
   },
 
   render() {
     const styles = {
-      entryContent: { padding: 8 },
-      entryLink: { fontSize: 12 },
-      entryAuthors: { fontSize: 10 }
+      content: { padding: 8 },
+      link: { fontSize: 12 },
+      authors: { fontSize: 10 }
     };
-    const { title, url, authors, estimate } = this.props;
-
+    const { title, url, authors, kind, estimate } = this.props.entry;
     return (
-      <Paper style={styles.entryContent}>
+      <Paper style={styles.content}>
+        {_.isEmpty(kind) ? null : <img src={require(`../img/${kind}.png`)} alt={kind} />}
         <div>{Array(estimate).join('•')}</div>
-        <a href={url} target='_new' style={styles.entryLink}>{title}</a>
+        <a href={url} target='_new' style={styles.link}>{title}</a>
         <br />
-        <div style={styles.entryAuthors}>{authors}</div>
+        <div style={styles.authors}>{authors}</div>
       </Paper>
     );
   }

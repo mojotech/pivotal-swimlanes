@@ -17,10 +17,9 @@ module.exports = {
     new webpack.NoErrorsPlugin()
   ],
   module: {
-    loaders: [{
-      test: /\.js$/,
-      loaders: ['babel'],
-      include: path.join(__dirname, 'src')
-    }]
+    loaders: [
+      { test: /\.js$/, loaders: ['babel'], include: path.join(__dirname, 'src') },
+      { test: /\.(svg|png)$/, exclude: /node_modules/, loader: 'file-loader' }
+    ]
   }
 };

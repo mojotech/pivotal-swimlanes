@@ -29,41 +29,29 @@ const Board = React.createClass({
 
   render() {
     const { stories, pullRequests } = this.props;
+    const storyAttributes = story => {
+      return {
+        title: story.name,
+        url: story.url,
+        authors: story.owner_ids.map(id => this._mapOwnerIdToName(id)).join(', '),
+        kind: story.kind,
+        estimate: story.estimate || 0
+      }
+    };
     const unstartedEntries =
       _(stories)
         .filter(story => story.current_state === 'unstarted' || story.current_state === 'planned')
-        .map(story => {
-          return {
-            title: story.name,
-            url: story.url,
-            authors: story.owner_ids.map(id => this._mapOwnerIdToName(id)).join(', '),
-            estimate: story.estimate || 0
-          };
-        })
+        .map(storyAttributes)
         .value();
     const rejectedEntries =
       _(stories)
         .filter(story => story.current_state === 'rejected')
-        .map(story => {
-          return {
-            title: story.name,
-            url: story.url,
-            authors: story.owner_ids.map(id => this._mapOwnerIdToName(id)).join(', '),
-            estimate: story.estimate || 0
-          };
-        })
+        .map(storyAttributes)
         .value();
     const inProgressEntries =
       _(stories)
         .filter(story => story.current_state === 'started')
-        .map(story => {
-          return {
-            title: story.name,
-            url: story.url,
-            authors: story.owner_ids.map(id => this._mapOwnerIdToName(id)).join(', '),
-            estimate: story.estimate || 0
-          };
-        })
+        .map(storyAttributes)
         .value();
     const readyForReviewEntries =
       _(pullRequests)
@@ -79,38 +67,17 @@ const Board = React.createClass({
     const mergedEntries =
       _(stories)
         .filter(story => story.current_state === 'finished')
-        .map(story => {
-          return {
-            title: story.name,
-            url: story.url,
-            authors: story.owner_ids.map(id => this._mapOwnerIdToName(id)).join(', '),
-            estimate: story.estimate || 0
-          };
-        })
+        .map(storyAttributes)
         .value();
     const deliveredEntries =
       _(stories)
         .filter(story => story.current_state === 'delivered')
-        .map(story => {
-          return {
-            title: story.name,
-            url: story.url,
-            authors: story.owner_ids.map(id => this._mapOwnerIdToName(id)).join(', '),
-            estimate: story.estimate || 0
-          };
-        })
+        .map(storyAttributes)
         .value();
     const acceptedEntries =
       _(stories)
         .filter(story => story.current_state === 'accepted')
-        .map(story => {
-          return {
-            title: story.name,
-            url: story.url,
-            authors: story.owner_ids.map(id => this._mapOwnerIdToName(id)).join(', '),
-            estimate: story.estimate || 0
-          };
-        })
+        .map(storyAttributes)
         .value();
 
     return (
