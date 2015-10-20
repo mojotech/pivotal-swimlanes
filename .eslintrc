@@ -44,12 +44,5 @@
   },
   "plugins": [
     "react"
-  ],
-  "globals": {
-    "require": false,
-    "gon": false,
-    "module": false,
-    "__dirname": false,
-    "analytics": false
-  }
+  ]
 }
