@@ -1,5 +1,5 @@
 {
-  "name": "Pivotal Swimlanes",
+  "name": "pivotal-swimlanes",
   "description": "Swimlane view for current Pivotal sprint",
   "engines": {
     "node": "2.0.2",
