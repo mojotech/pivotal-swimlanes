@@ -1,5 +1,6 @@
 import React from 'react';
 import { Paper } from 'material-ui';
+import _ from 'underscore';
 
 const Entry = React.createClass({
   propTypes: {

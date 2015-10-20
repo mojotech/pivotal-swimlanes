@@ -1,5 +1,6 @@
 import React from 'react';
 import $ from 'jquery';
+import _ from 'underscore';
 import Board from './Board';
 import { CircularProgress } from 'material-ui';
 
@@ -24,6 +25,7 @@ const App = React.createClass({
     const { pivotalProjectId } = this.props;
     $.ajax({
       url: `https://www.pivotaltracker.com/services/v5/projects/${pivotalProjectId}`,
+      method: 'GET',
       beforeSend: xhr => xhr.setRequestHeader('X-TrackerToken', this.props.pivotalToken)
     }).done(data => this.setState({ projectName: data.name }));
   },
@@ -32,9 +34,10 @@ const App = React.createClass({
     const { pivotalProjectId } = this.props;
     $.ajax({
       url: `https://www.pivotaltracker.com/services/v5/projects/${pivotalProjectId}/iterations?scope=current`,
+      method: 'GET',
       beforeSend: xhr => xhr.setRequestHeader('X-TrackerToken', this.props.pivotalToken)
     }).done(data =>
-      this.setState({ stories: _.select(data[0].stories, story => story.story_type != 'release') })
+      this.setState({ stories: _.select(data[0].stories, story => story.story_type !== 'release') })
     );
   },
 
@@ -42,6 +45,7 @@ const App = React.createClass({
     const { gitHubToken } = this.props;
     $.ajax({
       url: `https://api.github.com/repos/mojotech/squadlocker/pulls?state=open&access_token=${gitHubToken}`,
+      method: 'GET'
     }).done(data => this.setState({ pullRequests: data }));
   },
 
