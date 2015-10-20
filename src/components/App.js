@@ -40,22 +40,22 @@ const App = React.createClass({
       url: `https://www.pivotaltracker.com/services/v5/projects/${pivotalProjectId}/iterations?scope=current`,
       method: 'GET',
       beforeSend: xhr => xhr.setRequestHeader('X-TrackerToken', this.props.pivotalToken)
-    }).done(data =>
-      this.setState({
-        stories: _(data[0].stories)
-          .select(story => story.story_type !== 'release')
-          .map(story => {
-            return {
-              title: story.name,
-              url: story.url,
-              authors: story.owner_ids.map(id => this._mapOwnerIdToName(id)).join(', '),
-              kind: story.kind,
-              estimate: story.estimate || 0
-            };
-          })
-      )
-    }
-    ).fail(() =>
+    }).done(data => {
+      const storiesData = _.select(data[0].stories, story => story.story_type !== 'release');
+      const ownerIds = _.chain(storiesData).map(story => story.owner_ids).flatten().unique().value();
+      const stories = _(storiesData)
+        .map(story => {
+          return {
+            title: story.name,
+            url: story.url,
+            authors: story.owner_ids.map(id => this._mapOwnerIdToName(id)).join(', '),
+            kind: story.kind,
+            estimate: story.estimate || 0,
+            current_state: story.current_state
+          };
+        });
+      this.setState({ stories: stories });
+    }).fail(() =>
       this.setState({ errorFetchingData: true })
     );
   },
@@ -80,6 +80,25 @@ const App = React.createClass({
     ).fail(() =>
       this.setState({ errorFetchingData: true })
     );
+  },
+
+  _mapOwnerIdToName(id) {
+    switch (id) {
+    case 1584218:
+      return 'DSK';
+    case 1062813:
+      return 'MB';
+    case 1333386:
+      return 'DK';
+    case 1462994:
+      return 'JL';
+    case 1079920:
+      return 'JB';
+    case 168061:
+      return 'AS';
+    default:
+      return id;
+    }
   },
 
   render() {

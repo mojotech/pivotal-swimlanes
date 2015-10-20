@@ -9,25 +9,6 @@ const Board = React.createClass({
     pullRequests: React.PropTypes.array.isRequired
   },
 
-  _mapOwnerIdToName(id) {
-    switch (id) {
-    case 1584218:
-      return 'DSK';
-    case 1062813:
-      return 'MB';
-    case 1333386:
-      return 'DK';
-    case 1462994:
-      return 'JL';
-    case 1079920:
-      return 'JB';
-    case 168061:
-      return 'AS';
-    default:
-      return id;
-    }
-  },
-
   render() {
     const { stories, pullRequests } = this.props;
     const unstartedEntries = _.filter(stories, story => story.current_state === 'unstarted' || story.current_state === 'planned')
