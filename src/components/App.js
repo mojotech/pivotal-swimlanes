@@ -27,7 +27,11 @@ const App = React.createClass({
       url: `https://www.pivotaltracker.com/services/v5/projects/${pivotalProjectId}`,
       method: 'GET',
       beforeSend: xhr => xhr.setRequestHeader('X-TrackerToken', this.props.pivotalToken)
-    }).done(data => this.setState({ projectName: data.name }));
+    }).done(data =>
+      this.setState({ projectName: data.name })
+    ).fail(() =>
+      this.setState({ errorFetchingData: true })
+    );
   },
 
   _fetchStories() {
@@ -38,6 +42,8 @@ const App = React.createClass({
       beforeSend: xhr => xhr.setRequestHeader('X-TrackerToken', this.props.pivotalToken)
     }).done(data =>
       this.setState({ stories: _.select(data[0].stories, story => story.story_type !== 'release') })
+    ).fail(() =>
+      this.setState({ errorFetchingData: true })
     );
   },
 
@@ -46,15 +52,20 @@ const App = React.createClass({
     $.ajax({
       url: `https://api.github.com/repos/mojotech/squadlocker/pulls?state=open&access_token=${gitHubToken}`,
       method: 'GET'
-    }).done(data => this.setState({ pullRequests: data }));
+    }).done(data => {
+      this.setState({ pullRequests: data })
+    }
+    ).fail(() =>
+      this.setState({ errorFetchingData: true })
+    );
   },
 
   render() {
     const styles = {
       centered: { textAlign: 'center' }
     };
-    const { stories, pullRequests, projectName } = this.state;
-    const loading = (_.isNull(stories) || _.isNull(pullRequests) || _.isNull(projectName));
+    const { stories, pullRequests, projectName, errorFetchingData } = this.state;
+    const loading = (!errorFetchingData && (_.isNull(stories) || _.isNull(pullRequests) || _.isNull(projectName)));
     return (
       <div>
         {loading ? (
@@ -62,10 +73,14 @@ const App = React.createClass({
             <CircularProgress mode='indeterminate' />
           </div>
         ) : (
-          <div>
-            <h1 style={styles.centered}>{projectName} Sprint</h1>
-            <Board projectName={projectName} stories={stories} pullRequests={pullRequests} />
-          </div>
+          errorFetchingData ? (
+            <div>Error fetching data.</div>
+          ) : (
+            <div>
+              <h1 style={styles.centered}>{projectName} Sprint</h1>
+              <Board projectName={projectName} stories={stories} pullRequests={pullRequests} />
+            </div>
+          )
         )}
       </div>
     );
