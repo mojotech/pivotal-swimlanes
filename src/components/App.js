@@ -11,12 +11,21 @@ const App = React.createClass({
   },
 
   getInitialState() {
-    return { stories: null, pullRequests: null };
+    return { stories: null, pullRequests: null, projectName: null };
   },
 
   componentDidMount() {
+    this._fetchProjectName();
     this._fetchStories();
     this._fetchPullRequests();
+  },
+
+  _fetchProjectName() {
+    const { pivotalProjectId } = this.props;
+    $.ajax({
+      url: `https://www.pivotaltracker.com/services/v5/projects/${pivotalProjectId}`,
+      beforeSend: xhr => xhr.setRequestHeader('X-TrackerToken', this.props.pivotalToken)
+    }).done(data => this.setState({ projectName: data.name }));
   },
 
   _fetchStories() {
@@ -33,26 +42,26 @@ const App = React.createClass({
     const { gitHubToken } = this.props;
     $.ajax({
       url: `https://api.github.com/repos/mojotech/squadlocker/pulls?state=open&access_token=${gitHubToken}`,
-    }).done(data =>
-      this.setState({ pullRequests: data })
-    );
+    }).done(data => this.setState({ pullRequests: data }));
   },
 
   render() {
     const styles = {
       centered: { textAlign: 'center' }
     };
-    const { stories, pullRequests } = this.state;
-    const loading = (_.isEmpty(stories) || _.isEmpty(pullRequests));
+    const { stories, pullRequests, projectName } = this.state;
+    const loading = (_.isNull(stories) || _.isNull(pullRequests) || _.isNull(projectName));
     return (
       <div>
-        <h1 style={styles.centered}>SquadLocker - Current Sprint</h1>
         {loading ? (
           <div style={styles.centered}>
             <CircularProgress mode='indeterminate' />
           </div>
         ) : (
-          <Board stories={stories} pullRequests={pullRequests} />
+          <div>
+            <h1 style={styles.centered}>{projectName} Sprint</h1>
+            <Board projectName={projectName} stories={stories} pullRequests={pullRequests} />
+          </div>
         )}
       </div>
     );

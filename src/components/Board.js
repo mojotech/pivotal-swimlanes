@@ -4,6 +4,7 @@ import _ from 'lodash';
 
 const Board = React.createClass({
   propTypes: {
+    projectName: React.PropTypes.string.isRequired,
     stories: React.PropTypes.array.isRequired,
     pullRequests: React.PropTypes.array.isRequired
   },
