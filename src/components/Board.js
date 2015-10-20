@@ -30,56 +30,13 @@ const Board = React.createClass({
 
   render() {
     const { stories, pullRequests } = this.props;
-    const storyAttributes = story => {
-      return {
-        title: story.name,
-        url: story.url,
-        authors: story.owner_ids.map(id => this._mapOwnerIdToName(id)).join(', '),
-        kind: story.kind,
-        estimate: story.estimate || 0
-      };
-    };
-    const unstartedEntries =
-      _(stories)
-        .filter(story => story.current_state === 'unstarted' || story.current_state === 'planned')
-        .map(storyAttributes)
-        .value();
-    const rejectedEntries =
-      _(stories)
-        .filter(story => story.current_state === 'rejected')
-        .map(storyAttributes)
-        .value();
-    const inProgressEntries =
-      _(stories)
-        .filter(story => story.current_state === 'started')
-        .map(storyAttributes)
-        .value();
-    const readyForReviewEntries =
-      _(pullRequests)
-        .map(pullRequest => {
-          return {
-            title: pullRequest.title,
-            url: pullRequest.html_url,
-            authors: pullRequest.user.login,
-            estimate: 0
-          };
-        })
-        .value();
-    const mergedEntries =
-      _(stories)
-        .filter(story => story.current_state === 'finished')
-        .map(storyAttributes)
-        .value();
-    const deliveredEntries =
-      _(stories)
-        .filter(story => story.current_state === 'delivered')
-        .map(storyAttributes)
-        .value();
-    const acceptedEntries =
-      _(stories)
-        .filter(story => story.current_state === 'accepted')
-        .map(storyAttributes)
-        .value();
+    const unstartedEntries = _.filter(stories, story => story.current_state === 'unstarted' || story.current_state === 'planned')
+    const rejectedEntries = _.filter(stories, story => story.current_state === 'rejected')
+    const inProgressEntries = _.filter(stories, story => story.current_state === 'started')
+    const readyForReviewEntries = pullRequests;
+    const mergedEntries = _.filter(stories, story => story.current_state === 'finished')
+    const deliveredEntries = _.filter(stories, story => story.current_state === 'delivered')
+    const acceptedEntries = _.filter(stories, story => story.current_state === 'accepted')
 
     return (
       <div style={{overflow: 'scroll', whiteSpace: 'nowrap'}}>

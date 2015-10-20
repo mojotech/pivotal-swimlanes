@@ -41,7 +41,20 @@ const App = React.createClass({
       method: 'GET',
       beforeSend: xhr => xhr.setRequestHeader('X-TrackerToken', this.props.pivotalToken)
     }).done(data =>
-      this.setState({ stories: _.select(data[0].stories, story => story.story_type !== 'release') })
+      this.setState({
+        stories: _(data[0].stories)
+          .select(story => story.story_type !== 'release')
+          .map(story => {
+            return {
+              title: story.name,
+              url: story.url,
+              authors: story.owner_ids.map(id => this._mapOwnerIdToName(id)).join(', '),
+              kind: story.kind,
+              estimate: story.estimate || 0
+            };
+          })
+      )
+    }
     ).fail(() =>
       this.setState({ errorFetchingData: true })
     );
@@ -53,7 +66,16 @@ const App = React.createClass({
       url: `https://api.github.com/repos/mojotech/squadlocker/pulls?state=open&access_token=${gitHubToken}`,
       method: 'GET'
     }).done(data => {
-      this.setState({ pullRequests: data })
+      this.setState({
+        pullRequests: _.map(data, pullRequest => {
+          return {
+            title: pullRequest.title,
+            url: pullRequest.html_url,
+            authors: pullRequest.user.login,
+            estimate: 0
+          };
+        })
+      })
     }
     ).fail(() =>
       this.setState({ errorFetchingData: true })
