@@ -11,12 +11,7 @@ const App = React.createClass({
   },
 
   getInitialState() {
-    return {
-      stories: [],
-      pullRequests: [],
-      fetchingStories: true,
-      fetchingPullRequets: true
-    };
+    return { stories: null, pullRequests: null };
   },
 
   componentDidMount() {
@@ -31,8 +26,6 @@ const App = React.createClass({
       beforeSend: xhr => xhr.setRequestHeader('X-TrackerToken', this.props.pivotalToken)
     }).done(data =>
       this.setState({ stories: _.select(data[0].stories, story => story.story_type != 'release') })
-    ).always(() =>
-      this.setState({ fetchingStories: false })
     );
   },
 
@@ -42,8 +35,6 @@ const App = React.createClass({
       url: `https://api.github.com/repos/mojotech/squadlocker/pulls?state=open&access_token=${gitHubToken}`,
     }).done(data =>
       this.setState({ pullRequests: data })
-    ).always(() =>
-      this.setState({ fetchingPullRequets: false })
     );
   },
 
@@ -51,11 +42,12 @@ const App = React.createClass({
     const styles = {
       centered: { textAlign: 'center' }
     };
-    const { fetchingStories, fetchingPullRequets, stories, pullRequests } = this.state;
+    const { stories, pullRequests } = this.state;
+    const loading = (_.isEmpty(stories) || _.isEmpty(pullRequests));
     return (
       <div>
         <h1 style={styles.centered}>SquadLocker - Current Sprint</h1>
-        {fetchingStories || fetchingPullRequets ? (
+        {loading ? (
           <div style={styles.centered}>
             <CircularProgress mode='indeterminate' />
           </div>
