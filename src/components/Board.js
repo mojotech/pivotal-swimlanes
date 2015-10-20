@@ -37,7 +37,7 @@ const Board = React.createClass({
         authors: story.owner_ids.map(id => this._mapOwnerIdToName(id)).join(', '),
         kind: story.kind,
         estimate: story.estimate || 0
-      }
+      };
     };
     const unstartedEntries =
       _(stories)

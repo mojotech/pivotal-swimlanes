@@ -44,5 +44,8 @@
   },
   "plugins": [
     "react"
-  ]
+  ],
+  "globals": {
+    "require": false
+  }
 }
