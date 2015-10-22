@@ -8,7 +8,7 @@ const Entry = React.createClass({
       title: React.PropTypes.string.isRequired,
       url: React.PropTypes.string.isRequired,
       authors: React.PropTypes.string.isRequired,
-      kind: React.PropTypes.oneOf(['story', 'bug', 'chore']),
+      type: React.PropTypes.oneOf(['story', 'bug', 'chore']),
       estimate: React.PropTypes.number.isRequired
     }).isRequired
   },
@@ -19,11 +19,11 @@ const Entry = React.createClass({
       link: { fontSize: 12 },
       authors: { fontSize: 10 }
     };
-    const { title, url, authors, kind, estimate } = this.props.entry;
+    const { title, url, authors, type, estimate } = this.props.entry;
     return (
       <Paper style={styles.content}>
-        {_.isEmpty(kind) ? null : <img src={require(`../img/${kind}.png`)} alt={kind} />}
-        <div>{Array(estimate).join('•')}</div>
+        {_.isEmpty(type) ? null : <img src={require(`../img/${type}.png`)} alt={type} />}
+        <div>{Array(estimate + 1).join('•')}</div>
         <a href={url} target='_new' style={styles.link}>{title}</a>
         <br />
         <div style={styles.authors}>{authors}</div>

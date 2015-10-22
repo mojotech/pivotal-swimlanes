@@ -49,7 +49,7 @@ const App = React.createClass({
             title: story.name,
             url: story.url,
             authors: story.owner_ids.map(id => this._mapOwnerIdToName(id)).join(', '),
-            kind: story.kind,
+            type: story.story_type,
             estimate: story.estimate || 0,
             current_state: story.current_state
           };
@@ -72,7 +72,8 @@ const App = React.createClass({
             title: pullRequest.title,
             url: pullRequest.html_url,
             authors: pullRequest.user.login,
-            estimate: 0
+            estimate: 0,
+            type: 'pr'
           };
         })
       })
