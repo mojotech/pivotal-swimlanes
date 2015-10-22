@@ -17,13 +17,16 @@ const Entry = React.createClass({
     const styles = {
       content: { padding: 5 },
       link: { fontSize: 12 },
-      authors: { fontSize: 10 }
+      authors: { fontSize: 10 },
+      estimate: { paddingLeft: 5 }
     };
     const { title, url, authors, type, estimate } = this.props.entry;
     return (
       <Paper style={styles.content}>
-        {_.isEmpty(type) ? null : <img src={require(`../img/${type}.png`)} alt={type} />}
-        <div>{Array(estimate + 1).join('•')}</div>
+        <div>
+          {_.isEmpty(type) ? null : <img src={require(`../img/${type}.png`)} alt={type} />}
+          <span style={styles.estimate}>{Array(estimate + 1).join('•')}</span>
+        </div>
         <a href={url} target='_new' style={styles.link}>{title}</a>
         <br />
         <div style={styles.authors}>{authors}</div>
