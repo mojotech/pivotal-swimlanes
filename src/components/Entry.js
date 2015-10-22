@@ -8,7 +8,7 @@ const Entry = React.createClass({
       title: React.PropTypes.string.isRequired,
       url: React.PropTypes.string.isRequired,
       authors: React.PropTypes.string.isRequired,
-      type: React.PropTypes.oneOf(['story', 'bug', 'chore']),
+      type: React.PropTypes.oneOf(['story', 'bug', 'chore', 'pr']),
       estimate: React.PropTypes.number.isRequired
     }).isRequired
   },

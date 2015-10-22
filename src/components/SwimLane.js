@@ -10,7 +10,7 @@ const SwimLane = React.createClass({
         title: React.PropTypes.string.isRequired,
         url: React.PropTypes.string.isRequired,
         authors: React.PropTypes.string.isRequired,
-        type: React.PropTypes.oneOf(['story', 'bug', 'chore']),
+        type: React.PropTypes.oneOf(['feature', 'bug', 'chore', 'pr']),
         estimate: React.PropTypes.number.isRequired
       }).isRequired
     ).isRequired
