@@ -36,10 +36,14 @@ const App = React.createClass({
 
   _fetchStories() {
     const { pivotalProjectId } = this.props;
-    $.ajax({
-      url: `https://www.pivotaltracker.com/services/v5/projects/${pivotalProjectId}/iterations?scope=current`,
-      method: 'GET',
-      beforeSend: xhr => xhr.setRequestHeader('X-TrackerToken', this.props.pivotalToken)
+    this._fetchProjectMembers()
+    .then(members => {
+      this._members = members;
+      return $.ajax({
+        url: `https://www.pivotaltracker.com/services/v5/projects/${pivotalProjectId}/iterations?scope=current`,
+        method: 'GET',
+        beforeSend: xhr => xhr.setRequestHeader('X-TrackerToken', this.props.pivotalToken)
+      });
     }).done(data => {
       const storiesData = _.select(data[0].stories, story => story.story_type !== 'release');
       const ownerIds = _.chain(storiesData).map(story => story.owner_ids).flatten().unique().value();
@@ -83,23 +87,17 @@ const App = React.createClass({
     );
   },
 
+  _fetchProjectMembers() {
+    const { pivotalProjectId, pivotalToken } = this.props;
+    return $.ajax({
+      url: `https://www.pivotaltracker.com/services/v5/projects/${pivotalProjectId}/memberships`,
+      method: 'GET',
+      beforeSend: xhr => xhr.setRequestHeader('X-TrackerToken', pivotalToken)
+    });
+  },
+
   _mapOwnerIdToName(id) {
-    switch (id) {
-    case 1584218:
-      return 'DSK';
-    case 1062813:
-      return 'MB';
-    case 1333386:
-      return 'DK';
-    case 1462994:
-      return 'JL';
-    case 1079920:
-      return 'JB';
-    case 168061:
-      return 'AS';
-    default:
-      return id;
-    }
+    return _.first(_.filter(this._members, member => member.person.id === id)).person.name;
   },
 
   render() {
