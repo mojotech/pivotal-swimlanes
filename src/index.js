@@ -1,6 +1,12 @@
 import React from 'react';
 import App from './components/App';
-import { PIVOTAL_TOKEN, PIVOTAL_PROJECT_ID, GITHUB_TOKEN, GITHUB_USER, GITHUB_REPO } from './.env';
+import {
+  PIVOTAL_TOKEN,
+  PIVOTAL_PROJECT_ID,
+  GITHUB_TOKEN,
+  GITHUB_USER
+  GITHUB_REPO
+} from './.env';
 
 React.render(
   <App
