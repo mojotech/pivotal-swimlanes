@@ -61,9 +61,9 @@ const App = React.createClass({
   },
 
   _fetchPullRequests() {
-    const { gitHubToken } = this.props;
+    const { gitHubToken, gitHubUser, gitHubRepo } = this.props;
     $.ajax({
-      url: `https://api.github.com/repos/mojotech/squadlocker/pulls?state=open&access_token=${gitHubToken}`,
+      url: `https://api.github.com/repos/${gitHubUser}/${gitHubRepo}/pulls?state=open&access_token=${gitHubToken}`,
       method: 'GET'
     }).done(data => {
       this.setState({
