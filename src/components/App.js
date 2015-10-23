@@ -4,6 +4,8 @@ import _ from 'underscore';
 import Board from './Board';
 import { CircularProgress } from 'material-ui';
 
+const pivotalAPI = 'https://www.pivotaltracker.com/services/v5';
+
 const App = React.createClass({
   propTypes: {
     pivotalToken: React.PropTypes.string.isRequired,
@@ -24,7 +26,7 @@ const App = React.createClass({
   _fetchProjectName() {
     let { pivotalProjectId, pivotalToken } = this.props;
     $.ajax({
-      url: `https://www.pivotaltracker.com/services/v5/projects/${pivotalProjectId}`,
+      url: `${pivotalAPI}/projects/${pivotalProjectId}`,
       method: 'GET',
       beforeSend: xhr => xhr.setRequestHeader('X-TrackerToken', pivotalToken)
     }).done(data =>
@@ -40,7 +42,7 @@ const App = React.createClass({
     .then(members => {
       this._members = members;
       return $.ajax({
-        url: `https://www.pivotaltracker.com/services/v5/projects/${pivotalProjectId}/iterations?scope=current`,
+        url: `${pivotalAPI}/projects/${pivotalProjectId}/iterations?scope=current`,
         method: 'GET',
         beforeSend: xhr => xhr.setRequestHeader('X-TrackerToken', pivotalToken)
       });
@@ -90,7 +92,7 @@ const App = React.createClass({
   _fetchProjectMembers() {
     let { pivotalProjectId, pivotalToken } = this.props;
     return $.ajax({
-      url: `https://www.pivotaltracker.com/services/v5/projects/${pivotalProjectId}/memberships`,
+      url: `${pivotalAPI}/projects/${pivotalProjectId}/memberships`,
       method: 'GET',
       beforeSend: xhr => xhr.setRequestHeader('X-TrackerToken', pivotalToken)
     });
