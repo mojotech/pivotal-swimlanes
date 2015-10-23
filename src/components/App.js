@@ -22,11 +22,11 @@ const App = React.createClass({
   },
 
   _fetchProjectName() {
-    let { pivotalProjectId } = this.props;
+    let { pivotalProjectId, pivotalToken } = this.props;
     $.ajax({
       url: `https://www.pivotaltracker.com/services/v5/projects/${pivotalProjectId}`,
       method: 'GET',
-      beforeSend: xhr => xhr.setRequestHeader('X-TrackerToken', this.props.pivotalToken)
+      beforeSend: xhr => xhr.setRequestHeader('X-TrackerToken', pivotalToken)
     }).done(data =>
       this.setState({ projectName: data.name })
     ).fail(() =>
@@ -35,14 +35,14 @@ const App = React.createClass({
   },
 
   _fetchStories() {
-    let { pivotalProjectId } = this.props;
+    let { pivotalProjectId, pivotalToken } = this.props;
     this._fetchProjectMembers()
     .then(members => {
       this._members = members;
       return $.ajax({
         url: `https://www.pivotaltracker.com/services/v5/projects/${pivotalProjectId}/iterations?scope=current`,
         method: 'GET',
-        beforeSend: xhr => xhr.setRequestHeader('X-TrackerToken', this.props.pivotalToken)
+        beforeSend: xhr => xhr.setRequestHeader('X-TrackerToken', pivotalToken)
       });
     }).done(data => {
       let storiesData = _.select(data[0].stories, story => story.story_type !== 'release');
