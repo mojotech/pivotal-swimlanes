@@ -22,7 +22,7 @@ const App = React.createClass({
   },
 
   _fetchProjectName() {
-    const { pivotalProjectId } = this.props;
+    let { pivotalProjectId } = this.props;
     $.ajax({
       url: `https://www.pivotaltracker.com/services/v5/projects/${pivotalProjectId}`,
       method: 'GET',
@@ -35,7 +35,7 @@ const App = React.createClass({
   },
 
   _fetchStories() {
-    const { pivotalProjectId } = this.props;
+    let { pivotalProjectId } = this.props;
     this._fetchProjectMembers()
     .then(members => {
       this._members = members;
@@ -45,9 +45,9 @@ const App = React.createClass({
         beforeSend: xhr => xhr.setRequestHeader('X-TrackerToken', this.props.pivotalToken)
       });
     }).done(data => {
-      const storiesData = _.select(data[0].stories, story => story.story_type !== 'release');
-      const ownerIds = _.chain(storiesData).map(story => story.owner_ids).flatten().unique().value();
-      const stories = _(storiesData)
+      let storiesData = _.select(data[0].stories, story => story.story_type !== 'release');
+      let ownerIds = _.chain(storiesData).map(story => story.owner_ids).flatten().unique().value();
+      let stories = _(storiesData)
         .map(story => {
           return {
             title: story.name,
@@ -65,7 +65,7 @@ const App = React.createClass({
   },
 
   _fetchPullRequests() {
-    const { gitHubToken, gitHubUser, gitHubRepo } = this.props;
+    let { gitHubToken, gitHubUser, gitHubRepo } = this.props;
     $.ajax({
       url: `https://api.github.com/repos/${gitHubUser}/${gitHubRepo}/pulls?state=open&access_token=${gitHubToken}`,
       method: 'GET'
@@ -88,7 +88,7 @@ const App = React.createClass({
   },
 
   _fetchProjectMembers() {
-    const { pivotalProjectId, pivotalToken } = this.props;
+    let { pivotalProjectId, pivotalToken } = this.props;
     return $.ajax({
       url: `https://www.pivotaltracker.com/services/v5/projects/${pivotalProjectId}/memberships`,
       method: 'GET',
@@ -101,11 +101,11 @@ const App = React.createClass({
   },
 
   render() {
-    const styles = {
+    let styles = {
       centered: { textAlign: 'center' }
     };
-    const { stories, pullRequests, projectName, errorFetchingData } = this.state;
-    const loading = (!errorFetchingData && (_.isNull(stories) || _.isNull(pullRequests) || _.isNull(projectName)));
+    let { stories, pullRequests, projectName, errorFetchingData } = this.state;
+    let loading = (!errorFetchingData && (_.isNull(stories) || _.isNull(pullRequests) || _.isNull(projectName)));
     return (
       <div>
         {loading ? (
