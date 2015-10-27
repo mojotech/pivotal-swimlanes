@@ -1,6 +1,7 @@
 import React from 'react';
 import $ from 'jquery';
 import _ from 'underscore';
+import HeaderBar from './HeaderBar';
 import Board from './Board';
 import { CircularProgress } from 'material-ui';
 
@@ -119,7 +120,7 @@ const App = React.createClass({
             <div>Error fetching data.</div>
           ) : (
             <div>
-              <h1 style={styles.centered}>{projectName} Sprint</h1>
+              <HeaderBar projectName={projectName} />
               <Board projectName={projectName} stories={stories} pullRequests={pullRequests} />
             </div>
           )

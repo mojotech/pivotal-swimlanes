@@ -15,10 +15,16 @@ const Entry = React.createClass({
 
   render() {
     const styles = {
-      content: { padding: 5 },
-      link: { fontSize: 12 },
+      content: { padding: 5, backgroundColor: '#F9F9F9' },
+      title: {
+        fontSize: 12,
+        whiteSpace: 'normal',
+        paddingTop: 3,
+        paddingBottom: 3
+      },
       authors: { fontSize: 10 },
-      estimate: { paddingLeft: 5 }
+      estimate: { paddingLeft: 5 },
+      link: { float: 'right' }
     };
     const { title, url, authors, type, estimate } = this.props.entry;
     return (
@@ -26,9 +32,11 @@ const Entry = React.createClass({
         <div>
           {_.isEmpty(type) ? null : <img src={require(`../img/${type}.png`)} alt={type} />}
           <span style={styles.estimate}>{Array(estimate + 1).join('•')}</span>
+          <a href={url} target='_new'>
+            <img src={require('../img/open_in_new.png')} style={styles.link} />
+          </a>
         </div>
-        <a href={url} target='_new' style={styles.link}>{title}</a>
-        <br />
+        <div style={styles.title}>{title}</div>
         <div style={styles.authors}>{authors}</div>
       </Paper>
     );

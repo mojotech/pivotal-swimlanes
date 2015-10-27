@@ -3,7 +3,7 @@ Pivotal Swimlanes
 
 Swimlane view for current Pivotal sprint
 
-![pivotal swimlanes](http://i59.tinypic.com/35m2jb9.jpg)
+![pivotal swimlanes](http://oi58.tinypic.com/2h2p3rr.jpg)
 
 ### Setup
 - `cp src/.env.sample.js src/.env.js`

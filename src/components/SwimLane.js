@@ -19,14 +19,26 @@ const SwimLane = React.createClass({
   render() {
     const { title, entries } = this.props;
     const styles = {
-      container: { display: 'inline-block', verticalAlign: 'top' },
-      title: { textAlign: 'center' },
-      entryList: { listStyleType: 'none' },
+      container: {
+        display: 'inline-block',
+        verticalAlign: 'top',
+        padding: 5,
+        width: 300
+      },
+      title: {
+        textAlign: 'center',
+        font: "14px 'Helvetica Neue',Arial,Helvetica,sans-serif",
+        fontSize: 18,
+        fontWeight: 600,
+        lineHeight: '20px',
+        color: '#f6f6f6'
+      },
+      entryList: { listStyleType: 'none', padding: 0 },
       entry: { paddingBottom: 5 }
     };
     return (
       <div style={styles.container}>
-        <h2 style={styles.title}>{title}</h2>
+        <div style={styles.title}>{title}</div>
         <ul style={styles.entryList}>
           {_.map(entries, (entry, i) =>
             <li key={i} style={styles.entry}>
