@@ -1,22 +1,22 @@
 import React from 'react';
 import Project from '../components/Project';
-import {
-  PIVOTAL_TOKEN,
-  PIVOTAL_PROJECT_ID,
-  GITHUB_TOKEN,
-  GITHUB_USER,
-  GITHUB_REPO
-} from '../.env';
 
 const ProjectContainer = React.createClass({
   render() {
+    const {
+      pivotalToken,
+      pivotalProjectId,
+      gitHubToken,
+      gitHubUser,
+      gitHubRepo
+    } = JSON.parse(localStorage.getItem('pivotal-swimlanes-config'));
     return (
       <Project
-        pivotalToken={PIVOTAL_TOKEN}
-        pivotalProjectId={PIVOTAL_PROJECT_ID}
-        gitHubToken={GITHUB_TOKEN}
-        gitHubUser={GITHUB_USER}
-        gitHubRepo={GITHUB_REPO} />
+        pivotalToken={pivotalToken}
+        pivotalProjectId={pivotalProjectId}
+        gitHubToken={gitHubToken}
+        gitHubUser={gitHubUser}
+        gitHubRepo={gitHubRepo} />
     );
   }
 });
