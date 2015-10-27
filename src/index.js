@@ -4,7 +4,7 @@ import {
   PIVOTAL_TOKEN,
   PIVOTAL_PROJECT_ID,
   GITHUB_TOKEN,
-  GITHUB_USER
+  GITHUB_USER,
   GITHUB_REPO
 } from './.env';
 
