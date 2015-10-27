@@ -18,9 +18,19 @@ const Board = React.createClass({
     const mergedEntries = _.filter(stories, story => story.current_state === 'finished')
     const deliveredEntries = _.filter(stories, story => story.current_state === 'delivered')
     const acceptedEntries = _.filter(stories, story => story.current_state === 'accepted')
+    const styles = {
+      board: {
+        overflow: 'scroll',
+        whiteSpace: 'nowrap',
+        backgroundColor: '#4E57A3',
+        padding: 10,
+        height: '100vh',
+        width: '100%'
+      }
+    };
 
     return (
-      <div style={{overflow: 'scroll', whiteSpace: 'nowrap'}}>
+      <div style={styles.board}>
         <SwimLane title='Unstarted' entries={unstartedEntries} />
         <SwimLane title='In Progress' entries={inProgressEntries} />
         <SwimLane title='Rejected' entries={rejectedEntries} />
