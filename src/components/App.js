@@ -4,6 +4,8 @@ import _ from 'underscore';
 import Board from './Board';
 import { CircularProgress } from 'material-ui';
 
+const pivotalAPI = 'https://www.pivotaltracker.com/services/v5';
+
 const App = React.createClass({
   propTypes: {
     pivotalToken: React.PropTypes.string.isRequired,
@@ -22,11 +24,11 @@ const App = React.createClass({
   },
 
   _fetchProjectName() {
-    const { pivotalProjectId } = this.props;
+    let { pivotalProjectId, pivotalToken } = this.props;
     $.ajax({
-      url: `https://www.pivotaltracker.com/services/v5/projects/${pivotalProjectId}`,
+      url: `${pivotalAPI}/projects/${pivotalProjectId}`,
       method: 'GET',
-      beforeSend: xhr => xhr.setRequestHeader('X-TrackerToken', this.props.pivotalToken)
+      beforeSend: xhr => xhr.setRequestHeader('X-TrackerToken', pivotalToken)
     }).done(data =>
       this.setState({ projectName: data.name })
     ).fail(() =>
@@ -35,15 +37,19 @@ const App = React.createClass({
   },
 
   _fetchStories() {
-    const { pivotalProjectId } = this.props;
-    $.ajax({
-      url: `https://www.pivotaltracker.com/services/v5/projects/${pivotalProjectId}/iterations?scope=current`,
-      method: 'GET',
-      beforeSend: xhr => xhr.setRequestHeader('X-TrackerToken', this.props.pivotalToken)
+    let { pivotalProjectId, pivotalToken } = this.props;
+    this._fetchProjectMembers()
+    .then(members => {
+      this._members = members;
+      return $.ajax({
+        url: `${pivotalAPI}/projects/${pivotalProjectId}/iterations?scope=current`,
+        method: 'GET',
+        beforeSend: xhr => xhr.setRequestHeader('X-TrackerToken', pivotalToken)
+      });
     }).done(data => {
-      const storiesData = _.select(data[0].stories, story => story.story_type !== 'release');
-      const ownerIds = _.chain(storiesData).map(story => story.owner_ids).flatten().unique().value();
-      const stories = _(storiesData)
+      let storiesData = _.select(data[0].stories, story => story.story_type !== 'release');
+      let ownerIds = _.chain(storiesData).map(story => story.owner_ids).flatten().unique().value();
+      let stories = _(storiesData)
         .map(story => {
           return {
             title: story.name,
@@ -61,9 +67,9 @@ const App = React.createClass({
   },
 
   _fetchPullRequests() {
-    const { gitHubToken } = this.props;
+    let { gitHubToken, gitHubUser, gitHubRepo } = this.props;
     $.ajax({
-      url: `https://api.github.com/repos/mojotech/squadlocker/pulls?state=open&access_token=${gitHubToken}`,
+      url: `https://api.github.com/repos/${gitHubUser}/${gitHubRepo}/pulls?state=open&access_token=${gitHubToken}`,
       method: 'GET'
     }).done(data => {
       this.setState({
@@ -83,31 +89,25 @@ const App = React.createClass({
     );
   },
 
+  _fetchProjectMembers() {
+    let { pivotalProjectId, pivotalToken } = this.props;
+    return $.ajax({
+      url: `${pivotalAPI}/projects/${pivotalProjectId}/memberships`,
+      method: 'GET',
+      beforeSend: xhr => xhr.setRequestHeader('X-TrackerToken', pivotalToken)
+    });
+  },
+
   _mapOwnerIdToName(id) {
-    switch (id) {
-    case 1584218:
-      return 'DSK';
-    case 1062813:
-      return 'MB';
-    case 1333386:
-      return 'DK';
-    case 1462994:
-      return 'JL';
-    case 1079920:
-      return 'JB';
-    case 168061:
-      return 'AS';
-    default:
-      return id;
-    }
+    return _.first(_.filter(this._members, member => member.person.id === id)).person.name;
   },
 
   render() {
-    const styles = {
+    let styles = {
       centered: { textAlign: 'center' }
     };
-    const { stories, pullRequests, projectName, errorFetchingData } = this.state;
-    const loading = (!errorFetchingData && (_.isNull(stories) || _.isNull(pullRequests) || _.isNull(projectName)));
+    let { stories, pullRequests, projectName, errorFetchingData } = this.state;
+    let loading = (!errorFetchingData && (_.isNull(stories) || _.isNull(pullRequests) || _.isNull(projectName)));
     return (
       <div>
         {loading ? (
