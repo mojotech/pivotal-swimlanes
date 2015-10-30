@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { Router, Route } from 'react-router';
 import history from './history';
 import ProjectContainer from './containers/ProjectContainer';
@@ -10,7 +11,7 @@ function checkConfig(nextState, replaceState) {
   }
 }
 
-React.render(
+ReactDOM.render(
   <Router history={history}>
     <Route path='/' component={ProjectContainer} onEnter={checkConfig} />
     <Route path='setup' component={SetupContainer} />
