@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import $ from 'jquery';
 import _ from 'underscore';
 import HeaderBar from './HeaderBar';
@@ -7,11 +7,13 @@ import { CircularProgress } from 'material-ui';
 
 const pivotalAPI = 'https://www.pivotaltracker.com/services/v5';
 
-const App = React.createClass({
+const Project = React.createClass({
   propTypes: {
-    pivotalToken: React.PropTypes.string.isRequired,
-    pivotalProjectId: React.PropTypes.string.isRequired,
-    gitHubToken: React.PropTypes.string.isRequired
+    pivotalToken: PropTypes.string.isRequired,
+    pivotalProjectId: PropTypes.string.isRequired,
+    gitHubToken: PropTypes.string.isRequired,
+    gitHubUser: PropTypes.string.isRequired,
+    gitHubRepo: PropTypes.string.isRequired
   },
 
   getInitialState() {
@@ -130,4 +132,4 @@ const App = React.createClass({
   }
 });
 
-export default App;
+export default Project;
