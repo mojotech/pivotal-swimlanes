@@ -23,7 +23,7 @@ const Board = React.createClass({
         overflow: 'scroll',
         whiteSpace: 'nowrap',
         backgroundColor: '#4E57A3',
-        padding: 10,
+        padding: 5,
         height: '100vh',
         width: '100%'
       }
