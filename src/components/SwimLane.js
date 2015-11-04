@@ -23,7 +23,7 @@ const SwimLane = React.createClass({
         display: 'inline-block',
         verticalAlign: 'top',
         padding: 5,
-        width: 191
+        width: 224
       },
       title: {
         textAlign: 'center',
