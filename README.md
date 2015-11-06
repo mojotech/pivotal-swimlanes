@@ -3,7 +3,7 @@ Pivotal Swimlanes
 
 Swimlane view for current Pivotal sprint
 
-![pivotal swimlanes](http://oi58.tinypic.com/2h2p3rr.jpg)
+![pivotal swimlanes](http://oi65.tinypic.com/2dsgw8w.jpg)
 
 ### Setup
 - `npm install`
