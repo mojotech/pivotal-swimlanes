@@ -2,7 +2,7 @@
   "name": "pivotal-swimlanes",
   "description": "Swimlane view for current Pivotal sprint",
   "engines": {
-    "node": "2.0.2",
+    "node": "4.0.0",
     "npm": "3.3.5"
   },
   "scripts": {
