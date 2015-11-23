@@ -2,7 +2,7 @@ import React from 'react';
 import history from '../history'
 import $ from 'jquery';
 
-const Setup = React.createClass({
+const Settings = React.createClass({
   getInitialState() {
     return {
       pivotalToken: '',
@@ -87,7 +87,7 @@ const Setup = React.createClass({
     }
     return (
       <div>
-        <h1>Pivotal Swimlanes Setup</h1>
+        <h1>Pivotal Swimlanes Settings</h1>
         <form>
           <label><strong>Pivotal Token: </strong></label>
           <br />
@@ -137,4 +137,4 @@ const Setup = React.createClass({
   }
 });
 
-export default Setup;
+export default Settings;

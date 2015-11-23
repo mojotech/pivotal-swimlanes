@@ -3,12 +3,12 @@ import ReactDOM from 'react-dom';
 import { Router, Route } from 'react-router';
 import history from './history';
 import ProjectContainer from './containers/ProjectContainer';
-import SetupContainer from './containers/SetupContainer';
+import SettingsContainer from './containers/SettingsContainer';
 import $ from 'jquery';
 
 function checkConfig(nextState, replaceState) {
   if (!localStorage.getItem('pivotal-swimlanes-config')) {
-    replaceState(null, '/setup');
+    replaceState(null, '/settings');
   }
 }
 
@@ -41,14 +41,14 @@ function handleGitHubAuth(nextState, replaceState, callback) {
         gitHubToken
       })
     );
-    callback(replaceState(null, 'setup'));
+    callback(replaceState(null, 'settings'));
   });
 }
 
 ReactDOM.render(
   <Router history={history}>
     <Route path='/' component={ProjectContainer} onEnter={checkConfig} />
-    <Route path='setup' component={SetupContainer} />
+    <Route path='settings' component={SettingsContainer} />
     <Route path='github_authorized' onEnter={handleGitHubAuth} />
   </Router>, document.getElementById('root')
 );
