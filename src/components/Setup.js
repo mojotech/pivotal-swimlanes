@@ -1,5 +1,6 @@
 import React from 'react';
 import history from '../history'
+import $ from 'jquery';
 
 const Setup = React.createClass({
   getInitialState() {
@@ -8,7 +9,9 @@ const Setup = React.createClass({
       pivotalProjectId: '',
       gitHubToken: '',
       gitHubUser: '',
-      gitHubRepo: ''
+      gitHubRepo: '',
+      gitHubRepos: '',
+      fetchingData: false
     };
   },
 
@@ -26,7 +29,26 @@ const Setup = React.createClass({
       gitHubToken,
       gitHubUser,
       gitHubRepo
-    });
+    },
+      () => {
+        if (!_.isEmpty(gitHubToken)) {
+          this._fetchRepos();
+        }
+      }
+    );
+  },
+
+  _fetchRepos() {
+    this.setState({ fetchingData: true });
+    // TODO: I think this only returns the first 30 repos
+    $.ajax({
+      url: `https://api.github.com/user/repos?sort=pushed&access_token=${this.state.gitHubToken}`,
+      method: 'GET'
+    }).done(data =>
+      this.setState({ gitHubRepos: data })
+    ).always(() =>
+      this.setState({ fetchingData: false })
+    );
   },
 
   saveConfig() {
@@ -56,12 +78,16 @@ const Setup = React.createClass({
       pivotalProjectId,
       gitHubToken,
       gitHubUser,
-      gitHubRepo
+      gitHubRepo,
+      gitHubRepos,
+      fetchingData
     } = this.state;
+    if (fetchingData) {
+      return <div>Loading...</div>;
+    }
     return (
       <div>
         <h1>Pivotal Swimlanes Setup</h1>
-        <p>Please fill in the following credentials.</p>
         <form>
           <label><strong>Pivotal Token: </strong></label>
           <br />
@@ -79,29 +105,30 @@ const Setup = React.createClass({
             onChange={e => this.setState({ pivotalProjectId: e.target.value })} />
           <br />
           <br />
-          <label><strong>GitHub Token: </strong></label>
-          <br />
-          <input
-            type='text'
-            value={gitHubToken}
-            onChange={e => this.setState({ gitHubToken: e.target.value })} />
-          <br />
-          <br />
-          <label><strong>GitHub User/Organization: </strong></label>
-          <br />
-          <input
-            type='text'
-            value={gitHubUser}
-            onChange={e => this.setState({ gitHubUser: e.target.value })} />
-          <br />
-          <br />
           <label><strong>GitHub Repo: </strong></label>
           <br />
-          <input
-            type='text'
-            value={gitHubRepo}
-            onChange={e => this.setState({ gitHubRepo: e.target.value })} />
-          <br />
+          {_.isEmpty(gitHubToken) ? (
+            <a href='https://github.com/login/oauth/authorize?client_id=eea103fcc5e732e4c4c1&redirect_uri=http://localhost:3000/github_authorized&state=&scope=repo'>
+              Authorize GitHub Account
+            </a>
+          ) : (
+            <div>
+              <select>
+                {_.map(gitHubRepos, (repo, i) =>
+                  <option
+                    key={i}
+                    value={repo.full_name}
+                    selected={repo.full_name === `${gitHubUser}/${gitHubRepo}`}
+                    onChange={() =>
+                      this.setState({ gitHubUser: repo.full_name.split('/')[0], gitHubRepo: repo.name })
+                    }>
+                      {repo.full_name}
+                  </option>
+                )}
+              </select>
+              <br />
+            </div>
+          )}
           <br />
           <button onClick={this.saveConfig}>Save</button>
         </form>

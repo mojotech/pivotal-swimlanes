@@ -2,6 +2,7 @@ var path = require('path');
 var express = require('express');
 var webpack = require('webpack');
 var config = require('./webpack.config.dev');
+var request = require('request');
 
 var app = express();
 var compiler = webpack(config);
@@ -17,11 +18,23 @@ app.get('*', function(req, res) {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+app.post('/authorize_github', function(req, res) {
+  // TODO: add unguessable state parameter to prevent CSRF
+  request('https://github.com/login/oauth/access_token?client_id=eea103fcc5e732e4c4c1&client_secret=60816420e28043fbc46b3cf98cbdf943ff4617dc&code=' + req.query.code + '&redirect_uri=http://localhost:3000/github_authorized&scope=repo,user', function (error, response, body) {
+    var json_response = {};
+    body.split('&').forEach(function(el) {
+      var key = el.split('=')[0];
+      var value = el.split('=')[1];
+      json_response[key] = value
+    });
+    res.send(json_response.access_token);
+  }.bind(res))
+});
+
 app.listen(3000, 'localhost', function(err) {
   if (err) {
     console.log(err);
     return;
   }
-
   console.log('Listening at http://localhost:3000');
 });
