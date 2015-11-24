@@ -1,6 +1,7 @@
 import React from 'react';
 import history from '../history'
 import $ from 'jquery';
+import _ from 'underscore';
 
 const Settings = React.createClass({
   getInitialState() {
@@ -10,8 +11,7 @@ const Settings = React.createClass({
       gitHubToken: '',
       gitHubUser: '',
       gitHubRepo: '',
-      gitHubRepos: '',
-      fetchingData: false
+      gitHubRepos: ''
     };
   },
 
@@ -29,25 +29,34 @@ const Settings = React.createClass({
       gitHubToken,
       gitHubUser,
       gitHubRepo
-    },
-      () => {
-        if (!_.isEmpty(gitHubToken)) {
-          this._fetchRepos();
-        }
-      }
-    );
+    });
   },
 
-  _fetchRepos() {
-    this.setState({ fetchingData: true });
-    // TODO: I think this only returns the first 30 repos
+  _searchRepo(e) {
+    let query = e.target.value;
+    if (query.length === 0) {
+      this.setState({ gitHubRepos: [] });
+      return
+    };
+
+    const [user, repo] = query.split('/')
+
+    let url = ''
+    url += 'https://api.github.com/search/repositories'
+    url += '?'
+    url += $.param({
+      access_token: this.state.gitHubToken,
+      q: repo || query
+    });
+    if (repo) { url += `+user:${user}` }
+
     $.ajax({
-      url: `https://api.github.com/user/repos?sort=pushed&access_token=${this.state.gitHubToken}`,
+      url: url,
       method: 'GET'
     }).done(data =>
-      this.setState({ gitHubRepos: data })
-    ).always(() =>
-      this.setState({ fetchingData: false })
+      this.setState({ gitHubRepos: data.items })
+    ).fail(data =>
+      this.setState({ gitHubRepos: [] })
     );
   },
 
@@ -79,12 +88,13 @@ const Settings = React.createClass({
       gitHubToken,
       gitHubUser,
       gitHubRepo,
-      gitHubRepos,
-      fetchingData
+      gitHubRepos
     } = this.state;
-    if (fetchingData) {
-      return <div>Loading...</div>;
-    }
+    const styles = {
+      repo: {
+        cursor: 'pointer'
+      }
+    };
     return (
       <div>
         <h1>Pivotal Swimlanes Settings</h1>
@@ -113,19 +123,21 @@ const Settings = React.createClass({
             </a>
           ) : (
             <div>
-              <select>
+              <input
+                type='text'
+                placeholder='Search Repos'
+                onChange={_.debounce(this._searchRepo, 500)} />
+              <p><strong>Selected: {this.state.gitHubUser}/{this.state.gitHubRepo}</strong></p>
+              <ul>
                 {_.map(gitHubRepos, (repo, i) =>
-                  <option
+                  <li
                     key={i}
-                    value={repo.full_name}
-                    selected={repo.full_name === `${gitHubUser}/${gitHubRepo}`}
-                    onChange={() =>
-                      this.setState({ gitHubUser: repo.full_name.split('/')[0], gitHubRepo: repo.name })
-                    }>
-                      {repo.full_name}
-                  </option>
+                    style={styles.repo}
+                    onClick={() => this.setState({ gitHubUser: repo.owner.login, gitHubRepo: repo.name }) }>
+                    {repo.full_name}
+                  </li>
                 )}
-              </select>
+              </ul>
               <br />
             </div>
           )}
