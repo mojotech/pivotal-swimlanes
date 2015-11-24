@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { Link } from 'react-router';
 import $ from 'jquery';
 import _ from 'underscore';
 import HeaderBar from './HeaderBar';
@@ -12,7 +13,6 @@ const Project = React.createClass({
     pivotalToken: PropTypes.string.isRequired,
     pivotalProjectId: PropTypes.string.isRequired,
     gitHubToken: PropTypes.string.isRequired,
-    gitHubUser: PropTypes.string.isRequired,
     gitHubRepo: PropTypes.string.isRequired
   },
 
@@ -70,9 +70,9 @@ const Project = React.createClass({
   },
 
   _fetchPullRequests() {
-    let { gitHubToken, gitHubUser, gitHubRepo } = this.props;
+    let { gitHubToken, gitHubRepo } = this.props;
     $.ajax({
-      url: `https://api.github.com/repos/${gitHubUser}/${gitHubRepo}/pulls?state=open&access_token=${gitHubToken}`,
+      url: `https://api.github.com/repos/${gitHubRepo}/pulls?state=open&access_token=${gitHubToken}`,
       method: 'GET'
     }).done(data => {
       this.setState({
@@ -119,7 +119,10 @@ const Project = React.createClass({
           </div>
         ) : (
           errorFetchingData ? (
-            <div>Error fetching data.</div>
+            <div>
+              <p>Error fetching data.</p>
+              <Link to='settings'>Configure Settings</Link>
+            </div>
           ) : (
             <div>
               <HeaderBar projectName={projectName} />
