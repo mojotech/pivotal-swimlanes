@@ -90,6 +90,11 @@ const Settings = React.createClass({
       gitHubRepo,
       gitHubRepos
     } = this.state;
+    const styles = {
+      repo: {
+        cursor: 'pointer'
+      }
+    };
     return (
       <div>
         <h1>Pivotal Swimlanes Settings</h1>
@@ -125,7 +130,10 @@ const Settings = React.createClass({
               <p><strong>Selected: {this.state.gitHubUser}/{this.state.gitHubRepo}</strong></p>
               <ul>
                 {_.map(gitHubRepos, (repo, i) =>
-                  <li key={i} onClick={() => this.setState({ gitHubUser: repo.owner.login, gitHubRepo: repo.name }) }>
+                  <li
+                    key={i}
+                    style={styles.repo}
+                    onClick={() => this.setState({ gitHubUser: repo.owner.login, gitHubRepo: repo.name }) }>
                     {repo.full_name}
                   </li>
                 )}
