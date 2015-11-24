@@ -5,15 +5,7 @@ import _ from 'lodash';
 const SwimLane = React.createClass({
   propTypes: {
     title: React.PropTypes.string.isRequired,
-    entries: React.PropTypes.arrayOf(
-      React.PropTypes.shape({
-        title: React.PropTypes.string.isRequired,
-        url: React.PropTypes.string.isRequired,
-        authors: React.PropTypes.string.isRequired,
-        type: React.PropTypes.oneOf(['feature', 'bug', 'chore', 'pr']),
-        estimate: React.PropTypes.number.isRequired
-      }).isRequired
-    ).isRequired
+    entries: React.PropTypes.array.isRequired
   },
 
   render() {
