@@ -4,72 +4,42 @@ import $ from 'jquery';
 
 const Settings = React.createClass({
   getInitialState() {
-    return {
-      pivotalToken: '',
-      pivotalProjectId: '',
-      gitHubToken: '',
-      gitHubUser: '',
-      gitHubRepo: '',
-      gitHubRepos: '',
-      fetchingData: false
-    };
+    return { gitHubRepos: null };
   },
 
   componentDidMount() {
-    const {
-      pivotalToken,
-      pivotalProjectId,
-      gitHubToken,
-      gitHubUser,
-      gitHubRepo
-    } = JSON.parse(localStorage.getItem('pivotal-swimlanes-config')) || {};
-    this.setState({
-      pivotalToken,
-      pivotalProjectId,
-      gitHubToken,
-      gitHubUser,
-      gitHubRepo
-    },
-      () => {
-        if (!_.isEmpty(gitHubToken)) {
-          this._fetchRepos();
-        }
-      }
-    );
+    const { gitHubToken } = JSON.parse(localStorage.getItem('pivotal-swimlanes-config')) || {};
+    if (!_.isEmpty(gitHubToken)) {
+      this._fetchRepos();
+    }
   },
 
   _fetchRepos() {
-    this.setState({ fetchingData: true });
+    const { gitHubToken } = JSON.parse(localStorage.getItem('pivotal-swimlanes-config')) || {};
     // TODO: I think this only returns the first 30 repos
     $.ajax({
-      url: `https://api.github.com/user/repos?sort=pushed&access_token=${this.state.gitHubToken}`,
+      url: `https://api.github.com/user/repos?sort=pushed&access_token=${gitHubToken}`,
       method: 'GET'
-    }).done(data =>
-      this.setState({ gitHubRepos: data })
-    ).always(() =>
-      this.setState({ fetchingData: false })
-    );
+    }).done(data => this.setState({ gitHubRepos: data }));
   },
 
-  saveConfig() {
+  saveSettings() {
+    const { pivotalToken, pivotalProjectId, gitHubRepo } = this.refs;
     const {
-      pivotalToken,
-      pivotalProjectId,
-      gitHubToken,
-      gitHubUser,
-      gitHubRepo
-    } = this.state;
+      herokuToken,
+      gitHubToken
+    } = JSON.parse(localStorage.getItem('pivotal-swimlanes-config')) || {};
     localStorage.setItem(
       'pivotal-swimlanes-config',
       JSON.stringify({
-        pivotalToken,
-        pivotalProjectId,
+        pivotalToken: pivotalToken.value,
+        pivotalProjectId: pivotalProjectId.value,
+        gitHubRepo: gitHubRepo ? gitHubRepo.value : '',
         gitHubToken,
-        gitHubUser,
-        gitHubRepo
+        herokuToken
       })
     );
-    history.pushState(null, '/')
+    this.forceUpdate();
   },
 
   render() {
@@ -79,12 +49,9 @@ const Settings = React.createClass({
       gitHubToken,
       gitHubUser,
       gitHubRepo,
-      gitHubRepos,
-      fetchingData
-    } = this.state;
-    if (fetchingData) {
-      return <div>Loading...</div>;
-    }
+      herokuToken
+    } = JSON.parse(localStorage.getItem('pivotal-swimlanes-config')) || {};
+    const { gitHubRepos } = this.state;
     return (
       <div>
         <h1>Pivotal Swimlanes Settings</h1>
@@ -92,37 +59,37 @@ const Settings = React.createClass({
           <label><strong>Pivotal Token: </strong></label>
           <br />
           <input
+            ref='pivotalToken'
             type='text'
             value={pivotalToken}
-            onChange={e => this.setState({ pivotalToken: e.target.value })} />
+            onChange={this.saveSettings} />
           <br />
           <br />
           <label><strong>Pivotal Project ID: </strong></label>
           <br />
           <input
+            ref='pivotalProjectId'
             type='text'
             value={pivotalProjectId}
-            onChange={e => this.setState({ pivotalProjectId: e.target.value })} />
+            onChange={this.saveSettings} />
           <br />
           <br />
           <label><strong>GitHub Repo: </strong></label>
           <br />
           {_.isEmpty(gitHubToken) ? (
-            <a href='https://github.com/login/oauth/authorize?client_id=eea103fcc5e732e4c4c1&redirect_uri=http://localhost:3000/github_authorized&state=&scope=repo'>
-              Authorize GitHub Account
-            </a>
+            <div>
+              <a href='https://github.com/login/oauth/authorize?client_id=eea103fcc5e732e4c4c1&redirect_uri=http://localhost:3000/github_authorized&state=&scope=repo'>
+                Authorize GitHub Account
+              </a>
+              <br />
+            </div>
           ) : (
             <div>
-              <select>
+              <select ref='gitHubRepo' defaultValue='' value={gitHubRepo} onChange={this.saveSettings}>
+                <option value=''>Select a repo</option>
                 {_.map(gitHubRepos, (repo, i) =>
-                  <option
-                    key={i}
-                    value={repo.full_name}
-                    selected={repo.full_name === `${gitHubUser}/${gitHubRepo}`}
-                    onChange={() =>
-                      this.setState({ gitHubUser: repo.full_name.split('/')[0], gitHubRepo: repo.name })
-                    }>
-                      {repo.full_name}
+                  <option key={i} value={repo.full_name}>
+                    {repo.full_name}
                   </option>
                 )}
               </select>
@@ -130,7 +97,20 @@ const Settings = React.createClass({
             </div>
           )}
           <br />
-          <button onClick={this.saveConfig}>Save</button>
+          <label><strong>Heroku Account:</strong></label>
+          <br />
+          {_.isEmpty(herokuToken) ? (
+            <div>
+              <a href='https://id.heroku.com/oauth/authorize?client_id=cf243153-2c0f-4fcf-a808-878b5d699485&response_type=code&scope=read&state='>
+                Authorize Heroku Account
+              </a>
+              <br />
+            </div>
+          ) : (
+            <div>Account connected</div>
+          )}
+          <br />
+          <button onClick={() => history.pushState(null, '/')}>Continue</button>
         </form>
       </div>
     );

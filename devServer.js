@@ -31,6 +31,12 @@ app.post('/authorize_github', function(req, res) {
   }.bind(res))
 });
 
+app.post('/authorize_heroku', function(req, res) {
+  request.post('https://id.heroku.com/oauth/token?grant_type=authorization_code&code=' + req.query.code + '&client_secret=45a04cbd-c364-4f99-9d7c-9f280652037d', function (error, response, body) {
+    res.send(body);
+  }.bind(res))
+});
+
 app.listen(3000, 'localhost', function(err) {
   if (err) {
     console.log(err);
