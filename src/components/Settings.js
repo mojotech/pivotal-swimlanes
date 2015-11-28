@@ -9,7 +9,8 @@ const Settings = ({
   selectedRepo,
   repos,
   herokuAuthorized,
-  onChange
+  onSettingsChange,
+  onRepoQueryChange
 }) => {
   return (
     <div>
@@ -20,7 +21,7 @@ const Settings = ({
         <input
           type='text'
           value={pivotalToken}
-          onChange={e => onChange({ pivotalToken: e.target.value })} />
+          onChange={e => onSettingsChange({ pivotalToken: e.target.value })} />
         <br />
         <br />
         <label><strong>Pivotal Project ID: </strong></label>
@@ -28,22 +29,33 @@ const Settings = ({
         <input
           type='text'
           value={pivotalProjectId}
-          onChange={e => onChange({ pivotalProjectId: e.target.value })} />
+          onChange={e => onSettingsChange({ pivotalProjectId: e.target.value })} />
         <br />
         <br />
         <label><strong>GitHub Repo: </strong></label>
         <br />
         {gitHubAuthorized ? (
           <div>
-            <select defaultValue='' value={selectedRepo} onChange={e => onChange({ selectedRepo: e.target.value })}>
-              <option value=''>Select a repo</option>
-              {_.map(repos, (repo, i) =>
-                <option key={i} value={repo}>
-                  {repo}
-                </option>
-              )}
-            </select>
-            <br />
+            <input
+              type='text'
+              placeholder='Search Repos'
+              onChange={_.debounce(e => onRepoQueryChange(e.target.value), 500)} />
+            {_.any(selectedRepo) ? <p><strong>Selected: {selectedRepo}</strong></p> : null}
+            {_.any(repos) ? (
+              <ul>
+                {_.map(repos, (repo, i) =>
+                  <li
+                    key={i}
+                    style={{cursor: 'pointer'}}
+                    onClick={() => onSettingsChange({ selectedRepo: repo })}
+                  >
+                    {repo}
+                  </li>
+                )}
+              </ul>
+            ) : (
+              <p>No repos found.</p>
+            )}
           </div>
         ) : (
           <div>
