@@ -41,17 +41,21 @@ const Settings = ({
               placeholder='Search Repos'
               onChange={_.debounce(e => onRepoQueryChange(e.target.value), 500)} />
             {_.any(selectedRepo) ? <p><strong>Selected: {selectedRepo}</strong></p> : null}
-            <ul>
-              {_.map(repos, (repo, i) =>
-                <li
-                  key={i}
-                  style={{cursor: 'pointer'}}
-                  onClick={() => onSettingsChange({ selectedRepo: repo })}
-                >
-                  {repo}
-                </li>
-              )}
-            </ul>
+            {_.any(repos) ? (
+              <ul>
+                {_.map(repos, (repo, i) =>
+                  <li
+                    key={i}
+                    style={{cursor: 'pointer'}}
+                    onClick={() => onSettingsChange({ selectedRepo: repo })}
+                  >
+                    {repo}
+                  </li>
+                )}
+              </ul>
+            ) : (
+              <p>No repos found.</p>
+            )}
           </div>
         ) : (
           <div>
