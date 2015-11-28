@@ -23,21 +23,11 @@ const SettingsContainer = React.createClass({
     this.setState({
       pivotalToken,
       pivotalProjectId,
+      gitHubToken,
       gitHubAuthorized: _.any(gitHubToken),
       selectedRepo,
       herokuAuthorized: _.any(herokuToken)
     });
-    if (_.any(gitHubToken)) {
-      this.fetchRepos(gitHubToken);
-    }
-  },
-
-  fetchRepos(gitHubToken) {
-    // TODO: I think this only returns the first 30 repos
-    $.ajax({
-      url: `https://api.github.com/user/repos?sort=pushed&access_token=${gitHubToken}`,
-      method: 'GET'
-    }).done(data => this.setState({ repos: _.pluck(data, 'full_name') }));
   },
 
   saveSettings(changedData) {
@@ -57,6 +47,34 @@ const SettingsContainer = React.createClass({
     );
   },
 
+  /* eslint-disable camelcase */
+  searchRepo(query) {
+    if (query.length === 0) {
+      this.setState({ repos: [] });
+      return;
+    };
+
+    const [user, repo] = query.split('/');
+
+    let url = '';
+    url += 'https://api.github.com/search/repositories';
+    url += '?';
+    url += $.param({
+      access_token: this.state.gitHubToken,
+      q: repo || query
+    });
+    if (repo) { url += `+user:${user}`; }
+
+    $.ajax({
+      url: url,
+      method: 'GET'
+    }).done(data =>
+      this.setState({ repos: _(data.items).take(10).pluck('full_name').value() })
+    ).fail(() =>
+      this.setState({ gitHubRepos: [] })
+    );
+  },
+
   render() {
     const {
       pivotalToken,
@@ -73,7 +91,8 @@ const SettingsContainer = React.createClass({
         selectedRepo={selectedRepo}
         repos={this.state.repos}
         herokuAuthorized={herokuAuthorized}
-        onChange={this.saveSettings} />
+        onSettingsChange={this.saveSettings}
+        onRepoQueryChange={this.searchRepo} />
     );
   }
 });
