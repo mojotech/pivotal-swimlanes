@@ -120,9 +120,9 @@ const ProjectContainer = React.createClass({
   },
 
   fetchPullRequests() {
-    let { gitHubToken, gitHubRepo } = this.settings();
+    let { gitHubToken, selectedRepo } = this.settings();
     return $.ajax({
-      url: `https://api.github.com/repos/${gitHubRepo}/pulls?state=open&access_token=${gitHubToken}`,
+      url: `https://api.github.com/repos/${selectedRepo}/pulls?state=open&access_token=${gitHubToken}`,
       method: 'GET'
     }).then(data =>
       _.map(data, pullRequest => (
