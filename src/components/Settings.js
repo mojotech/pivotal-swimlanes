@@ -43,7 +43,11 @@ const Settings = ({
             {_.any(selectedRepo) ? <p><strong>Selected: {selectedRepo}</strong></p> : null}
             <ul>
               {_.map(repos, (repo, i) =>
-                <li key={i} onClick={() => onSettingsChange({ selectedRepo: repo })}>
+                <li
+                  key={i}
+                  style={{cursor: 'pointer'}}
+                  onClick={() => onSettingsChange({ selectedRepo: repo })}
+                >
                   {repo}
                 </li>
               )}
