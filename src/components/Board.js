@@ -5,18 +5,17 @@ import _ from 'lodash';
 const Board = React.createClass({
   propTypes: {
     projectName: React.PropTypes.string.isRequired,
-    stories: React.PropTypes.array.isRequired,
-    pullRequests: React.PropTypes.array.isRequired
+    entries: React.PropTypes.array.isRequired
   },
 
   render() {
-    const { stories, pullRequests } = this.props;
-    const unstartedEntries = _.filter(stories, story => story.current_state === 'unstarted' || story.current_state === 'planned')
-    const inProgressEntries = _.filter(stories, story => story.current_state === 'started' || story.current_state === 'rejected')
-    const readyForReviewEntries = pullRequests;
-    const mergedEntries = _.filter(stories, story => story.current_state === 'finished')
-    const deliveredEntries = _.filter(stories, story => story.current_state === 'delivered')
-    const acceptedEntries = _.filter(stories, story => story.current_state === 'accepted')
+    const { entries } = this.props;
+    const unstartedEntries = _.filter(entries, entry => entry.state === 'Unstarted');
+    const inProgressEntries = _.filter(entries, entry => entry.state === 'In Progress');
+    const readyForReviewEntries = _.filter(entries, entry => entry.state === 'Ready for Review');
+    const mergedEntries = _.filter(entries, entry => entry.state === 'Merged');
+    const deliveredEntries = _.filter(entries, entry => entry.state === 'Delivered');
+    const acceptedEntries = _.filter(entries, entry => entry.state === 'Accepted');
     const styles = {
       board: {
         overflow: 'scroll',

@@ -6,10 +6,12 @@ const Entry = React.createClass({
   propTypes: {
     entry: React.PropTypes.shape({
       title: React.PropTypes.string.isRequired,
-      url: React.PropTypes.string.isRequired,
-      authors: React.PropTypes.string.isRequired,
-      type: React.PropTypes.oneOf(['feature', 'bug', 'chore', 'pr']),
-      estimate: React.PropTypes.number.isRequired
+      owners: React.PropTypes.arrayOf(React.PropTypes.string),
+      estimate: React.PropTypes.number,
+      reviewUrl: React.PropTypes.string,
+      trackerUrl: React.PropTypes.string,
+      type: React.PropTypes.string.isRequired,
+      state: React.PropTypes.string.isRequired
     }).isRequired
   },
 
@@ -22,22 +24,38 @@ const Entry = React.createClass({
         paddingTop: 3,
         paddingBottom: 3
       },
-      authors: { fontSize: 10 },
+      owners: { fontSize: 10 },
       estimate: { paddingLeft: 5 },
-      link: { float: 'right' }
+      links: { float: 'right' },
+      link: { paddingLeft: 4 }
     };
-    const { title, url, authors, type, estimate } = this.props.entry;
+    const {
+      title,
+      owners,
+      estimate,
+      reviewUrl,
+      trackerUrl,
+      type,
+      state
+    } = this.props.entry;
     return (
       <Paper style={styles.content}>
         <div>
           {_.isEmpty(type) ? null : <img src={require(`../img/${type}.png`)} alt={type} />}
-          <span style={styles.estimate}>{Array(estimate + 1).join('•')}</span>
-          <a href={url} target='_new'>
-            <img src={require('../img/open_in_new.png')} style={styles.link} />
-          </a>
+          {estimate ? <span style={styles.estimate}>{Array(estimate + 1).join('•')}</span> : null}
+          <div style={styles.links}>
+            {state === 'Ready for Review' ? (
+              <a href={reviewUrl} target='_new' style={styles.link}>
+                <img src={require('../img/pr.png')} />
+              </a>
+            ) : null}
+            <a href={trackerUrl} target='_new' style={styles.link}>
+              <img src={require('../img/open_in_new.png')} />
+            </a>
+          </div>
         </div>
         <div style={styles.title}>{title}</div>
-        <div style={styles.authors}>{authors}</div>
+        <div style={styles.owners}>{owners.join(', ')}</div>
       </Paper>
     );
   }

@@ -1,23 +1,170 @@
 import React from 'react';
 import Project from '../components/Project';
+import $ from 'jquery';
+
+const pivotalAPI = 'https://www.pivotaltracker.com/services/v5';
 
 const ProjectContainer = React.createClass({
-  render() {
-    const {
-      pivotalToken,
-      pivotalProjectId,
-      gitHubToken,
-      gitHubUser,
-      gitHubRepo
-    } = JSON.parse(localStorage.getItem('pivotal-swimlanes-config'));
-    return (
-      <Project
-        pivotalToken={pivotalToken}
-        pivotalProjectId={pivotalProjectId}
-        gitHubToken={gitHubToken}
-        gitHubUser={gitHubUser}
-        gitHubRepo={gitHubRepo} />
+  getInitialState() {
+    return {
+      projectName: null,
+      entries: null,
+      error: false
+    };
+  },
+
+  componentDidMount() {
+    this.fetchData();
+  },
+
+  fetchData() {
+    this.fetchProjectName().then(projectName => {
+      this.fetchProjectMembers().then(projectMembers => {
+        this.fetchStories().then(stories => {
+          this.fetchPullRequests().then(pullRequests => {
+            this.fetchCommits(pullRequests).then(commits => {
+              let entries = _.map(stories, story => {
+                let commitWithPivotalStoryId = _.find(
+                  commits,
+                  prCommits => _.find(prCommits.commitMessages, message => _.includes(message, story.id))
+                );
+                let reviewUrl = commitWithPivotalStoryId ? (
+                  _.find(pullRequests, 'id', commitWithPivotalStoryId.pullRequestId).url
+                ) : null;
+                return (
+                  {
+                    title: story.name,
+                    owners: _.map(story.ownerIds, id => _.find(projectMembers, 'id', id).name),
+                    estimate: story.estimate,
+                    reviewUrl,
+                    trackerUrl: story.url,
+                    state: _.isEmpty(reviewUrl) ? this.storyType(story) : 'Ready for Review',
+                    type: story.type
+                  }
+                );
+              });
+              this.setState({ projectName, entries });
+            })
+          });
+        });
+      });
+    });
+  },
+
+  storyType(story) {
+    switch (story.state) {
+      case 'unstarted':
+      case 'planned':
+        return 'Unstarted';
+
+      case 'started':
+      case 'rejected':
+        return 'In Progress'
+
+      case 'Ready for Review':
+        return 'Ready for Review';
+
+      case 'finished':
+        return 'Merged';
+
+      case 'delivered':
+        return 'Delivered';
+
+      case 'accepted':
+        return 'Accepted';
+
+      default:
+        return story.state;
+    }
+  },
+
+  settings() {
+    return JSON.parse(localStorage.getItem('pivotal-swimlanes-config')) || {};
+  },
+
+  fetchProjectName() {
+    let { pivotalProjectId, pivotalToken } = this.settings();
+    return $.ajax({
+      url: `${pivotalAPI}/projects/${pivotalProjectId}`,
+      method: 'GET',
+      beforeSend: xhr => xhr.setRequestHeader('X-TrackerToken', pivotalToken)
+    }).then(data =>
+      data.name
+    ).fail(() =>
+      this.setState({ error: true })
     );
+  },
+
+  fetchStories() {
+    let { pivotalProjectId, pivotalToken } = this.settings();
+    return $.ajax({
+      url: `${pivotalAPI}/projects/${pivotalProjectId}/iterations?scope=current`,
+      method: 'GET',
+      beforeSend: xhr => xhr.setRequestHeader('X-TrackerToken', pivotalToken)
+    }).then(data =>
+      _.map(data[0].stories, story => (
+        {
+          id: story.id,
+          state: story.current_state,
+          name: story.name,
+          type: story.story_type,
+          url: story.url,
+          ownerIds: story.owner_ids,
+          estimate: story.estimate
+        }
+      ))
+    ).fail(() => this.setState({ error: true }));
+  },
+
+  fetchPullRequests() {
+    let { gitHubToken, gitHubRepo } = this.settings();
+    return $.ajax({
+      url: `https://api.github.com/repos/${gitHubRepo}/pulls?state=open&access_token=${gitHubToken}`,
+      method: 'GET'
+    }).then(data =>
+      _.map(data, pullRequest => (
+        {
+          id: pullRequest.id,
+          url: pullRequest.html_url,
+          commitsUrl: pullRequest.commits_url
+        }
+      ))
+    ).fail(() => this.setState({ error: true }));
+  },
+
+  fetchCommits(pullRequests) {
+    let { gitHubToken } = this.settings();
+    let urls = _.pluck(pullRequests, 'commitsUrl');
+    let requests = _.map(urls, url =>
+      $.ajax({
+        url: `${url}?access_token=${gitHubToken}`,
+        method: 'GET'
+      })
+    );
+    return Promise.all(requests).then(data =>
+      _.map(data, (commits, i) => (
+        {
+          pullRequestId: pullRequests[i].id,
+          commitMessages: _(commits).pluck('commit').pluck('message').value()
+        }
+      ))
+    );
+  },
+
+  fetchProjectMembers() {
+    let { pivotalProjectId, pivotalToken } = this.settings();
+    return $.ajax({
+      url: `${pivotalAPI}/projects/${pivotalProjectId}/memberships`,
+      method: 'GET',
+      beforeSend: xhr => xhr.setRequestHeader('X-TrackerToken', pivotalToken)
+    }).then(data =>
+      _.map(data, item => ({ id: item.person.id, name: item.person.name }))
+    ).fail(() => this.setState({ error: true }));
+  },
+
+  render() {
+    const { projectName, entries, error } = this.state;
+    return <Project projectName={projectName} entries={entries} error={error} />;
   }
 });
 
