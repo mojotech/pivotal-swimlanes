@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import SwimLane from './SwimLane';
 import _ from 'lodash';
 
-const Board = ({ projectName, entries }) => {
+const Board = ({ entries }) => {
   const unstartedEntries = _.filter(entries, entry => entry.state === 'Unstarted');
   const inProgressEntries = _.filter(entries, entry => entry.state === 'In Progress');
   const readyForReviewEntries = _.filter(entries, entry => entry.state === 'Ready for Review');
@@ -32,9 +32,6 @@ const Board = ({ projectName, entries }) => {
   );
 };
 
-Board.propTypes = {
-  projectName: PropTypes.string.isRequired,
-  entries: PropTypes.array.isRequired
-};
+Board.propTypes = { entries: PropTypes.array.isRequired };
 
 export default Board;

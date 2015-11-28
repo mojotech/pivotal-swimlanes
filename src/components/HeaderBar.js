@@ -28,7 +28,7 @@ const HeaderBar = ({ projectName }) => {
       paddingTop: 6,
       paddingRight: 15
     }
-  }
+  };
   return (
     <div style={styles.headerBar}>
       <img src={require('../img/swim.png')} style={styles.logo} />

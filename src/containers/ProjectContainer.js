@@ -1,6 +1,7 @@
 import React from 'react';
 import Project from '../components/Project';
 import $ from 'jquery';
+import _ from 'lodash';
 
 const pivotalAPI = 'https://www.pivotaltracker.com/services/v5';
 
@@ -47,7 +48,7 @@ const ProjectContainer = React.createClass({
                 );
               });
               this.setState({ projectName, entries });
-            })
+            });
           });
         });
       });
@@ -56,28 +57,28 @@ const ProjectContainer = React.createClass({
 
   storyType(story) {
     switch (story.state) {
-      case 'unstarted':
-      case 'planned':
-        return 'Unstarted';
+    case 'unstarted':
+    case 'planned':
+      return 'Unstarted';
 
-      case 'started':
-      case 'rejected':
-        return 'In Progress'
+    case 'started':
+    case 'rejected':
+      return 'In Progress';
 
-      case 'Ready for Review':
-        return 'Ready for Review';
+    case 'Ready for Review':
+      return 'Ready for Review';
 
-      case 'finished':
-        return 'Merged';
+    case 'finished':
+      return 'Merged';
 
-      case 'delivered':
-        return 'Delivered';
+    case 'delivered':
+      return 'Delivered';
 
-      case 'accepted':
-        return 'Accepted';
+    case 'accepted':
+      return 'Accepted';
 
-      default:
-        return story.state;
+    default:
+      return story.state;
     }
   },
 
