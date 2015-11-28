@@ -13,9 +13,9 @@ function checkConfig(nextState, replaceState) {
 }
 
 function handleGitHubAuth(nextState, replaceState, callback) {
-  let { code, state } = nextState.location.query;
+  let { code } = nextState.location.query;
 
-  // TODO: abort if state doesn't match what it expects
+  // TODO: abort if nextState.location.query.state doesn't match what it expects
 
   $.ajax({
     url: `http://localhost:3000/authorize_github?code=${code}`,
@@ -48,9 +48,9 @@ function handleGitHubAuth(nextState, replaceState, callback) {
 }
 
 function handleHerokuAuth(nextState, replaceState, callback) {
-  let { code, state } = nextState.location.query;
+  let { code } = nextState.location.query;
 
-  // TODO: abort if state doesn't match what it expects
+  // TODO: abort if nextState.location.query.state doesn't match what it expects
 
   $.ajax({
     url: `http://localhost:3000/authorize_heroku?code=${code}`,

@@ -22,7 +22,7 @@ const Project = ({ projectName, entries, error }) => {
         ) : (
           <div>
             <HeaderBar projectName={projectName} />
-            <Board projectName={projectName} entries={entries} />
+            <Board entries={entries} />
           </div>
         )
       )}

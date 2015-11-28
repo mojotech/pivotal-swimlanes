@@ -1,6 +1,7 @@
 import React from 'react';
 import Settings from '../components/Settings';
 import $ from 'jquery';
+import _ from 'lodash';
 
 const SettingsContainer = React.createClass({
   getInitialState() {
@@ -8,6 +9,10 @@ const SettingsContainer = React.createClass({
   },
 
   componentDidMount() {
+    this.fetchSettings();
+  },
+
+  fetchSettings() {
     const {
       gitHubToken,
       pivotalToken,
@@ -23,11 +28,11 @@ const SettingsContainer = React.createClass({
       herokuAuthorized: _.any(herokuToken)
     });
     if (_.any(gitHubToken)) {
-      this._fetchRepos(gitHubToken);
+      this.fetchRepos(gitHubToken);
     }
   },
 
-  _fetchRepos(gitHubToken) {
+  fetchRepos(gitHubToken) {
     // TODO: I think this only returns the first 30 repos
     $.ajax({
       url: `https://api.github.com/user/repos?sort=pushed&access_token=${gitHubToken}`,
@@ -36,11 +41,6 @@ const SettingsContainer = React.createClass({
   },
 
   saveSettings(changedData) {
-    const {
-      pivotalToken,
-      pivotalProjectId,
-      selectedRepo
-    } = this.state;
     const previousSettings = JSON.parse(
       localStorage.getItem('pivotal-swimlanes-config')
     ) || {};
