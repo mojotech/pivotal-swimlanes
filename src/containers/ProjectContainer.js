@@ -1,5 +1,6 @@
 import React from 'react';
 import Project from '../components/Project';
+import { getSettings } from '../settings';
 import $ from 'jquery';
 import _ from 'lodash';
 
@@ -82,12 +83,8 @@ const ProjectContainer = React.createClass({
     }
   },
 
-  settings() {
-    return JSON.parse(localStorage.getItem('pivotal-swimlanes-config')) || {};
-  },
-
   fetchProjectName() {
-    let { pivotalProjectId, pivotalToken } = this.settings();
+    let { pivotalProjectId, pivotalToken } = getSettings();
     return $.ajax({
       url: `${pivotalAPI}/projects/${pivotalProjectId}`,
       method: 'GET',
@@ -100,7 +97,7 @@ const ProjectContainer = React.createClass({
   },
 
   fetchStories() {
-    let { pivotalProjectId, pivotalToken } = this.settings();
+    let { pivotalProjectId, pivotalToken } = getSettings();
     return $.ajax({
       url: `${pivotalAPI}/projects/${pivotalProjectId}/iterations?scope=current`,
       method: 'GET',
@@ -121,7 +118,7 @@ const ProjectContainer = React.createClass({
   },
 
   fetchPullRequests() {
-    let { gitHubToken, selectedRepo } = this.settings();
+    let { gitHubToken, selectedRepo } = getSettings();
     return $.ajax({
       url: `https://api.github.com/repos/${selectedRepo}/pulls?state=open&access_token=${gitHubToken}`,
       method: 'GET'
@@ -137,7 +134,7 @@ const ProjectContainer = React.createClass({
   },
 
   fetchCommits(pullRequests) {
-    let { gitHubToken } = this.settings();
+    let { gitHubToken } = getSettings();
     let urls = _.pluck(pullRequests, 'commitsUrl');
     let requests = _.map(urls, url =>
       $.ajax({
@@ -156,7 +153,7 @@ const ProjectContainer = React.createClass({
   },
 
   fetchProjectMembers() {
-    let { pivotalProjectId, pivotalToken } = this.settings();
+    let { pivotalProjectId, pivotalToken } = getSettings();
     return $.ajax({
       url: `${pivotalAPI}/projects/${pivotalProjectId}/memberships`,
       method: 'GET',
