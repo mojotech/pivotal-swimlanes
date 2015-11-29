@@ -3,6 +3,14 @@ import Settings from '../components/Settings';
 import $ from 'jquery';
 import _ from 'lodash';
 
+const localStorageKey = 'pivotal-swimlanes-config';
+
+const settings = () => JSON.parse(localStorage.getItem(localStorageKey)) || {};
+
+const updateSettings = data => (
+  localStorage.setItem(localStorageKey, JSON.stringify({ ...settings(), ...data }))
+);
+
 const SettingsContainer = React.createClass({
   getInitialState() {
     return {};
@@ -19,7 +27,7 @@ const SettingsContainer = React.createClass({
       pivotalProjectId,
       selectedRepo,
       herokuToken
-    } = JSON.parse(localStorage.getItem('pivotal-swimlanes-config')) || {};
+    } = settings();
     this.setState({
       pivotalToken,
       pivotalProjectId,
@@ -31,20 +39,8 @@ const SettingsContainer = React.createClass({
   },
 
   saveSettings(changedData) {
-    const previousSettings = JSON.parse(
-      localStorage.getItem('pivotal-swimlanes-config')
-    ) || {};
-    this.setState({
-      ...this.state,
-      ...changedData
-    });
-    localStorage.setItem(
-      'pivotal-swimlanes-config',
-      JSON.stringify({
-        ...previousSettings,
-        ...changedData
-      })
-    );
+    this.setState({ ...this.state, ...changedData });
+    updateSettings({ ...settings(), ...changedData });
   },
 
   /* eslint-disable camelcase */
