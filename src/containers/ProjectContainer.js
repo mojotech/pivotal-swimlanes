@@ -1,5 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router';
 import Project from '../components/Project';
+import { CircularProgress } from 'material-ui';
 import { getSettings } from '../settings';
 import $ from 'jquery';
 import _ from 'lodash';
@@ -164,8 +166,24 @@ const ProjectContainer = React.createClass({
   },
 
   render() {
-    const { projectName, entries, error } = this.state;
-    return <Project projectName={projectName} entries={entries} error={error} />;
+    let { projectName, entries, error } = this.state;
+    let loading = (_.isEmpty(projectName) || _.isEmpty(entries)) && !error;
+    return (
+      loading ? (
+        <div style={{textAlign: 'center'}}>
+          <CircularProgress mode='indeterminate' />
+        </div>
+      ) : (
+        error ? (
+          <div>
+            <p>Error fetching data.</p>
+            <Link to='settings'>Configure Settings</Link>
+          </div>
+        ) : (
+          <Project projectName={projectName} entries={entries} />
+        )
+      )
+    );
   }
 });
 
