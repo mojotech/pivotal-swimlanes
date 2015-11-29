@@ -5,14 +5,23 @@ import history from './history';
 import ProjectContainer from './containers/ProjectContainer';
 import SettingsContainer from './containers/SettingsContainer';
 import $ from 'jquery';
+import _ from 'lodash';
 
-function checkConfig(nextState, replaceState) {
-  if (!localStorage.getItem('pivotal-swimlanes-config')) {
-    replaceState(null, '/settings');
-  }
-}
+const localStorageKey = 'pivotal-swimlanes-config';
 
-function handleGitHubAuth(nextState, replaceState, callback) {
+const settingsPath = 'settings';
+
+const settings = () => JSON.parse(localStorage.getItem(localStorageKey)) || {};
+
+const updateSettings = data => (
+  localStorage.setItem(localStorageKey, JSON.stringify({ ...settings(), ...data }))
+);
+
+const checkConfig = (nextState, replaceState) => (
+  _.isEmpty(settings()) ? replaceState(null, settingsPath) : null
+);
+
+const handleGitHubAuth = (nextState, replaceState, callback) => {
   let { code } = nextState.location.query;
 
   // TODO: abort if nextState.location.query.state doesn't match what it expects
@@ -24,30 +33,12 @@ function handleGitHubAuth(nextState, replaceState, callback) {
   }).success(data =>
     console.log(data)
   ).fail(data => { // TODO: Not sure why this is failing
-    let gitHubToken = data.responseText;
-    let {
-      pivotalToken,
-      pivotalProjectId,
-      gitHubUser,
-      gitHubRepo,
-      herokuToken
-    } = JSON.parse(localStorage.getItem('pivotal-swimlanes-config')) || {};
-    localStorage.setItem(
-      'pivotal-swimlanes-config',
-      JSON.stringify({
-        pivotalToken,
-        pivotalProjectId,
-        gitHubUser,
-        gitHubRepo,
-        gitHubToken,
-        herokuToken
-      })
-    );
-    callback(replaceState(null, 'settings'));
+    updateSettings({ gitHubToken: data.responseText });
+    callback(replaceState(null, settingsPath));
   });
-}
+};
 
-function handleHerokuAuth(nextState, replaceState, callback) {
+const handleHerokuAuth = (nextState, replaceState, callback) => {
   let { code } = nextState.location.query;
 
   // TODO: abort if nextState.location.query.state doesn't match what it expects
@@ -57,28 +48,10 @@ function handleHerokuAuth(nextState, replaceState, callback) {
     method: 'POST',
     dataType: 'json'
   }).success(data => {
-    var herokuToken = data.access_token;
-    let {
-      pivotalToken,
-      pivotalProjectId,
-      gitHubUser,
-      gitHubRepo,
-      gitHubToken
-    } = JSON.parse(localStorage.getItem('pivotal-swimlanes-config')) || {};
-    localStorage.setItem(
-      'pivotal-swimlanes-config',
-      JSON.stringify({
-        pivotalToken,
-        pivotalProjectId,
-        gitHubUser,
-        gitHubRepo,
-        gitHubToken,
-        herokuToken
-      })
-    );
-    callback(replaceState(null, 'settings'));
+    updateSettings({ herokuToken: data.access_token });
+    callback(replaceState(null, settingsPath));
   });
-}
+};
 
 ReactDOM.render(
   <Router history={history}>
