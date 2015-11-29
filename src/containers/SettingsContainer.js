@@ -1,5 +1,5 @@
 import React from 'react';
-import Settings from '../components/Settings';
+import Settings from '../components/Settings/Settings';
 import { getSettings, updateSettings } from '../settings';
 import $ from 'jquery';
 import _ from 'lodash';

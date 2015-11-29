@@ -27,16 +27,16 @@ const Entry = ({
 }) => (
   <Paper style={styles.content}>
     <div>
-      {_.isEmpty(type) ? null : <img src={require(`../img/${type}.png`)} alt={type} />}
+      {_.isEmpty(type) ? null : <img src={require(`./img/${type}.png`)} alt={type} />}
       {estimate ? <span style={styles.estimate}>{Array(estimate + 1).join('•')}</span> : null}
       <div style={styles.links}>
         {state === 'Ready for Review' ? (
           <a href={reviewUrl} target='_new' style={styles.link}>
-            <img src={require('../img/pr.png')} />
+            <img src={require('./img/pr.png')} />
           </a>
         ) : null}
         <a href={trackerUrl} target='_new' style={styles.link}>
-          <img src={require('../img/open_in_new.png')} />
+          <img src={require('./img/open_in_new.png')} />
         </a>
       </div>
     </div>

@@ -31,10 +31,10 @@ const styles = {
 
 const HeaderBar = ({ projectName }) => (
   <div style={styles.headerBar}>
-    <img src={require('../img/swim.png')} style={styles.logo} />
+    <img src={require('./img/swim.png')} style={styles.logo} />
     <div style={styles.projectName}>{projectName}</div>
     <Link style={styles.settings} to='settings'>
-      <img src={require('../img/settings.png')} height={20} />
+      <img src={require('./img/settings.png')} height={20} />
     </Link>
   </div>
 );

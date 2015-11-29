@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
-import Project from '../components/Project';
+import Project from '../components/Project/Project';
 import { CircularProgress } from 'material-ui';
 import { getSettings } from '../settings';
 import $ from 'jquery';
