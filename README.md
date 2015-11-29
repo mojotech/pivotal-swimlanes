@@ -9,3 +9,6 @@ Scrapes data from Pivotal Tracker, GitHub, (and soon Heroku), and organizes stor
 - `npm install`
 - `npm start`
 - http://localhost:3000
+
+### Front end linting
+`npm run lint`
