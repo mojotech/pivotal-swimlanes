@@ -27,7 +27,14 @@ const SwimLane = ({ title, entries }) => {
       <ul style={styles.entryList}>
         {_.map(entries, (entry, i) =>
           <li key={i} style={styles.entry}>
-            <Entry entry={entry} />
+            <Entry
+              title={entry.title}
+              owners={entry.owners}
+              estimate={entry.estimate}
+              reviewUrl={entry.reviewUrl}
+              trackerUrl={entry.trackerUrl}
+              type={entry.type}
+              state={entry.state} />
           </li>
         )}
       </ul>

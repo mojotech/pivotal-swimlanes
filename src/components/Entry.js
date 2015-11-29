@@ -2,7 +2,15 @@ import React, { PropTypes } from 'react';
 import { Paper } from 'material-ui';
 import _ from 'underscore';
 
-const Entry = ({ entry }) => {
+const Entry = ({
+  title,
+  owners,
+  estimate,
+  reviewUrl,
+  trackerUrl,
+  type,
+  state
+}) => {
   const styles = {
     content: { padding: 5, backgroundColor: '#F9F9F9' },
     title: {
@@ -16,15 +24,6 @@ const Entry = ({ entry }) => {
     links: { float: 'right' },
     link: { paddingLeft: 4 }
   };
-  const {
-    title,
-    owners,
-    estimate,
-    reviewUrl,
-    trackerUrl,
-    type,
-    state
-  } = entry;
   return (
     <Paper style={styles.content}>
       <div>
@@ -48,15 +47,13 @@ const Entry = ({ entry }) => {
 };
 
 Entry.propTypes = {
-  entry: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    owners: PropTypes.arrayOf(PropTypes.string),
-    estimate: PropTypes.number,
-    reviewUrl: PropTypes.string,
-    trackerUrl: PropTypes.string,
-    type: PropTypes.string.isRequired,
-    state: PropTypes.string.isRequired
-  }).isRequired
+  title: PropTypes.string.isRequired,
+  owners: PropTypes.arrayOf(PropTypes.string),
+  estimate: PropTypes.number,
+  reviewUrl: PropTypes.string,
+  trackerUrl: PropTypes.string,
+  type: PropTypes.string.isRequired,
+  state: PropTypes.string.isRequired
 };
 
 export default Entry;
