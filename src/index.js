@@ -4,21 +4,14 @@ import { Router, Route } from 'react-router';
 import history from './history';
 import ProjectContainer from './containers/ProjectContainer';
 import SettingsContainer from './containers/SettingsContainer';
+import { getSettings, updateSettings } from './settings';
 import $ from 'jquery';
 import _ from 'lodash';
 
-const localStorageKey = 'pivotal-swimlanes-config';
-
 const settingsPath = 'settings';
 
-const settings = () => JSON.parse(localStorage.getItem(localStorageKey)) || {};
-
-const updateSettings = data => (
-  localStorage.setItem(localStorageKey, JSON.stringify({ ...settings(), ...data }))
-);
-
 const checkConfig = (nextState, replaceState) => (
-  _.isEmpty(settings()) ? replaceState(null, settingsPath) : null
+  _.isEmpty(getSettings()) ? replaceState(null, settingsPath) : null
 );
 
 const handleGitHubAuth = (nextState, replaceState, callback) => {
