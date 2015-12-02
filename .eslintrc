@@ -45,6 +45,7 @@
     "react"
   ],
   "globals": {
-    "require": false
+    "require": false,
+    "process": false
   }
 }

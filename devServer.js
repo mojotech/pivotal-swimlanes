@@ -1,9 +1,10 @@
+require('dotenv').load();
+
 var path = require('path');
 var express = require('express');
 var webpack = require('webpack');
 var config = require('./webpack.config.dev');
 var request = require('request');
-
 var app = express();
 var compiler = webpack(config);
 
@@ -20,7 +21,7 @@ app.get('*', function(req, res) {
 
 app.post('/authorize_github', function(req, res) {
   // TODO: add unguessable state parameter to prevent CSRF
-  request('https://github.com/login/oauth/access_token?client_id=eea103fcc5e732e4c4c1&client_secret=60816420e28043fbc46b3cf98cbdf943ff4617dc&code=' + req.query.code + '&redirect_uri=http://localhost:3000/github_authorized&scope=repo,user', function (error, response, body) {
+  request('https://github.com/login/oauth/access_token?client_id=' + process.env.GITHUB_CLIENT_ID + '&client_secret=' + process.env.GITHUB_CLIENT_SECRET + '&code=' + req.query.code + '&redirect_uri=http://localhost:3000/github_authorized&scope=repo,user', function (error, response, body) {
     var json_response = {};
     body.split('&').forEach(function(el) {
       var key = el.split('=')[0];
@@ -32,7 +33,7 @@ app.post('/authorize_github', function(req, res) {
 });
 
 app.post('/authorize_heroku', function(req, res) {
-  request.post('https://id.heroku.com/oauth/token?grant_type=authorization_code&code=' + req.query.code + '&client_secret=45a04cbd-c364-4f99-9d7c-9f280652037d', function (error, response, body) {
+  request.post('https://id.heroku.com/oauth/token?grant_type=authorization_code&code=' + req.query.code + '&client_secret=' + process.env.HEROKU_SECRET, function (error, response, body) {
     res.send(body);
   }.bind(res))
 });
