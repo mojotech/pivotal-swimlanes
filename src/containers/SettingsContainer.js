@@ -34,6 +34,12 @@ const SettingsContainer = React.createClass({
   saveSettings(changedData) {
     this.setState({ ...this.state, ...changedData });
     updateSettings({ ...getSettings(), ...changedData });
+    if (changedData.gitHubAuthorized === false) {
+      updateSettings({ gitHubToken: null, selectedRepo: null });
+    }
+    if (changedData.herokuAuthorized === false) {
+      updateSettings({ herokuToken: null });
+    }
   },
 
   /* eslint-disable camelcase */
