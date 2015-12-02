@@ -58,7 +58,7 @@ const Settings = ({
         </div>
       ) : (
         <div>
-          <a href='https://github.com/login/oauth/authorize?client_id=eea103fcc5e732e4c4c1&redirect_uri=http://localhost:3000/github_authorized&state=&scope=repo'>
+          <a href={'https://github.com/login/oauth/authorize?client_id=' + process.env.GITHUB_CLIENT_ID + '&redirect_uri=http://localhost:3000/github_authorized&state=&scope=repo'}>
             Authorize GitHub Account
           </a>
           <br />
@@ -71,7 +71,7 @@ const Settings = ({
         <div>Account connected</div>
       ) : (
         <div>
-          <a href='https://id.heroku.com/oauth/authorize?client_id=cf243153-2c0f-4fcf-a808-878b5d699485&response_type=code&scope=read&state='>
+          <a href={'https://id.heroku.com/oauth/authorize?client_id=' + process.env.HEROKU_CLIENT_ID + '&response_type=code&scope=read&state='}>
             Authorize Heroku Account
           </a>
           <br />
