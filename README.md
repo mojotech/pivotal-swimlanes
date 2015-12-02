@@ -6,6 +6,8 @@ Scrapes data from Pivotal Tracker, GitHub, (and soon Heroku), and organizes stor
 ![pivotal swimlanes](http://oi65.tinypic.com/2dsgw8w.jpg)
 
 ### Setup
+- cp .env-sample .env
+- Fill in environment variables
 - `npm install`
 - `npm start`
 - http://localhost:3000
