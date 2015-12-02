@@ -15,35 +15,37 @@ const checkConfig = (nextState, replaceState) => (
 );
 
 const handleGitHubAuth = (nextState, replaceState, callback) => {
-  let { code } = nextState.location.query;
-
-  // TODO: abort if nextState.location.query.state doesn't match what it expects
-
-  $.ajax({
-    url: `${process.env.HOST}/authorize_github?code=${code}`,
-    method: 'POST',
-    dataType: 'json'
-  }).success(data =>
-    console.log(data)
-  ).fail(data => { // TODO: Not sure why this is failing
-    updateSettings({ gitHubToken: data.responseText });
-    callback(replaceState(null, settingsPath));
-  });
+  let { code, state } = nextState.location.query;
+  let expectedState = getSettings().state;
+  if (state === expectedState) {
+    $.ajax({
+      url: `${process.env.HOST}/authorize_github?code=${code}`,
+      method: 'POST',
+      dataType: 'json'
+    }).success(data =>
+      console.log(data)
+    ).fail(data => { // TODO: Not sure why this is failing
+      updateSettings({ gitHubToken: data.responseText });
+      callback(replaceState(null, settingsPath));
+    });
+  }
+  updateSettings({ state: null });
 };
 
 const handleHerokuAuth = (nextState, replaceState, callback) => {
-  let { code } = nextState.location.query;
-
-  // TODO: abort if nextState.location.query.state doesn't match what it expects
-
-  $.ajax({
-    url: `${process.env.HOST}/authorize_heroku?code=${code}`,
-    method: 'POST',
-    dataType: 'json'
-  }).success(data => {
-    updateSettings({ herokuToken: data.access_token });
-    callback(replaceState(null, settingsPath));
-  });
+  let { code, state } = nextState.location.query;
+  let expectedState = getSettings().state;
+  if (state === expectedState) {
+    $.ajax({
+      url: `${process.env.HOST}/authorize_heroku?code=${code}`,
+      method: 'POST',
+      dataType: 'json'
+    }).success(data => {
+      updateSettings({ herokuToken: data.access_token });
+      callback(replaceState(null, settingsPath));
+    });
+  }
+  updateSettings({ state: null });
 };
 
 ReactDOM.render(

@@ -1,6 +1,25 @@
 import React, { PropTypes } from 'react';
 import history from '../../history';
+import { updateSettings } from '../../settings';
 import _ from 'lodash';
+
+const randState = () => Math.random().toString(36).slice(2);
+
+const authorizeGitHub = e => {
+  e.preventDefault();
+  let state = randState();
+  updateSettings({ state });
+  let url = 'https://github.com/login/oauth/authorize?client_id=' + process.env.GITHUB_CLIENT_ID + '&redirect_uri=' + process.env.HOST + '/github_authorized&state=' + state + '&scope=repo';
+  window.location.href = url;
+};
+
+const authorizeHeroku = e => {
+  e.preventDefault();
+  let state = randState();
+  updateSettings({ state });
+  let url = 'https://id.heroku.com/oauth/authorize?client_id=' + process.env.HEROKU_CLIENT_ID + '&response_type=code&scope=read&state=' + state;
+  window.location.href = url;
+};
 
 const Settings = ({
   pivotalToken,
@@ -58,7 +77,7 @@ const Settings = ({
         </div>
       ) : (
         <div>
-          <a href={'https://github.com/login/oauth/authorize?client_id=' + process.env.GITHUB_CLIENT_ID + '&redirect_uri=' + process.env.HOST + '/github_authorized&state=&scope=repo'}>
+          <a href='' onClick={authorizeGitHub}>
             Authorize GitHub Account
           </a>
           <br />
@@ -71,7 +90,7 @@ const Settings = ({
         <div>Account connected</div>
       ) : (
         <div>
-          <a href={'https://id.heroku.com/oauth/authorize?client_id=' + process.env.HEROKU_CLIENT_ID + '&response_type=code&scope=read&state='}>
+          <a href='' onClick={authorizeHeroku}>
             Authorize Heroku Account
           </a>
           <br />
