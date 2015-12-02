@@ -20,7 +20,7 @@ const handleGitHubAuth = (nextState, replaceState, callback) => {
   // TODO: abort if nextState.location.query.state doesn't match what it expects
 
   $.ajax({
-    url: `http://localhost:3000/authorize_github?code=${code}`,
+    url: `${process.env.HOST}/authorize_github?code=${code}`,
     method: 'POST',
     dataType: 'json'
   }).success(data =>
@@ -37,7 +37,7 @@ const handleHerokuAuth = (nextState, replaceState, callback) => {
   // TODO: abort if nextState.location.query.state doesn't match what it expects
 
   $.ajax({
-    url: `http://localhost:3000/authorize_heroku?code=${code}`,
+    url: `${process.env.HOST}/authorize_heroku?code=${code}`,
     method: 'POST',
     dataType: 'json'
   }).success(data => {

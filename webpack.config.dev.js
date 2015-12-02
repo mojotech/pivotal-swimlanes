@@ -20,7 +20,8 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env': {
         'GITHUB_CLIENT_ID': JSON.stringify(process.env.GITHUB_CLIENT_ID || ''),
-        'HEROKU_CLIENT_ID': JSON.stringify(process.env.HEROKU_CLIENT_ID || '')
+        'HEROKU_CLIENT_ID': JSON.stringify(process.env.HEROKU_CLIENT_ID || ''),
+        'HOST': JSON.stringify(process.env.HOST || '')
       }
     })
   ],

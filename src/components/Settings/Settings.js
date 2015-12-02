@@ -58,7 +58,7 @@ const Settings = ({
         </div>
       ) : (
         <div>
-          <a href={'https://github.com/login/oauth/authorize?client_id=' + process.env.GITHUB_CLIENT_ID + '&redirect_uri=http://localhost:3000/github_authorized&state=&scope=repo'}>
+          <a href={'https://github.com/login/oauth/authorize?client_id=' + process.env.GITHUB_CLIENT_ID + '&redirect_uri=' + process.env.HOST + '/github_authorized&state=&scope=repo'}>
             Authorize GitHub Account
           </a>
           <br />

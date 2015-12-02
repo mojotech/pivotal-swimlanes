@@ -21,7 +21,7 @@ app.get('*', function(req, res) {
 
 app.post('/authorize_github', function(req, res) {
   // TODO: add unguessable state parameter to prevent CSRF
-  request('https://github.com/login/oauth/access_token?client_id=' + process.env.GITHUB_CLIENT_ID + '&client_secret=' + process.env.GITHUB_CLIENT_SECRET + '&code=' + req.query.code + '&redirect_uri=http://localhost:3000/github_authorized&scope=repo,user', function (error, response, body) {
+  request('https://github.com/login/oauth/access_token?client_id=' + process.env.GITHUB_CLIENT_ID + '&client_secret=' + process.env.GITHUB_CLIENT_SECRET + '&code=' + req.query.code + '&redirect_uri=' + process.env.HOST + '/github_authorized&scope=repo,user', function (error, response, body) {
     var json_response = {};
     body.split('&').forEach(function(el) {
       var key = el.split('=')[0];
