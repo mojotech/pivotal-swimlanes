@@ -44,7 +44,7 @@ const Settings = ({
     <div>
       <h1>Pivotal Swimlanes Settings</h1>
       <form>
-        <label><strong>Pivotal Token: </strong></label>
+        <label><strong>Pivotal API Token: </strong></label>
         <br />
         <input
           type='text'
@@ -66,16 +66,14 @@ const Settings = ({
         </select>
         <br />
         <br />
-        <label><strong>GitHub Repo:</strong></label>
+        <label><strong>GitHub Repo: {selectedRepo}</strong></label>
         <br />
         {gitHubAuthorized ? (
           <div>
-            <div>[<a href='' onClick={removeGitHubAccount}>remove account</a>]</div>
             <input
               type='text'
               placeholder='Search Repos'
               onChange={_.debounce(e => onRepoQueryChange(e.target.value), 500)} />
-            {_.any(selectedRepo) ? <p><strong>Selected: {selectedRepo}</strong></p> : null}
             {_.any(repos) ? (
               <ul>
                 {_.map(repos, (repo, i) =>
@@ -88,9 +86,8 @@ const Settings = ({
                   </li>
                 )}
               </ul>
-            ) : (
-              <p>No repos found.</p>
-            )}
+            ) : null}
+            <div>[<a href='' onClick={removeGitHubAccount}>remove account</a>]</div>
           </div>
         ) : (
           <div>
