@@ -6,9 +6,10 @@ const randState = () => Math.random().toString(36).slice(2);
 
 const Settings = ({
   pivotalToken,
-  pivotalProjectId,
+  pivotalProjects,
   gitHubAuthorized,
   selectedRepo,
+  selectedPivotalProjectId,
   repos,
   herokuAuthorized,
   onSettingsChange,
@@ -51,12 +52,18 @@ const Settings = ({
           onChange={e => onSettingsChange({ pivotalToken: e.target.value })} />
         <br />
         <br />
-        <label><strong>Pivotal Project ID: </strong></label>
+        <label><strong>Pivotal Project: </strong></label>
         <br />
-        <input
-          type='text'
-          value={pivotalProjectId}
-          onChange={e => onSettingsChange({ pivotalProjectId: e.target.value })} />
+        <select onChange={e => onSettingsChange({ selectedPivotalProjectId: e.target.value })}>
+          <option value='' disabled={_.any(selectedPivotalProjectId)}>
+            Select a project
+          </option>
+          {_.map(pivotalProjects, project =>
+            <option key={project.id} value={project.id} defaultValue=''>
+              {project.name}
+            </option>
+          )}
+        </select>
         <br />
         <br />
         <label><strong>GitHub Repo:</strong></label>
@@ -117,8 +124,14 @@ const Settings = ({
 
 Settings.propTypes = {
   pivotalToken: PropTypes.string,
-  pivotalProjectId: PropTypes.string,
+  pivotalProjects: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired
+    })
+  ),
   selectedRepo: PropTypes.string,
+  selectedPivotalProjectId: PropTypes.string,
   repos: PropTypes.arrayOf(PropTypes.string),
   herokuAuthorized: PropTypes.bool
 };

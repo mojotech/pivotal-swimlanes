@@ -1,8 +1,11 @@
 import React from 'react';
 import Settings from '../components/Settings/Settings';
+import Loading from '../components/shared/Loading';
 import { getSettings, updateSettings } from '../settings';
 import $ from 'jquery';
 import _ from 'lodash';
+
+const pivotalAPI = 'https://www.pivotaltracker.com/services/v5';
 
 const SettingsContainer = React.createClass({
   getInitialState() {
@@ -11,24 +14,41 @@ const SettingsContainer = React.createClass({
 
   componentDidMount() {
     this.fetchSettings();
+    this.fetchPivotalProjects();
   },
 
   fetchSettings() {
     const {
       gitHubToken,
       pivotalToken,
-      pivotalProjectId,
       selectedRepo,
+      selectedPivotalProjectId,
+      selectedPivotalProject,
       herokuToken
     } = getSettings();
     this.setState({
       pivotalToken,
-      pivotalProjectId,
       gitHubToken,
       gitHubAuthorized: _.any(gitHubToken),
       selectedRepo,
+      selectedPivotalProjectId,
+      selectedPivotalProject,
       herokuAuthorized: _.any(herokuToken)
     });
+  },
+
+  fetchPivotalProjects() {
+    let { pivotalToken } = getSettings();
+    return $.ajax({
+      url: `${pivotalAPI}/me`,
+      method: 'GET',
+      beforeSend: xhr => xhr.setRequestHeader('X-TrackerToken', pivotalToken)
+    }).then(data => {
+      let projects = _.map(data.projects, p => (
+        { id: p.project_id, name: p.project_name })
+      );
+      this.setState({ pivotalProjects: projects });
+    }).fail(() => this.setState({ error: true }));
   },
 
   saveSettings(changedData) {
@@ -73,17 +93,23 @@ const SettingsContainer = React.createClass({
   render() {
     const {
       pivotalToken,
-      pivotalProjectId,
+      pivotalProjects,
       gitHubAuthorized,
       selectedRepo,
-      herokuAuthorized
+      selectedPivotalProjectId,
+      herokuAuthorized,
+      error
     } = this.state;
-    return (
+    const loading = _.isEmpty(pivotalProjects) && !error;
+    return loading ? (
+      <Loading />
+    ) : (
       <Settings
         pivotalToken={pivotalToken}
-        pivotalProjectId={pivotalProjectId}
+        pivotalProjects={pivotalProjects}
         gitHubAuthorized={gitHubAuthorized}
         selectedRepo={selectedRepo}
+        selectedPivotalProjectId={selectedPivotalProjectId}
         repos={this.state.repos}
         herokuAuthorized={herokuAuthorized}
         onSettingsChange={this.saveSettings}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import Project from '../components/Project/Project';
-import { CircularProgress } from 'material-ui';
+import Loading from '../components/shared/Loading';
 import { getSettings } from '../settings';
 import $ from 'jquery';
 import _ from 'lodash';
@@ -86,9 +86,9 @@ const ProjectContainer = React.createClass({
   },
 
   fetchProjectName() {
-    let { pivotalProjectId, pivotalToken } = getSettings();
+    let { selectedPivotalProjectId, pivotalToken } = getSettings();
     return $.ajax({
-      url: `${pivotalAPI}/projects/${pivotalProjectId}`,
+      url: `${pivotalAPI}/projects/${selectedPivotalProjectId}`,
       method: 'GET',
       beforeSend: xhr => xhr.setRequestHeader('X-TrackerToken', pivotalToken)
     }).then(data =>
@@ -99,9 +99,9 @@ const ProjectContainer = React.createClass({
   },
 
   fetchStories() {
-    let { pivotalProjectId, pivotalToken } = getSettings();
+    let { selectedPivotalProjectId, pivotalToken } = getSettings();
     return $.ajax({
-      url: `${pivotalAPI}/projects/${pivotalProjectId}/iterations?scope=current`,
+      url: `${pivotalAPI}/projects/${selectedPivotalProjectId}/iterations?scope=current`,
       method: 'GET',
       beforeSend: xhr => xhr.setRequestHeader('X-TrackerToken', pivotalToken)
     }).then(data =>
@@ -155,9 +155,9 @@ const ProjectContainer = React.createClass({
   },
 
   fetchProjectMembers() {
-    let { pivotalProjectId, pivotalToken } = getSettings();
+    let { selectedPivotalProjectId, pivotalToken } = getSettings();
     return $.ajax({
-      url: `${pivotalAPI}/projects/${pivotalProjectId}/memberships`,
+      url: `${pivotalAPI}/projects/${selectedPivotalProjectId}/memberships`,
       method: 'GET',
       beforeSend: xhr => xhr.setRequestHeader('X-TrackerToken', pivotalToken)
     }).then(data =>
@@ -170,9 +170,7 @@ const ProjectContainer = React.createClass({
     let loading = (_.isEmpty(projectName) || _.isEmpty(entries)) && !error;
     return (
       loading ? (
-        <div style={{textAlign: 'center'}}>
-          <CircularProgress mode='indeterminate' />
-        </div>
+        <Loading />
       ) : (
         error ? (
           <div>
