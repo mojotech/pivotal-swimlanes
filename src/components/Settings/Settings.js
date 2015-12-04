@@ -42,7 +42,7 @@ const Settings = ({
   };
   return (
     <div>
-      <h1>Pivotal Swimlanes Settings</h1>
+      <h1>Swimlanes Settings</h1>
       <form>
         <label><strong>Pivotal API Token: </strong></label>
         <br />
