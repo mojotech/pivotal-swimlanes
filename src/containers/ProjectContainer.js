@@ -40,7 +40,7 @@ const ProjectContainer = React.createClass({
                     title: story.name,
                     owners: _.map(story.ownerIds, id => {
                       let owner = _.find(projectMembers, 'id', id);
-                      return owner ? owner.name : id.toString();
+                      return owner ? owner.name : null;
                     }),
                     estimate: story.estimate,
                     reviewUrl,
