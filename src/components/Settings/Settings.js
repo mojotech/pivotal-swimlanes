@@ -98,7 +98,7 @@ const Settings = ({
           </div>
         )}
         <br />
-        <label><strong>Heroku Account:</strong></label>
+        {/*<label><strong>Heroku Account:</strong></label>
         <br />
         {herokuAuthorized ? (
           <div>
@@ -112,7 +112,7 @@ const Settings = ({
             <br />
           </div>
         )}
-        <br />
+        <br />*/}
         <button onClick={() => history.pushState(null, '/')}>Continue</button>
       </form>
     </div>
