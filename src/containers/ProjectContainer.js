@@ -105,17 +105,20 @@ const ProjectContainer = React.createClass({
       method: 'GET',
       beforeSend: xhr => xhr.setRequestHeader('X-TrackerToken', pivotalToken)
     }).then(data =>
-      _.map(data[0].stories, story => (
-        {
-          id: story.id,
-          state: story.current_state,
-          name: story.name,
-          type: story.story_type,
-          url: story.url,
-          ownerIds: story.owner_ids,
-          estimate: story.estimate
-        }
-      ))
+      _(data[0].stories)
+        .filter(s => s.story_type !== 'release')
+        .map(story => (
+          {
+            id: story.id,
+            state: story.current_state,
+            name: story.name,
+            type: story.story_type,
+            url: story.url,
+            ownerIds: story.owner_ids,
+            estimate: story.estimate
+          }
+        ))
+        .value()
     ).fail(() => this.setState({ error: true }));
   },
 
