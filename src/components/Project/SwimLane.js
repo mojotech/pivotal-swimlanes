@@ -14,12 +14,12 @@ const SwimLane = ({ title, entries }) => {
       textAlign: 'center',
       font: "14px 'Helvetica Neue',Arial,Helvetica,sans-serif",
       fontSize: 18,
-      fontWeight: 600,
+      fontWeight: 500,
       lineHeight: '20px',
       color: '#f6f6f6'
     },
     entryList: { listStyleType: 'none', padding: 0 },
-    entry: { paddingBottom: 5 }
+    entry: { paddingBottom: 4 }
   };
   return (
     <div style={styles.container}>

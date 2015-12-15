@@ -3,12 +3,11 @@ import { Paper } from 'material-ui';
 import _ from 'underscore';
 
 const styles = {
-  content: { padding: 5, backgroundColor: '#F9F9F9' },
+  content: { padding: 4, backgroundColor: '#F9F9F9' },
   title: {
     fontSize: 12,
     whiteSpace: 'normal',
-    paddingTop: 3,
-    paddingBottom: 3
+    paddingBottom: 1
   },
   owners: { fontSize: 10 },
   estimate: { paddingLeft: 5 },
