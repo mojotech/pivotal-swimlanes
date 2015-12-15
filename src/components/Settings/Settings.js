@@ -46,6 +46,8 @@ const Settings = ({
       <form>
         <label><strong>Pivotal API Token: </strong></label>
         <br />
+        <label>This is found at the bottom of your Pivotal profile.</label>
+        <br />
         <input
           type='text'
           value={pivotalToken}
