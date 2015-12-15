@@ -60,6 +60,9 @@ const SettingsContainer = React.createClass({
     if (changedData.herokuAuthorized === false) {
       updateSettings({ herokuToken: null });
     }
+    if (changedData.pivotalToken !== this.state.pivotalToken) {
+      this.fetchPivotalProjects();
+    }
   },
 
   /* eslint-disable camelcase */
