@@ -6,7 +6,8 @@ Scrapes data from Pivotal Tracker, GitHub, (and soon Heroku), and organizes stor
 ![pivotal swimlanes](http://oi65.tinypic.com/2dsgw8w.jpg)
 
 ### Setup
-- Register a GitHub Developer application [here](https://github.com/settings/developers)
+- Register a GitHub Developer application [here](https://github.com/settings/developers). The Authorization callback URL (if using the
+default ENV host) should be `http://localhost:3000/github_authorized`
 - `cp .env-sample .env`
 - In .env, fill in the generated client ID and secret from your GitHub developer application
 - `npm install`
