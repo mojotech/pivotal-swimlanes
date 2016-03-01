@@ -40,6 +40,13 @@ const Settings = ({
     e.preventDefault();
     onSettingsChange({ herokuAuthorized: false });
   };
+
+  const repoChangeHandler = _.compose(
+    _.debounce(onRepoQueryChange, 500),
+    _.property('value'),
+    _.property('target')
+  );
+
   return (
     <div>
       <h1>Swimlanes Settings</h1>
@@ -75,7 +82,7 @@ const Settings = ({
             <input
               type='text'
               placeholder='Search Repos'
-              onChange={_.debounce(e => onRepoQueryChange(e.target.value), 500)} />
+              onChange={repoChangeHandler} />
             {_.any(repos) ? (
               <ul>
                 {_.map(repos, (repo, i) =>
