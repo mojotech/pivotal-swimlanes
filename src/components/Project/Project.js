@@ -1,17 +1,34 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import HeaderBar from './HeaderBar';
 import Board from './Board';
 
-const Project = ({ projectName, entries }) => (
-  <div>
-    <HeaderBar projectName={projectName} />
-    <Board entries={entries} />
-  </div>
-);
+class Project extends Component {
+  static propTypes = {
+    projectName: PropTypes.string.isRequired,
+    entries: PropTypes.array.isRequired,
+  };
 
-Project.propTypes = {
-  projectName: PropTypes.string.isRequired,
-  entries: PropTypes.array.isRequired
-};
+  state = {
+    sidebarVisible: false
+  };
+
+  toggleSidebar = () => (
+    this.setState({ sidebarVisible: !this.state.sidebarVisible })
+  );
+
+  render() {
+    const { entries, projectName } = this.props;
+    const { sidebarVisible } = this.state;
+    return (
+      <div>
+        <HeaderBar
+          projectName={projectName}
+          sidebarVisible={sidebarVisible}
+          onToggleSidebar={this.toggleSidebar} />
+        <Board entries={entries} sidebarVisible={sidebarVisible} />
+      </div>
+    );
+  }
+}
 
 export default Project;
