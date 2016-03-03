@@ -7,19 +7,20 @@ const SwimLane = ({ title, entries }) => {
     container: {
       display: 'inline-block',
       verticalAlign: 'top',
-      padding: 5,
-      width: 224
+      width: 224,
+      height: '100%',
+      borderRight: '1px solid #F1F1F1',
+      padding: 15
     },
     title: {
-      textAlign: 'center',
       font: "14px 'Helvetica Neue',Arial,Helvetica,sans-serif",
-      fontSize: 18,
-      fontWeight: 500,
+      fontSize: 16,
+      fontWeight: 400,
       lineHeight: '20px',
-      color: '#f6f6f6'
+      color: '#585757'
     },
     entryList: { listStyleType: 'none', padding: 0 },
-    entry: { paddingBottom: 4 }
+    entry: { marginBottom: 10 }
   };
   return (
     <div style={styles.container}>
