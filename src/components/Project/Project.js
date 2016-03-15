@@ -6,6 +6,7 @@ class Project extends Component {
   static propTypes = {
     projectName: PropTypes.string.isRequired,
     entries: PropTypes.array.isRequired,
+    hasSelectedRepo: PropTypes.bool.isRequired
   };
 
   state = {
@@ -17,7 +18,7 @@ class Project extends Component {
   );
 
   render() {
-    const { entries, projectName } = this.props;
+    const { entries, projectName, hasSelectedRepo } = this.props;
     const { sidebarVisible } = this.state;
     return (
       <div>
@@ -25,7 +26,10 @@ class Project extends Component {
           projectName={projectName}
           sidebarVisible={sidebarVisible}
           onToggleSidebar={this.toggleSidebar} />
-        <Board entries={entries} sidebarVisible={sidebarVisible} />
+        <Board 
+          entries={entries} 
+          sidebarVisible={sidebarVisible} 
+          hasSelectedRepo={hasSelectedRepo} />
       </div>
     );
   }
