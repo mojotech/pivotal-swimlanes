@@ -124,18 +124,29 @@ const ProjectContainer = React.createClass({
 
   fetchPullRequests() {
     let { gitHubToken, selectedRepo } = getSettings();
-    return $.ajax({
-      url: `https://api.github.com/repos/${selectedRepo}/pulls?state=open&access_token=${gitHubToken}`,
-      method: 'GET'
-    }).then(data =>
-      _.map(data, pullRequest => (
-        {
-          id: pullRequest.id,
-          url: pullRequest.html_url,
-          commitsUrl: pullRequest.commits_url
-        }
-      ))
-    ).fail(() => this.setState({ error: true }));
+    return new Promise(resolve => {
+      if (selectedRepo !== null && selectedRepo !== undefined) {
+        $.ajax({
+          url: `https://api.github.com/repos/${selectedRepo}/pulls?state=open&access_token=${gitHubToken}`,
+          method: 'GET'
+        }).then(data =>
+          resolve(
+            _.map(data, pullRequest => (
+              {
+                id: pullRequest.id,
+                url: pullRequest.html_url,
+                commitsUrl: pullRequest.commits_url
+              }
+            ))
+          )
+        ).fail(() => { 
+          this.setState({ error: true }); 
+          resolve(); 
+        });
+      } else {
+        resolve();
+      }
+    });
   },
 
   fetchCommits(pullRequests) {
@@ -171,6 +182,8 @@ const ProjectContainer = React.createClass({
   render() {
     let { projectName, entries, error } = this.state;
     let loading = (_.isEmpty(projectName) || _.isEmpty(entries)) && !error;
+    const { selectedRepo } = getSettings();
+    const hasSelectedRepo = (selectedRepo !== null && selectedRepo !== undefined);
     return (
       loading ? (
         <Loading />
@@ -181,7 +194,10 @@ const ProjectContainer = React.createClass({
             <Link to='settings'>Configure Settings</Link>
           </div>
         ) : (
-          <Project projectName={projectName} entries={entries} />
+          <Project 
+            projectName={projectName} 
+            entries={entries} 
+            hasSelectedRepo={hasSelectedRepo} />
         )
       )
     );
