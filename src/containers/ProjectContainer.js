@@ -26,15 +26,25 @@ const ProjectContainer = React.createClass({
       this.fetchProjectMembers().then(projectMembers => {
         this.fetchStories().then(stories => {
           this.fetchPullRequests().then(pullRequests => {
-            this.fetchCommits(pullRequests).then(commits => {
-              let entries = _.map(stories, story => {
-                let commitWithPivotalStoryId = _.find(
-                  commits,
-                  prCommits => _.find(prCommits.commitMessages, message => _.includes(message, story.id))
-                );
-                let reviewUrl = commitWithPivotalStoryId ? (
-                  _.find(pullRequests, 'id', commitWithPivotalStoryId.pullRequestId).url
-                ) : null;
+            this.fetchCommits(pullRequests).then(pullRequestsWithCommits => {
+              const entries = _.map(stories, story => {
+                const commitsWithPivotalStoryId = _.filter(pullRequestsWithCommits, prCommits => {
+                  const commitsHaveStoryId =
+                    _(prCommits.commitMessages)
+                      .filter(message => _.includes(message, story.id))
+                      .any();
+                  return commitsHaveStoryId;
+                });
+
+                const reviewUrls =
+                  _(pullRequests)
+                    .filter(pullRequest => {
+                      const prIds = _.pluck(commitsWithPivotalStoryId, 'pullRequestId');
+                      return _.includes(prIds, pullRequest.id);
+                    })
+                    .pluck('url')
+                    .value();
+
                 return (
                   {
                     title: story.name,
@@ -43,9 +53,9 @@ const ProjectContainer = React.createClass({
                       return owner ? owner.name : null;
                     }),
                     estimate: story.estimate,
-                    reviewUrl,
+                    reviewUrls,
                     trackerUrl: story.url,
-                    state: _.isEmpty(reviewUrl) ? this.storyType(story) : 'Ready for Review',
+                    state: _.isEmpty(reviewUrls) ? this.storyType(story) : 'Ready for Review',
                     type: story.type
                   }
                 );
@@ -139,9 +149,9 @@ const ProjectContainer = React.createClass({
               }
             ))
           )
-        ).fail(() => { 
-          this.setState({ error: true }); 
-          resolve(); 
+        ).fail(() => {
+          this.setState({ error: true });
+          resolve();
         });
       } else {
         resolve();
@@ -194,9 +204,9 @@ const ProjectContainer = React.createClass({
             <Link to='settings'>Configure Settings</Link>
           </div>
         ) : (
-          <Project 
-            projectName={projectName} 
-            entries={entries} 
+          <Project
+            projectName={projectName}
+            entries={entries}
             hasSelectedRepo={hasSelectedRepo} />
         )
       )

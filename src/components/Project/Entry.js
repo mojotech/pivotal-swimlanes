@@ -20,7 +20,7 @@ const Entry = ({
   title,
   owners,
   estimate,
-  reviewUrl,
+  reviewUrls,
   trackerUrl,
   type,
   state
@@ -31,9 +31,11 @@ const Entry = ({
       {estimate ? <span style={styles.estimate}>{Array(estimate + 1).join('•')}</span> : null}
       <div style={styles.links}>
         {state === 'Ready for Review' ? (
-          <a href={reviewUrl} target='_new' style={styles.link}>
-            <img src={require('./img/pr.png')} />
-          </a>
+          reviewUrls.map((reviewUrl, i) =>
+            <a href={reviewUrl} key={i} target='_new' style={styles.link}>
+              <img src={require('./img/pr.png')} />
+            </a>
+          )
         ) : null}
         <a href={trackerUrl} target='_new' style={styles.link}>
           <ExternalLinkIcon style={{color: '#000000', fontSize: 14}} />
@@ -49,7 +51,7 @@ Entry.propTypes = {
   title: PropTypes.string.isRequired,
   owners: PropTypes.arrayOf(PropTypes.string),
   estimate: PropTypes.number,
-  reviewUrl: PropTypes.string,
+  reviewUrls: PropTypes.arrayOf(PropTypes.string),
   trackerUrl: PropTypes.string,
   type: PropTypes.string.isRequired,
   state: PropTypes.string.isRequired
