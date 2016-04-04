@@ -8,7 +8,8 @@ const styles = {
   content: { padding: 6, backgroundColor: '#FDFDFD' },
   title: {
     fontSize: 12,
-    whiteSpace: 'normal'
+    whiteSpace: 'normal',
+    wordWrap: 'break-word'
   },
   owners: { fontSize: 11, marginTop: 6 },
   estimate: { paddingLeft: 5 },
