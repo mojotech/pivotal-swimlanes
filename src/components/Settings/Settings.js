@@ -11,7 +11,6 @@ const Settings = ({
   selectedRepo,
   selectedPivotalProjectId,
   repos,
-  herokuAuthorized,
   onSettingsChange,
   onRepoQueryChange
 }) => {
@@ -23,22 +22,9 @@ const Settings = ({
     window.location.href = url;
   };
 
-  const authorizeHeroku = e => {
-    e.preventDefault();
-    let state = randState();
-    onSettingsChange({ state });
-    let url = 'https://id.heroku.com/oauth/authorize?client_id=' + process.env.HEROKU_CLIENT_ID + '&response_type=code&scope=read&state=' + state;
-    window.location.href = url;
-  };
-
   const removeGitHubAccount = e => {
     e.preventDefault();
     onSettingsChange({ gitHubAuthorized: false });
-  };
-
-  const removeHerokuAccount = e => {
-    e.preventDefault();
-    onSettingsChange({ herokuAuthorized: false });
   };
 
   const repoChangeHandler = _.compose(
@@ -107,21 +93,6 @@ const Settings = ({
           </div>
         )}
         <br />
-        {/*<label><strong>Heroku Account:</strong></label>
-        <br />
-        {herokuAuthorized ? (
-          <div>
-            Account connected [<a href='' onClick={removeHerokuAccount}>remove account</a>]
-          </div>
-        ) : (
-          <div>
-            <a href='' onClick={authorizeHeroku}>
-              Authorize Heroku Account
-            </a>
-            <br />
-          </div>
-        )}
-        <br />*/}
         <button onClick={() => history.pushState(null, '/')}>Continue</button>
       </form>
     </div>
