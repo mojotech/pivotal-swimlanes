@@ -1,10 +1,9 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
-const Bars = require('react-icons/lib/fa/bars');
 const Cog = require('react-icons/lib/fa/cog');
 const Filter = require('react-icons/lib/fa/filter');
 
-const HeaderBar = ({ projectName, sidebarVisible, onToggleSidebar }) => {
+const HeaderBar = ({ projectName, sidebarVisible }) => {
   const styles = {
     headerBar: {
       height: 50,
