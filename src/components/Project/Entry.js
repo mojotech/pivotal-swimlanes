@@ -12,7 +12,12 @@ const styles = {
     whiteSpace: 'normal',
     wordWrap: 'break-word'
   },
-  owners: { fontSize: 11, marginTop: 6 },
+  owners: {
+    fontSize: 11,
+    marginTop: 6,
+    textOverflow: 'ellipsis',
+    overflowX: 'hidden'
+  },
   estimate: { paddingLeft: 5 },
   links: { float: 'right' },
   link: { paddingLeft: 4 }
