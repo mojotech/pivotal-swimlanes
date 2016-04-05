@@ -163,11 +163,11 @@ const ProjectContainer = React.createClass({
   },
 
   fetchPullRequestStatuses(sha) {
-    let { selectedRepo } = getSettings();
+    let { gitHubToken, selectedRepo } = getSettings();
     return new Promise(resolve => {
       if (selectedRepo !== null && selectedRepo !== undefined) {
         $.ajax({
-          url: `https://api.github.com/repos/${selectedRepo}/commits/${sha}/statuses`,
+          url: `https://api.github.com/repos/${selectedRepo}/commits/${sha}/statuses?access_token=${gitHubToken}`,
           method: 'GET'
         }).then(data => {
           const state = data.length === 0 ? null : data[0].state;
