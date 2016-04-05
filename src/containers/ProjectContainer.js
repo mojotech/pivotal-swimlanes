@@ -35,14 +35,13 @@ const ProjectContainer = React.createClass({
                       .any();
                   return commitsHaveStoryId;
                 });
-
-                const reviewUrls =
+                const storyPullRequests =
                   _(pullRequests)
                     .filter(pullRequest => {
                       const prIds = _.pluck(commitsWithPivotalStoryId, 'pullRequestId');
                       return _.includes(prIds, pullRequest.id);
                     })
-                    .pluck('url')
+                    .map(pullRequest => ( {url:pullRequest.url, status: pullRequest.status}))
                     .value();
 
                 return (
@@ -53,9 +52,9 @@ const ProjectContainer = React.createClass({
                       return owner ? owner.name : null;
                     }),
                     estimate: story.estimate,
-                    reviewUrls,
+                    pullRequests: storyPullRequests,
                     trackerUrl: story.url,
-                    state: _.isEmpty(reviewUrls) ? this.storyType(story) : 'Ready for Review',
+                    state: _.isEmpty(storyPullRequests) ? this.storyType(story) : 'Ready for Review',
                     type: story.type
                   }
                 );
@@ -139,17 +138,41 @@ const ProjectContainer = React.createClass({
         $.ajax({
           url: `https://api.github.com/repos/${selectedRepo}/pulls?state=open&access_token=${gitHubToken}`,
           method: 'GET'
-        }).then(data =>
-          resolve(
-            _.map(data, pullRequest => (
-              {
+        }).then(data => {
+          const pullRequestShas = data.map(pullRequest => pullRequest.head.sha);
+          const statusRequests = pullRequestShas.map(sha => this.fetchPullRequestStatuses(sha));
+          Promise.all(statusRequests).then(statuses => {
+            const pullRequestData = data.map((pullRequest, i) => {
+              return ({
                 id: pullRequest.id,
                 url: pullRequest.html_url,
-                commitsUrl: pullRequest.commits_url
-              }
-            ))
-          )
-        ).fail(() => {
+                commitsUrl: pullRequest.commits_url,
+                status: statuses[i]
+              });
+            });
+            resolve(pullRequestData);
+          });
+        }).fail(() => {
+          this.setState({ error: true });
+          resolve();
+        });
+      } else {
+        resolve();
+      }
+    });
+  },
+
+  fetchPullRequestStatuses(sha) {
+    let { selectedRepo } = getSettings();
+    return new Promise(resolve => {
+      if (selectedRepo !== null && selectedRepo !== undefined) {
+        $.ajax({
+          url: `https://api.github.com/repos/${selectedRepo}/commits/${sha}/statuses`,
+          method: 'GET'
+        }).then(data => {
+          const state = data.length === 0 ? null : data[0].state;
+          resolve(state);  // return only the first (most recent) commit status
+        }).fail(() => {
           this.setState({ error: true });
           resolve();
         });
