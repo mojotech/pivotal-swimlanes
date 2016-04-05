@@ -23,12 +23,14 @@ class Project extends Component {
     return (
       <div>
         <HeaderBar
-          projectName={projectName}
+          heading={projectName}
           sidebarVisible={sidebarVisible}
-          onToggleSidebar={this.toggleSidebar} />
-        <Board 
-          entries={entries} 
-          sidebarVisible={sidebarVisible} 
+          onToggleSidebar={this.toggleSidebar}
+          showFilter={false}
+          showSettings={true} />
+        <Board
+          entries={entries}
+          sidebarVisible={sidebarVisible}
           hasSelectedRepo={hasSelectedRepo} />
       </div>
     );

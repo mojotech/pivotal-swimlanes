@@ -1,6 +1,18 @@
 import React, { PropTypes } from 'react';
 import history from '../../history';
 import _ from 'lodash';
+import HeaderBar from '../Project/HeaderBar';
+
+const styles = {
+  board: {
+    backgroundColor: '#FFFFFF',
+    width: '100%',
+    fontFamily: "'Open Sans', helvetica, arial, sans-serif",
+    fontSize: 12,
+    fontWeight: 400,
+    marginLeft: 40
+  }
+};
 
 const randState = () => Math.random().toString(36).slice(2);
 
@@ -34,7 +46,12 @@ const Settings = ({
   );
 
   return (
-    <div>
+    <div style={styles.board}>
+      <HeaderBar
+        heading='Swimlanes Settings'
+        sidebarVisible={false}
+        showFilter={false}
+        showSettings={false} />
       <h1>Swimlanes Settings</h1>
       <form>
         <label><strong>Pivotal API Token: </strong></label>

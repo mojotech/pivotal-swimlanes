@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 const Cog = require('react-icons/lib/fa/cog');
 const Filter = require('react-icons/lib/fa/filter');
 
-const HeaderBar = ({ projectName, sidebarVisible }) => {
+const HeaderBar = ({ heading, sidebarVisible, showFilter, showSettings }) => {
   const styles = {
     headerBar: {
       height: 50,
@@ -15,7 +15,7 @@ const HeaderBar = ({ projectName, sidebarVisible }) => {
       right: 0,
       bottom: 0
     },
-    projectName: {
+    heading: {
       fontFamily: "'Open Sans', helvetica, arial, sans-serif",
       fontSize: 18,
       fontWeight: 400,
@@ -67,27 +67,37 @@ const HeaderBar = ({ projectName, sidebarVisible }) => {
   return (
     <div style={styles.headerBar}>
       <img src={require('./img/swim.png')} style={{...styles.logo, ...styles.verticalAlign }} />
-      <div style={{...styles.projectName, ...styles.verticalAlign}}>
-        {projectName}
+      <div style={{...styles.heading, ...styles.verticalAlign}}>
+        {heading}
       </div>
       <div style={{float: 'right'}}>
-        <div style={{...styles.divider, float: 'left'}} />
-        <div style={{...styles.button}} to='filter' onClick={() => alert('Filtering stories coming soon!')}>
-          <Filter style={{...styles.filterIcon, ...styles.verticalAlign }} />
-        </div>
-        <div style={{...styles.divider, float: 'left'}} />
-        <Link style={{...styles.button}} to='settings'>
-          <Cog style={{...styles.settingsIcon, ...styles.verticalAlign }} />
-        </Link>
+        {showFilter ? (
+          <div>
+            <div style={{...styles.divider, float: 'left'}} />
+            <div style={{...styles.button}} to='filter' onClick={() => alert('Filtering stories coming soon!')}>
+              <Filter style={{...styles.filterIcon, ...styles.verticalAlign }} />
+            </div>
+          </div>
+        ) : null}
+        {showSettings ? (
+          <div>
+            <div style={{...styles.divider, float: 'left'}} />
+            <Link style={{...styles.button}} to='settings'>
+              <Cog style={{...styles.settingsIcon, ...styles.verticalAlign }} />
+            </Link>
+          </div>
+        ) : null}
       </div>
     </div>
   );
 };
 
 HeaderBar.propTypes = {
-  projectName: PropTypes.string.isRequired,
+  heading: PropTypes.string.isRequired,
   sidebarVisible: PropTypes.bool.isRequired,
-  onToggleSidebar: PropTypes.func.isRequired
+  onToggleSidebar: PropTypes.func.isRequired,
+  showFilter: PropTypes.bool.isRequired,
+  showSettings: PropTypes.bool.isRequired
 };
 
 export default HeaderBar;
