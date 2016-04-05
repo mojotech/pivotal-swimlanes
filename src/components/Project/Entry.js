@@ -3,6 +3,7 @@ import { Paper } from 'material-ui';
 import _ from 'underscore';
 
 const ExternalLinkIcon = require('react-icons/lib/fa/external-link');
+const GitHubIcon = require('react-icons/lib/fa/github');
 
 const styles = {
   content: { padding: 6, backgroundColor: '#FDFDFD' },
@@ -21,7 +22,7 @@ const Entry = ({
   title,
   owners,
   estimate,
-  reviewUrls,
+  pullRequests,
   trackerUrl,
   type,
   state
@@ -32,11 +33,27 @@ const Entry = ({
       {estimate ? <span style={styles.estimate}>{Array(estimate + 1).join('•')}</span> : null}
       <div style={styles.links}>
         {state === 'Ready for Review' ? (
-          reviewUrls.map((reviewUrl, i) =>
-            <a href={reviewUrl} key={i} target='_new' style={styles.link}>
-              <img src={require('./img/pr.png')} />
-            </a>
-          )
+          pullRequests.map((pullRequest, i) => {
+            let prStatusColor;
+            switch (pullRequest.status) {
+            case 'success':
+              prStatusColor = '#50A32B';
+              break;
+            case 'pending':
+              prStatusColor = '#C9A217';
+              break;
+            case 'failure':
+              prStatusColor = '#AF1900';
+              break;
+            default:
+              prStatusColor = 'black';
+            }
+            return (
+              <a href={pullRequest.url} key={i} target='_new' style={styles.link}>
+                <GitHubIcon style={{color: prStatusColor}}/>
+              </a>
+            );
+          })
         ) : null}
         <a href={trackerUrl} target='_new' style={styles.link}>
           <ExternalLinkIcon style={{color: '#000000', fontSize: 14}} />
@@ -52,7 +69,12 @@ Entry.propTypes = {
   title: PropTypes.string.isRequired,
   owners: PropTypes.arrayOf(PropTypes.string),
   estimate: PropTypes.number,
-  reviewUrls: PropTypes.arrayOf(PropTypes.string),
+  pullRequests: PropTypes.arrayOf(
+    PropTypes.shape({
+      url: PropTypes.string.isRequired,
+      status: PropTypes.string
+    }).isRequired
+  ).isRequired,
   trackerUrl: PropTypes.string,
   type: PropTypes.string.isRequired,
   state: PropTypes.string.isRequired

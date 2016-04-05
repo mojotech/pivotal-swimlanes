@@ -32,7 +32,7 @@ const SwimLane = ({ title, entries }) => {
               title={entry.title}
               owners={entry.owners}
               estimate={entry.estimate}
-              reviewUrls={entry.reviewUrls}
+              pullRequests={entry.pullRequests}
               trackerUrl={entry.trackerUrl}
               type={entry.type}
               state={entry.state} />
