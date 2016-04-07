@@ -24,7 +24,8 @@ const Settings = ({
   selectedPivotalProjectId,
   repos,
   onSettingsChange,
-  onRepoQueryChange
+  onRepoQueryChange,
+  gitHubUser
 }) => {
   const authorizeGitHub = e => {
     e.preventDefault();
