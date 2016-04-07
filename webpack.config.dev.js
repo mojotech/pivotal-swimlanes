@@ -28,6 +28,7 @@ module.exports = {
   module: {
     loaders: [
       { test: /\.js$/, loaders: ['babel'], include: path.join(__dirname, 'src') },
+      { test: /\.scss$/, loaders: ['style','css','sass']},
       { test: /\.(svg|png)$/, exclude: /node_modules/, loader: 'file-loader' }
     ]
   }
