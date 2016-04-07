@@ -1,0 +1,52 @@
+@import 'variables';
+
+input, select {
+  appearance: none;
+  outline: none;
+}
+
+
+.settings-container form {
+  margin: 40px 40px;
+  width: 400px;
+  font-family: $font-primary;
+}
+
+.settings-container .label-note {
+  font-size:12px;
+}
+
+.settings-container label {
+  margin-right:20px;
+}
+
+.input {
+  background: white;
+  border: 1px solid $color-tint;
+  border-radius: $border-radius;
+  color: $color-shade;
+  font-family: $font-primary;
+  font-size: $type-base;
+  margin: 0 0 $spacing-medium;
+  outline: none;
+  padding: $spacing-small $spacing-small;
+  transition: border-color .15s $bezier;
+  width: 100%;
+
+
+  &.api-token {
+    width: 93%;
+  }
+
+  &.large {
+    font-size: $type-h6;
+    padding: $spacing-medium $spacing-small;
+  }
+  &:focus {
+    border-color: $color-secondary;
+  }
+}
+
+select.input {
+  height: 42px;
+}

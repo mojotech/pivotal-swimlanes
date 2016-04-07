@@ -3,15 +3,14 @@ import { Link } from 'react-router';
 const Cog = require('react-icons/lib/fa/cog');
 const Filter = require('react-icons/lib/fa/filter');
 
-const HeaderBar = ({ heading, sidebarVisible, showFilter, showSettings }) => {
+const HeaderBar = ({ heading, showFilter, showSettings }) => {
   const styles = {
     headerBar: {
       height: 50,
       backgroundColor: '#0094D9',
       clear: 'both',
-      position: 'absolute',
       top: 0,
-      left: sidebarVisible ? 220 : 0,
+      left: 0,
       right: 0,
       bottom: 0
     },
@@ -94,8 +93,6 @@ const HeaderBar = ({ heading, sidebarVisible, showFilter, showSettings }) => {
 
 HeaderBar.propTypes = {
   heading: PropTypes.string.isRequired,
-  sidebarVisible: PropTypes.bool.isRequired,
-  onToggleSidebar: PropTypes.func.isRequired,
   showFilter: PropTypes.bool.isRequired,
   showSettings: PropTypes.bool.isRequired
 };
