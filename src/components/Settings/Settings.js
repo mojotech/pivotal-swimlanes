@@ -71,6 +71,7 @@ const Settings = ({
         <label><strong>Pivotal Project: </strong></label>
         <br />
         <select
+          value={selectedPivotalProjectId}
           className = 'input'
           onChange={e => onSettingsChange({ selectedPivotalProjectId: e.target.value })}>
           <option value='' disabled={_.any(selectedPivotalProjectId)}>
