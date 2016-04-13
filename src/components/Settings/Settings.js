@@ -46,7 +46,7 @@ const Settings = ({
 
   const removeGitHubAccount = e => {
     e.preventDefault();
-    onSettingsChange({ gitHubAuthorized: false });
+    onSettingsChange({ gitHubAuthorized: false, selectedRepo: null });
   };
 
   const repoChangeHandler = _.debounce(onRepoQueryChange, 500);
