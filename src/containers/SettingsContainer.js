@@ -64,7 +64,7 @@ const SettingsContainer = React.createClass({
         { id: p.project_id, name: p.project_name })
       );
       this.setState({ pivotalProjects: projects });
-    }).fail(() => this.setState({ error: true }));
+    }).fail(() => this.setState({ error: true, pivotalProjects: null }));
   },
 
   saveSettings(changedData) {
@@ -130,7 +130,8 @@ const SettingsContainer = React.createClass({
         herokuAuthorized={herokuAuthorized}
         onSettingsChange={this.saveSettings}
         onRepoQueryChange={this.searchRepo}
-        gitHubUser={this.state.gitHubUser} />
+        gitHubUser={this.state.gitHubUser}
+        fetchPivotalProjects={this.fetchPivotalProjects} />
     );
   }
 });

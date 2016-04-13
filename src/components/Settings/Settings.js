@@ -30,7 +30,8 @@ const Settings = ({
   repos,
   onSettingsChange,
   onRepoQueryChange,
-  gitHubUser
+  gitHubUser,
+  fetchPivotalProjects
 }) => {
   const authorizeGitHub = e => {
     e.preventDefault();
@@ -62,7 +63,8 @@ const Settings = ({
           type='text'
           className = 'input api-token'
           value={pivotalToken}
-          onChange={e => onSettingsChange({ pivotalToken: e.target.value })} />
+          onChange={e => onSettingsChange({ pivotalToken: e.target.value })}
+          onBlur={fetchPivotalProjects} />
         <br />
         <label><strong>Pivotal Project: </strong></label>
         <br />
