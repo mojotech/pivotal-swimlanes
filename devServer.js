@@ -26,7 +26,7 @@ app.post('/authorize_github', function(req, res) {
     body.split('&').forEach(function(el) {
       var key = el.split('=')[0];
       var value = el.split('=')[1];
-      json_response[key] = value
+      json_response[key] = value;
     });
     res.send(json_response.access_token);
   }.bind(res))

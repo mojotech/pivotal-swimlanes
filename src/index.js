@@ -7,6 +7,7 @@ import SettingsContainer from './containers/SettingsContainer';
 import { getSettings, updateSettings } from './settings';
 import $ from 'jquery';
 import _ from 'lodash';
+import './styles/form.scss';
 
 const settingsPath = 'settings';
 

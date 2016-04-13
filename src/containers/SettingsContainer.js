@@ -13,27 +13,43 @@ const SettingsContainer = React.createClass({
   },
 
   componentDidMount() {
-    this.fetchSettings();
-    this.fetchPivotalProjects();
+    this.fetchSettings().then(() => {
+      this.fetchPivotalProjects();
+      if (this.state.gitHubToken) {
+        this.fetchGitHubAccount();
+      }
+    });
+  },
+
+  fetchGitHubAccount(){
+    const { gitHubToken } = getSettings();
+    $.ajax({
+      url: `https://api.github.com/user?access_token=${gitHubToken}`,
+      method: 'GET'
+    }).then(data => {
+      this.setState({ gitHubUser: data.login });
+    });
   },
 
   fetchSettings() {
-    const {
-      gitHubToken,
-      pivotalToken,
-      selectedRepo,
-      selectedPivotalProjectId,
-      selectedPivotalProject,
-      herokuToken
-    } = getSettings();
-    this.setState({
-      pivotalToken,
-      gitHubToken,
-      gitHubAuthorized: _.any(gitHubToken),
-      selectedRepo,
-      selectedPivotalProjectId,
-      selectedPivotalProject,
-      herokuAuthorized: _.any(herokuToken)
+    return new Promise(resolve => {
+      const {
+        gitHubToken,
+        pivotalToken,
+        selectedRepo,
+        selectedPivotalProjectId,
+        selectedPivotalProject,
+        herokuToken
+      } = getSettings();
+      this.setState({
+        pivotalToken,
+        gitHubToken,
+        gitHubAuthorized: _.any(gitHubToken),
+        selectedRepo,
+        selectedPivotalProjectId,
+        selectedPivotalProject,
+        herokuAuthorized: _.any(herokuToken)
+      }, resolve);
     });
   },
 
@@ -113,7 +129,8 @@ const SettingsContainer = React.createClass({
         repos={this.state.repos}
         herokuAuthorized={herokuAuthorized}
         onSettingsChange={this.saveSettings}
-        onRepoQueryChange={this.searchRepo} />
+        onRepoQueryChange={this.searchRepo}
+        gitHubUser={this.state.gitHubUser} />
     );
   }
 });
