@@ -55,3 +55,7 @@ h3.section-heading {
   color:#CCCCCC;
   border-bottom:1px solid #CCCCCC;
 }
+
+h3.section-heading:first-of-type {
+  margin-top:75px;
+}
