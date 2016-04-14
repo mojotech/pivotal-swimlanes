@@ -20,8 +20,9 @@ const Board = ({ entries, sidebarVisible, hasSelectedRepo }) => {
       overflow: 'scroll',
       whiteSpace: 'nowrap',
       backgroundColor: '#FFFFFF',
-      height: '100vh',
-      width: '100%'
+      width: '100%',
+      display: 'table',
+      overflowY: 'scroll'
     }
   };
   

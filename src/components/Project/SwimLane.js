@@ -5,10 +5,10 @@ import _ from 'lodash';
 const SwimLane = ({ title, entries }) => {
   const styles = {
     container: {
-      display: 'inline-block',
+      display: 'table-cell',
       verticalAlign: 'top',
       width: 224,
-      height: '100%',
+      minWidth:224,
       borderRight: '1px solid #F1F1F1',
       padding: 15
     },
