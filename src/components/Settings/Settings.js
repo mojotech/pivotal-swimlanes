@@ -16,10 +16,6 @@ const styles = {
     background: '#0094D9',
     padding: '2px 6px',
     cursor: 'default'
-  },
-
-  menu: {
-    border: 'solid 1px #ccc'
   }
 };
 
@@ -59,7 +55,7 @@ const Settings = ({
         showFilter={false}
         showSettings={false} />
       <form>
-        <h3 style={{color:'#CCCCCC',borderBottom:'1px solid #CCCCCC'}}>Pivotal settings</h3>
+        <h3 className='section-heading'>Pivotal settings</h3>
         <label><strong>Pivotal API Token: </strong></label>
          <div className='label-note'>This is found at the bottom of your Pivotal profile.</div>
         <input
@@ -84,7 +80,7 @@ const Settings = ({
           )}
         </select>
         <br />
-         <h3 style={{color:'#CCCCCC',borderBottom:'1px solid #CCCCCC'}}>GitHub settings</h3>
+         <h3 className='section-heading'>GitHub settings</h3>
         {gitHubAuthorized ? (
           <div>
             <div>
