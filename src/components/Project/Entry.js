@@ -6,7 +6,7 @@ const ExternalLinkIcon = require('react-icons/lib/fa/external-link');
 const GitHubIcon = require('react-icons/lib/fa/github');
 
 const styles = {
-  content: { padding: 6, backgroundColor: '#FDFDFD' },
+  content: { padding: 6, backgroundColor: '#FDFDFD', width: 224 },
   title: {
     fontSize: 12,
     whiteSpace: 'normal',
