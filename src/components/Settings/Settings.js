@@ -99,8 +99,20 @@ const Settings = ({
             <br />
             <br />
             <label><strong>Selected GitHub Repo:</strong></label>
-            <br />
-            {selectedRepo ? (<label>{selectedRepo}</label>) : (<label>[None]</label>)}
+             <br />
+            {selectedRepo ? (
+              <span>
+                <label>{selectedRepo}</label>
+                <FlatButton
+                  label='Remove repo'
+                  onClick={() => onSettingsChange({ selectedRepo: null })}
+                  backgroundColor='#FF8900'
+                  labelStyle={{color:'#FFFFFF', fontSize:10 }}
+                  style={{lineHeight:1.3}} />
+              </span>
+            ) : (
+              <label>[None]</label>
+            )}
             <br />
             <br />
             <Autocomplete
