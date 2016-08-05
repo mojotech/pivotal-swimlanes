@@ -1,0 +1,14 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+	ignorecase = true
+	precomposeunicode = true
+[remote "origin"]
+	url = git@github.com:mojotech/pivotal-swimlanes
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "dk/rewrite"]
+	remote = origin
+	merge = refs/heads/master
+	rebase = true
