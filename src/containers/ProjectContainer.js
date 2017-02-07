@@ -7,7 +7,6 @@ import $ from 'jquery';
 import _ from 'lodash';
 
 const pivotalAPI = 'https://www.pivotaltracker.com/services/v5';
-
 const ProjectContainer = React.createClass({
   getInitialState() {
     return {
@@ -30,15 +29,13 @@ const ProjectContainer = React.createClass({
               const entries = _.map(stories, story => {
                 const commitsWithPivotalStoryId = _.filter(pullRequestsWithCommits, prCommits => {
                   const commitsHaveStoryId =
-                    _(prCommits.commitMessages)
-                      .filter(message => _.includes(message, story.id))
-                      .any();
+                    _.some(_.filter(prCommits.commitMessages, message => _.includes(message, story.id)));
                   return commitsHaveStoryId;
                 });
                 const storyPullRequests =
                   _(pullRequests)
                     .filter(pullRequest => {
-                      const prIds = _.pluck(commitsWithPivotalStoryId, 'pullRequestId');
+                      const prIds = _.map(commitsWithPivotalStoryId, 'pullRequestId');
                       return _.includes(prIds, pullRequest.id);
                     })
                     .map(pullRequest => ( {url:pullRequest.url, status: pullRequest.status}))
@@ -95,7 +92,7 @@ const ProjectContainer = React.createClass({
   },
 
   fetchProjectName() {
-    let { selectedPivotalProjectId, pivotalToken } = getSettings();
+    let { selectedPivotalProjectId, pivotalToken } = getSettings;
     return $.ajax({
       url: `${pivotalAPI}/projects/${selectedPivotalProjectId}`,
       method: 'GET',
@@ -108,7 +105,7 @@ const ProjectContainer = React.createClass({
   },
 
   fetchStories() {
-    let { selectedPivotalProjectId, pivotalToken } = getSettings();
+    let { selectedPivotalProjectId, pivotalToken } = getSettings;
     return $.ajax({
       url: `${pivotalAPI}/projects/${selectedPivotalProjectId}/iterations?scope=current`,
       method: 'GET',
@@ -132,7 +129,7 @@ const ProjectContainer = React.createClass({
   },
 
   fetchPullRequests() {
-    let { gitHubToken, selectedRepo } = getSettings();
+    let { gitHubToken, selectedRepo } = getSettings;
     return new Promise(resolve => {
       if (selectedRepo !== null && selectedRepo !== undefined) {
         $.ajax({
@@ -163,7 +160,7 @@ const ProjectContainer = React.createClass({
   },
 
   fetchPullRequestStatuses(sha) {
-    let { gitHubToken, selectedRepo } = getSettings();
+    let { gitHubToken, selectedRepo } = getSettings;
     return new Promise(resolve => {
       if (selectedRepo !== null && selectedRepo !== undefined) {
         $.ajax({
@@ -183,8 +180,8 @@ const ProjectContainer = React.createClass({
   },
 
   fetchCommits(pullRequests) {
-    let { gitHubToken } = getSettings();
-    let urls = _.pluck(pullRequests, 'commitsUrl');
+    let { gitHubToken } = getSettings;
+    let urls = _.map(pullRequests, 'commitsUrl');
     let requests = _.map(urls, url =>
       $.ajax({
         url: `${url}?access_token=${gitHubToken}`,
@@ -195,14 +192,14 @@ const ProjectContainer = React.createClass({
       _.map(data, (commits, i) => (
         {
           pullRequestId: pullRequests[i].id,
-          commitMessages: _(commits).pluck('commit').pluck('message').value()
+          commitMessages: _(commits).map('commit').map('message').value()
         }
       ))
     );
   },
 
   fetchProjectMembers() {
-    let { selectedPivotalProjectId, pivotalToken } = getSettings();
+    let { selectedPivotalProjectId, pivotalToken } = getSettings;
     return $.ajax({
       url: `${pivotalAPI}/projects/${selectedPivotalProjectId}/memberships`,
       method: 'GET',
@@ -215,7 +212,7 @@ const ProjectContainer = React.createClass({
   render() {
     let { projectName, entries, error } = this.state;
     let loading = (_.isEmpty(projectName) || _.isEmpty(entries)) && !error;
-    const { selectedRepo } = getSettings();
+    const { selectedRepo } = getSettings;
     const hasSelectedRepo = (selectedRepo !== null && selectedRepo !== undefined);
     return (
       loading ? (

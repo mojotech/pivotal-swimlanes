@@ -2,8 +2,10 @@ import React, { PropTypes } from 'react';
 import history from '../../history';
 import _ from 'lodash';
 import HeaderBar from '../Project/HeaderBar';
-import FlatButton from 'material-ui/lib/flat-button';
+import FlatButton from 'material-ui/FlatButton';
 import Autocomplete from 'react-autocomplete';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 const styles = {
   item: {
@@ -72,7 +74,7 @@ const Settings = ({
           value={selectedPivotalProjectId}
           className = 'input'
           onChange={e => onSettingsChange({ selectedPivotalProjectId: e.target.value })}>
-          <option value='' disabled={_.any(selectedPivotalProjectId)}>
+          <option value='' disabled={_.some(selectedPivotalProjectId)}>
             Select a project
           </option>
           {_.map(pivotalProjects, project =>
@@ -89,12 +91,14 @@ const Settings = ({
               <label><strong>GitHub account:</strong></label>
               <br />
               <label>{gitHubUser}</label>
-              <FlatButton
-                label='Remove account'
-                onClick={removeGitHubAccount}
-                backgroundColor='#FF8900'
-                labelStyle={{color:'#FFFFFF', fontSize:10 }}
-                style={{lineHeight:1.3}} />
+              <MuiThemeProvider>
+                <FlatButton
+                  label='Remove account'
+                  onClick={removeGitHubAccount}
+                  backgroundColor='#FF8900'
+                  labelStyle={{color:'#FFFFFF', fontSize:10 }}
+                  style={{lineHeight:1.3}} />
+              </MuiThemeProvider>
             </div>
             <br />
             <br />
@@ -103,12 +107,14 @@ const Settings = ({
             {selectedRepo ? (
               <span>
                 <label>{selectedRepo}</label>
-                <FlatButton
-                  label='Remove repo'
-                  onClick={() => onSettingsChange({ selectedRepo: null })}
-                  backgroundColor='#FF8900'
-                  labelStyle={{color:'#FFFFFF', fontSize:10 }}
-                  style={{lineHeight:1.3}} />
+                <MuiThemeProvider>
+                  <FlatButton
+                    label='Remove repo'
+                    onClick={() => onSettingsChange({ selectedRepo: null })}
+                    backgroundColor='#FF8900'
+                    labelStyle={{color:'#FFFFFF', fontSize:10 }}
+                    style={{lineHeight:1.3}} />
+                </MuiThemeProvider>
               </span>
             ) : (
               <label>[None]</label>
@@ -134,20 +140,24 @@ const Settings = ({
           </div>
         ) : (
           <div>
-            <FlatButton
-              label='Authorize GitHub Account'
-              onClick={authorizeGitHub}
-              backgroundColor='#FF8900'
-              labelStyle={{color:'#FFFFFF' }}/>
-            <br />
+            <MuiThemeProvider>
+              <FlatButton
+                label='Authorize GitHub Account'
+                onClick={authorizeGitHub}
+                backgroundColor='#FF8900'
+                labelStyle={{color:'#FFFFFF' }}/>
+              <br />
+            </MuiThemeProvider>
           </div>
         )}
         <br />
-        <FlatButton
-          label='Continue'
-          onClick={() => history.pushState(null, '/')}
-          backgroundColor='#0094D9'
-          labelStyle={{color:'#FFFFFF'}}/>
+        <MuiThemeProvider>
+          <FlatButton
+            label='Continue'
+            onClick={() => history.push('/')}
+            backgroundColor='#0094D9'
+            labelStyle={{color:'#FFFFFF'}}/>
+        </MuiThemeProvider>
       </form>
     </div>
   );

@@ -1,9 +1,8 @@
 const localStorageKey = 'pivotal-swimlanes-config';
 
-const getSettings = () => JSON.parse(localStorage.getItem(localStorageKey)) || {};
+export const getSettings = JSON.parse(localStorage.getItem(localStorageKey)) || {};
 
-const updateSettings = data => (
+export const updateSettings = data => (
   localStorage.setItem(localStorageKey, JSON.stringify({ ...getSettings(), ...data }))
 );
 
-export default { getSettings, updateSettings };

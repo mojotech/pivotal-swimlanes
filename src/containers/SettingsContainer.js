@@ -22,7 +22,7 @@ const SettingsContainer = React.createClass({
   },
 
   fetchGitHubAccount(){
-    const { gitHubToken } = getSettings();
+    const { gitHubToken } = getSettings;
     $.ajax({
       url: `https://api.github.com/user?access_token=${gitHubToken}`,
       method: 'GET'
@@ -40,21 +40,21 @@ const SettingsContainer = React.createClass({
         selectedPivotalProjectId,
         selectedPivotalProject,
         herokuToken
-      } = getSettings();
+      } = getSettings;
       this.setState({
         pivotalToken,
         gitHubToken,
-        gitHubAuthorized: _.any(gitHubToken),
+        gitHubAuthorized: _.some(gitHubToken),
         selectedRepo,
         selectedPivotalProjectId,
         selectedPivotalProject,
-        herokuAuthorized: _.any(herokuToken)
+        herokuAuthorized: _.some(herokuToken)
       }, resolve);
     });
   },
 
   fetchPivotalProjects() {
-    let { pivotalToken } = getSettings();
+    let { pivotalToken } = getSettings;
     return $.ajax({
       url: `${pivotalAPI}/me`,
       method: 'GET',
@@ -69,7 +69,7 @@ const SettingsContainer = React.createClass({
 
   saveSettings(changedData) {
     this.setState({ ...this.state, ...changedData });
-    updateSettings({ ...getSettings(), ...changedData });
+    updateSettings({ ...getSettings, ...changedData });
     if (changedData.gitHubAuthorized === false) {
       updateSettings({ gitHubToken: null, selectedRepo: null });
     }
