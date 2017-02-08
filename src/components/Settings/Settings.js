@@ -5,7 +5,6 @@ import HeaderBar from '../Project/HeaderBar';
 import FlatButton from 'material-ui/FlatButton';
 import Autocomplete from 'react-autocomplete';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 const styles = {
   item: {
@@ -174,6 +173,11 @@ Settings.propTypes = {
   selectedRepo: PropTypes.string,
   selectedPivotalProjectId: PropTypes.string,
   repos: PropTypes.arrayOf(PropTypes.string),
+  gitHubAuthorized: PropTypes.bool,
+  onSettingsChange: PropTypes.func,
+  onRepoQueryChange: PropTypes.func,
+  gitHubUser: PropTypes.obj,
+  fetchPivotalProjects: PropTypes.func,
   herokuAuthorized: PropTypes.bool
 };
 

@@ -2,8 +2,6 @@ import React, { PropTypes } from 'react';
 import { Paper } from 'material-ui';
 import _ from 'underscore';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-
 
 const ExternalLinkIcon = require('react-icons/lib/fa/external-link');
 const GitHubIcon = require('react-icons/lib/fa/github');

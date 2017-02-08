@@ -41,20 +41,18 @@ const ProjectContainer = React.createClass({
                     .map(pullRequest => ( {url:pullRequest.url, status: pullRequest.status}))
                     .value();
 
-                return (
-                  {
-                    title: story.name,
-                    owners: _.map(story.ownerIds, id => {
-                      let owner = _.find(projectMembers, 'id', id);
-                      return owner ? owner.name : null;
-                    }),
-                    estimate: story.estimate,
-                    pullRequests: storyPullRequests,
-                    trackerUrl: story.url,
-                    state: _.isEmpty(storyPullRequests) ? this.storyType(story) : 'Ready for Review',
-                    type: story.type
-                  }
-                );
+                return ({
+                  title: story.name,
+                  owners: _.map(story.ownerIds, id => {
+                    let owner = _.find(projectMembers, 'id', id);
+                    return owner ? owner.name : null;
+                  }),
+                  estimate: story.estimate,
+                  pullRequests: storyPullRequests,
+                  trackerUrl: story.url,
+                  state: _.isEmpty(storyPullRequests) ? this.storyType(story) : 'Ready for Review',
+                  type: story.type
+                });
               });
               this.setState({ projectName, entries });
             });
