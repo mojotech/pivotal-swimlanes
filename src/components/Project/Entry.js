@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Paper } from 'material-ui';
 import _ from 'underscore';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 const ExternalLinkIcon = require('react-icons/lib/fa/external-link');
 const GitHubIcon = require('react-icons/lib/fa/github');
@@ -32,42 +33,44 @@ const Entry = ({
   type,
   state
 }) => (
-  <Paper style={styles.content}>
-    <div>
-      {_.isEmpty(type) ? null : <img src={require(`./img/${type}.png`)} alt={type} />}
-      {estimate ? <span style={styles.estimate}>{Array(estimate + 1).join('•')}</span> : null}
-      <div style={styles.links}>
-        {state === 'Ready for Review' ? (
-          pullRequests.map((pullRequest, i) => {
-            let prStatusColor;
-            switch (pullRequest.status) {
-            case 'success':
-              prStatusColor = '#50A32B';
-              break;
-            case 'pending':
-              prStatusColor = '#C9A217';
-              break;
-            case 'failure':
-              prStatusColor = '#AF1900';
-              break;
-            default:
-              prStatusColor = 'black';
-            }
-            return (
-              <a href={pullRequest.url} key={i} target='_new' style={styles.link}>
-                <GitHubIcon style={{color: prStatusColor}}/>
-              </a>
-            );
-          })
-        ) : null}
-        <a href={trackerUrl} target='_new' style={styles.link}>
-          <ExternalLinkIcon style={{color: '#000000', fontSize: 14}} />
-        </a>
+  <MuiThemeProvider>
+    <Paper style={styles.content}>
+      <div>
+        {_.isEmpty(type) ? null : <img src={require(`./img/${type}.png`)} alt={type} />}
+        {estimate ? <span style={styles.estimate}>{Array(estimate + 1).join('•')}</span> : null}
+        <div style={styles.links}>
+          {state === 'Ready for Review' ? (
+            pullRequests.map((pullRequest, i) => {
+              let prStatusColor;
+              switch (pullRequest.status) {
+              case 'success':
+                prStatusColor = '#50A32B';
+                break;
+              case 'pending':
+                prStatusColor = '#C9A217';
+                break;
+              case 'failure':
+                prStatusColor = '#AF1900';
+                break;
+              default:
+                prStatusColor = 'black';
+              }
+              return (
+                <a href={pullRequest.url} key={i} target='_new' style={styles.link}>
+                  <GitHubIcon style={{color: prStatusColor}}/>
+                </a>
+              );
+            })
+          ) : null}
+          <a href={trackerUrl} target='_new' style={styles.link}>
+            <ExternalLinkIcon style={{color: '#000000', fontSize: 14}} />
+          </a>
+        </div>
       </div>
-    </div>
-    <div style={styles.title}>{title}</div>
-    {_.any(owners) ? <div style={styles.owners}>{owners.join(', ')}</div> : null}
-  </Paper>
+      <div style={styles.title}>{title}</div>
+      {_.some(owners) ? <div style={styles.owners}>{owners.join(', ')}</div> : null}
+    </Paper>
+  </MuiThemeProvider>
 );
 
 Entry.propTypes = {

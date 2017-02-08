@@ -16,7 +16,7 @@ module.exports = {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
         'GITHUB_CLIENT_ID': JSON.stringify(process.env.GITHUB_CLIENT_ID || ''),
@@ -27,8 +27,8 @@ module.exports = {
   ],
   module: {
     loaders: [
-      { test: /\.js$/, loaders: ['babel'], include: path.join(__dirname, 'src') },
-      { test: /\.scss$/, loaders: ['style','css','sass']},
+      { test: /\.js$/, loaders: ['babel-loader'], include: path.join(__dirname, 'src') },
+      { test: /\.scss$/, loaders: ['style-loader','css-loader','sass-loader']},
       { test: /\.(svg|png)$/, exclude: /node_modules/, loader: 'file-loader' }
     ]
   }

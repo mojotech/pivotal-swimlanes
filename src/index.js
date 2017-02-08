@@ -12,7 +12,7 @@ import './styles/form.scss';
 const settingsPath = 'settings';
 
 const checkConfig = (nextState, replaceState) => (
-  _.isEmpty(getSettings()) ? replaceState(null, settingsPath) : null
+  _.isEmpty(getSettings) ? replaceState(null, settingsPath) : null
 );
 
 const handleGitHubAuth = (nextState, replaceState, callback) => {
