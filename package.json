@@ -1,9 +1,13 @@
 {
-  "name": "pivotal-swimlanes",
-  "description": "Swimlane view for current Pivotal sprint",
+  "name": "pivotal_swimlanes",
+  "version": "2.0.0",
+  "description": "Reporting & Kanban Swimlanes for Pivotal Tracker Projects",
   "engines": {
     "node": "6.5.0",
     "npm": "3.10.3"
+  },
+  "directories": {
+    "test": "test"
   },
   "scripts": {
     "clean": "rimraf dist && npm cache clear && npm rebuild node-sass",
@@ -45,6 +49,7 @@
     "dotenv": "^4.0.0",
     "eslint": "^3.15.0",
     "eslint-plugin-react": "^6.9.0",
+    "extract-text-webpack-plugin": "^2.0.0-rc.3",
     "file-loader": "^0.10.0",
     "history": "^3.2.1",
     "jquery": "^3.1.1",
@@ -54,8 +59,13 @@
     "react-autocomplete": "^1.4.0",
     "react-dom": "^15.4.2",
     "react-icons": "^2.2.3",
+    "react-redux": "^5.0.2",
     "react-router": "^3.0.2",
+    "react-router-redux": "^4.0.7",
     "react-tap-event-plugin": "^2.0.1",
+    "redux": "^3.6.0",
+    "redux-logger": "^2.8.1",
+    "redux-thunk": "^2.2.0",
     "request": "^2.79.0",
     "underscore": "^1.8.3"
   }
