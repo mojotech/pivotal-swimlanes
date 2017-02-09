@@ -8,7 +8,7 @@ const Board = ({ entries, sidebarVisible, hasSelectedRepo }) => {
     {label: 'In Progress',display: true},
     {label: 'Ready for Review',display: hasSelectedRepo},
     {label: 'Merged',display: true},
-    {label: 'Delivered ',display: true},
+    {label: 'Delivered',display: true},
     {label: 'Accepted',display: true}
   ];
 
