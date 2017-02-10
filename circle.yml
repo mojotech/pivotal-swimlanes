@@ -4,10 +4,17 @@ machine:
 
 dependencies:
   pre:
-    - npm install -g npm@3.10.3
-  override:
-    - nvm install 6.5 && npm run clean && npm install
+    - script/ci/setup.sh
+    - npm cache clear
+    - npm install -g npm@3.10.3 && npm install
+  cache_directories:
+    - ~/dependencies
+    - ~/.mix
+    - _build
+    - deps
 
 test:
+  pre:
+    - npm run lint
   override:
-    - nvm use 6.5 && npm run lint && npm test
+    - script/ci/test.sh
