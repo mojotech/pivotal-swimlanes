@@ -6,7 +6,7 @@ dependencies:
   pre:
     - npm install -g npm@3.10.3
   override:
-    - nvm install 6.5 && npm install
+    - nvm install 6.5 && npm run clean && npm install
 
 test:
   override:

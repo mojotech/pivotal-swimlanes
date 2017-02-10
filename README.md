@@ -21,3 +21,8 @@ default ENV host) should be `http://localhost:3000/github_authorized`
 
 ### Front end linting
 `npm run lint`
+
+### Tech Stack
+- Phoenix (Elixir):  data persistence and reporting API
+- Redux:  maintain state on the frontend
+- React JS:  Front End Views
