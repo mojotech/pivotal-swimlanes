@@ -177,7 +177,7 @@ Settings.propTypes = {
   gitHubAuthorized: PropTypes.bool,
   onSettingsChange: PropTypes.func,
   onRepoQueryChange: PropTypes.func,
-  gitHubUser: PropTypes.obj,
+  gitHubUser: PropTypes.string,
   fetchPivotalProjects: PropTypes.func,
   herokuAuthorized: PropTypes.bool
 };
