@@ -15,7 +15,9 @@ class Loading extends Component {
   }
 
   handleLoadingTimeout() {
-    this.setState({ timedOut: true });
+    if (this.timeoutDiv) {
+      this.setState({ timedOut: true });
+    }
   }
 
   render() {
@@ -26,7 +28,7 @@ class Loading extends Component {
         <h4>It appears you do not have any current stories</h4>
         <Link to='/settings'>back to settings</Link>
       </div>) :
-      (<div style={{textAlign: 'center', paddingTop: '300px'}}>
+      (<div ref={(div) => { this.timeoutDiv = div; }} style={{textAlign: 'center', paddingTop: '300px'}}>
         <MuiThemeProvider>
           <CircularProgress mode='indeterminate' />
         </MuiThemeProvider>
