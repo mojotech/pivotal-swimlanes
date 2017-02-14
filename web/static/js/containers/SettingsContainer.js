@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Settings from '../components/Settings/Settings';
 import Loading from '../components/shared/Loading';
 import { getSettings, updateSettings } from '../utils/settings';
@@ -7,10 +7,20 @@ import _ from 'lodash';
 
 const pivotalAPI = 'https://www.pivotaltracker.com/services/v5';
 
-const SettingsContainer = React.createClass({
-  getInitialState() {
-    return {};
-  },
+class SettingsContainer extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      gitHubAuthorized: false,
+      gitHubUser: '',
+      gitHubToken: '',
+      herokuAuthorized: false,
+      pivotalProjects: [],
+      pivotalToken: '',
+      selectedPivotalProjectId: '',
+      selectedRepo: ''
+    };
+  }
 
   componentDidMount() {
     this.fetchSettings().then(() => {
@@ -19,7 +29,7 @@ const SettingsContainer = React.createClass({
         this.fetchGitHubAccount();
       }
     });
-  },
+  }
 
   fetchGitHubAccount(){
     const { gitHubToken } = getSettings;
@@ -29,7 +39,7 @@ const SettingsContainer = React.createClass({
     }).then(data => {
       this.setState({ gitHubUser: data.login });
     });
-  },
+  }
 
   fetchSettings() {
     return new Promise(resolve => {
@@ -51,7 +61,7 @@ const SettingsContainer = React.createClass({
         herokuAuthorized: _.some(herokuToken)
       }, resolve);
     });
-  },
+  }
 
   fetchPivotalProjects() {
     let { pivotalToken } = getSettings;
@@ -65,7 +75,7 @@ const SettingsContainer = React.createClass({
       );
       this.setState({ pivotalProjects: projects });
     }).fail(() => this.setState({ error: true, pivotalProjects: null }));
-  },
+  }
 
   saveSettings(changedData) {
     this.setState({ ...this.state, ...changedData });
@@ -76,7 +86,7 @@ const SettingsContainer = React.createClass({
     if (changedData.herokuAuthorized === false) {
       updateSettings({ herokuToken: null });
     }
-  },
+  }
 
   /* eslint-disable camelcase */
   searchRepo(query) {
@@ -104,7 +114,7 @@ const SettingsContainer = React.createClass({
     ).fail(() =>
       this.setState({ gitHubRepos: [] })
     );
-  },
+  }
 
   render() {
     const {
@@ -128,12 +138,12 @@ const SettingsContainer = React.createClass({
         selectedPivotalProjectId={selectedPivotalProjectId}
         repos={this.state.repos}
         herokuAuthorized={herokuAuthorized}
-        onSettingsChange={this.saveSettings}
-        onRepoQueryChange={this.searchRepo}
+        onSettingsChange={(data) => this.saveSettings(data)}
+        onRepoQueryChange={(query) => this.searchRepo(query)}
         gitHubUser={this.state.gitHubUser}
-        fetchPivotalProjects={this.fetchPivotalProjects} />
+        fetchPivotalProjects={() => this.fetchPivotalProjects()} />
     );
   }
-});
+};
 
 export default SettingsContainer;
