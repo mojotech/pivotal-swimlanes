@@ -11,7 +11,7 @@ default ENV host) should be `http://localhost:3000/github_authorized`
 - `cp .env-sample .env`
 - In .env, fill in the generated client ID and secret from your GitHub developer application
 - `npm install`
-- `npm start`
+- `mix phoenix.server`
 - [https://localhost:3000](https://localhost:3000)
 - Enter your Pivotal API Token, found at the bottom of your [profile](https://www.pivotaltracker.com/profile)
 - Select your Pivotal project
@@ -21,3 +21,8 @@ default ENV host) should be `http://localhost:3000/github_authorized`
 
 ### Front end linting
 `npm run lint`
+
+### Tech Stack
+- Phoenix (Elixir):  data persistence and reporting API
+- Redux:  maintain state on the frontend
+- React JS:  Front End Views

@@ -1,5 +1,22 @@
-.DS_Store
-node_modules
+# App artifacts
+/_build
+/db
+/deps
+/*.ez
+.DS_store
+
+# webpack generated files
+priv/static/*hot-update.json
+priv/static/*hot-update.js
+priv/static/css/application.scss
+priv/static/js/application.js
+
+# npm packages
+/node_modules
 npm-debug.log
 dist
 .env
+
+#sensitive information
+/config/prod.secret.exs
+/config/dev.secret.exs
