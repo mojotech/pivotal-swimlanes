@@ -1,3 +1,5 @@
+process.env.NODE_ENV = 'production';
+
 var path = require('path');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var webpack = require('webpack');
