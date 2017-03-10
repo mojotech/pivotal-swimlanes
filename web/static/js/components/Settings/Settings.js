@@ -144,9 +144,9 @@ const Settings = ({
                 label='Authorize GitHub Account'
                 onClick={authorizeGitHub}
                 backgroundColor='#FF8900'
-                labelStyle={{color:'#FFFFFF' }}/>
-              <br />
+                labelStyle={{color:'#FFFFFF' }} />
             </MuiThemeProvider>
+            <br />
           </div>
         )}
         <br />

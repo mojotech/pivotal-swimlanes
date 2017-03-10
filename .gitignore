@@ -8,7 +8,7 @@
 # webpack generated files
 priv/static/*hot-update.json
 priv/static/*hot-update.js
-priv/static/css/application.scss
+priv/static/css/application.css
 priv/static/js/application.js
 
 # npm packages
