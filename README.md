@@ -3,7 +3,7 @@ Swimlanes
 
 Scrapes data from Pivotal Tracker, GitHub, (and soon Heroku), and organizes stories from the current sprint in a kanban-style board based on its state in these services.
 
-![pivotal swimlanes](http://oi65.tinypic.com/2dsgw8w.jpg)
+![pivotal swimlanes](https://cloud.githubusercontent.com/assets/2212806/23809022/fbe5cfc6-0599-11e7-8d9d-3442921db098.png)
 
 ### Setup
 - Register a GitHub Developer application [here](https://github.com/settings/developers). The Authorization callback URL (if using the
