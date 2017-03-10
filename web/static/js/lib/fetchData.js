@@ -87,6 +87,7 @@ function formatEntries(stories, pullRequestsWithCommits, pullRequests, projectMe
 }
 
 async function fetchProjectName() {
+  if (!selectedPivotalProjectId) { return; }
   return $.ajax({
     url: `${pivotalAPI}/projects/${selectedPivotalProjectId}`,
     method: 'GET',
@@ -99,6 +100,7 @@ async function fetchProjectName() {
 }
 
 async function fetchStories() {
+  if (!selectedPivotalProjectId) { return; }
   return $.ajax({
     url: `${pivotalAPI}/projects/${selectedPivotalProjectId}/iterations?scope=current`,
     method: 'GET',
@@ -125,7 +127,7 @@ async function fetchStories() {
 
 async function fetchPullRequests() {
   return new Promise(resolve => {
-    if (selectedRepo !== null && selectedRepo !== undefined) {
+    if (selectedRepo !== null && selectedRepo !== undefined && gitHubToken !== undefined) {
       $.ajax({
         url: `https://api.github.com/repos/${selectedRepo}/pulls?state=open&access_token=${gitHubToken}`,
         method: 'GET'
@@ -189,6 +191,7 @@ function fetchCommits(pullRequests) {
 }
 
 function fetchProjectMembers() {
+  if (!selectedPivotalProjectId) { return; }
   return $.ajax({
     url: `${pivotalAPI}/projects/${selectedPivotalProjectId}/memberships`,
     method: 'GET',
