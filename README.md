@@ -10,6 +10,7 @@ Scrapes data from Pivotal Tracker, GitHub, (and soon Heroku), and organizes stor
 default ENV host) should be `http://localhost:3000/github_authorized`
 - `cp .env-sample .env`
 - In .env, fill in the generated client ID and secret from your GitHub developer application
+- `mix deps.get`
 - `npm install`
 - `mix phoenix.server`
 - [https://localhost:3000](https://localhost:3000)
