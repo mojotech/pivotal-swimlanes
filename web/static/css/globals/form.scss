@@ -1,10 +1,11 @@
 @import 'variables';
 
 input, select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
   appearance: none;
   outline: none;
 }
-
 
 .settings-container form {
   margin: 40px 40px;
@@ -58,4 +59,10 @@ h3.section-heading {
 
 h3.section-heading:first-of-type {
   margin-top:75px;
+}
+
+.error {
+  color: $color-warning;
+  font-size: $type-base;
+  margin: -15px 0 15px 0;
 }

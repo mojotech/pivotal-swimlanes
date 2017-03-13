@@ -5,6 +5,7 @@ import { browserHistory, Router, Route } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import configureStore from './redux/store';
 import ProjectContainer from './containers/ProjectContainer';
+import RegistrationContainer from './containers/RegistrationContainer';
 import SettingsContainer from './containers/SettingsContainer';
 import { getSettings, updateSettings } from './utils/settings';
 import $ from 'jquery';
@@ -57,6 +58,7 @@ const node =
   (<Provider store={store}>
       <Router history={history}>
         <Route path='/' component={ProjectContainer} onEnter={checkConfig} />
+        <Route path='sign_up' component={RegistrationContainer} />
         <Route path='settings' component={SettingsContainer} />
         <Route path='github_authorized' onEnter={handleGitHubAuth} />
         <Route path='heroku_authorized' onEnter={handleHerokuAuth} />
