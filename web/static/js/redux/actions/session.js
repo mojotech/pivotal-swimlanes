@@ -30,6 +30,33 @@ export const signUp = (data) => {
   };
 };
 
+export const login = (email, password) => (
+  (dispatch) => {
+    const data = {
+      session: {
+        email: email,
+        password: password
+      }
+    };
+
+    httpPost('/api/sessions', data)
+    .then((resp) => {
+      localStorage.setItem('swimlanesAuthToken', resp.jwt);
+      dispatch(setCurrentUser(resp.user));
+      dispatch(setUserSocket(resp.user));
+      dispatch(push('/projects'));
+    })
+    .catch((error) => {
+      if (error.response) {
+        error.response.json()
+        .then((errorJSON) => {
+          dispatch(sessionError(errorJSON.error));
+        });
+      }
+    });
+  }
+);
+
 const setUserSocket = (user) => (
   (dispatch) => {
     const socket = new Socket('/socket', {

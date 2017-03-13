@@ -150,7 +150,7 @@ const Settings = ({
           </div>
         )}
         <br />
-        <Link to='/'>
+        <Link to='/projects'>
           <MuiThemeProvider>
             <FlatButton
               label='Continue'
