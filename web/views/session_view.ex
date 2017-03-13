@@ -23,7 +23,12 @@ defmodule PivotalSwimlanes.SessionView do
   defp user_json(user) do
     %{
       id: user.id,
-      first_name: user.first_name
+      firstName: user.first_name,
+      lastName: user.last_name,
+      email: user.email,
+      pivotalToken: user.pivotal_token || nil,
+      githubToken: user.github_token || nil,
+      pivotalProjectId: user.pivotal_project_id || nil
     }
   end
 end

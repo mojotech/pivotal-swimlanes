@@ -19,6 +19,7 @@ defmodule PivotalSwimlanes.Router do
     pipe_through :api
 
     post "/registrations", RegistrationController, :create
+    post "/sessions", SessionController, :create
   end
 
   scope "/", PivotalSwimlanes do
