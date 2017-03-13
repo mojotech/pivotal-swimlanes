@@ -11,6 +11,14 @@ defmodule PivotalSwimlanes.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug Guardian.Plug.VerifyHeader
+    plug Guardian.Plug.LoadResource
+  end
+
+  scope "/api", PivotalSwimlanes do
+    pipe_through :api
+
+    post "/registrations", RegistrationController, :create
   end
 
   scope "/", PivotalSwimlanes do
@@ -20,7 +28,5 @@ defmodule PivotalSwimlanes.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", PivotalSwimlanes do
-  #   pipe_through :api
-  # end
+
 end
