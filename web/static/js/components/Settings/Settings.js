@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import _ from 'lodash';
-import HeaderBar from '../Project/HeaderBar';
+import HeaderBar from '../shared/HeaderBar';
 import FlatButton from 'material-ui/FlatButton';
 import Autocomplete from 'react-autocomplete';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';

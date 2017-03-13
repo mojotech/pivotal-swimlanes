@@ -7,7 +7,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { renderErrorsFor } from '../utils/errors';
 import * as sessionActions from '../redux/actions/session';
 
-import HeaderBar from '../components/Project/HeaderBar';
+import HeaderBar from '../components/shared/HeaderBar';
 
 class RegistrationContainer extends React.Component {
   static propTypes = {

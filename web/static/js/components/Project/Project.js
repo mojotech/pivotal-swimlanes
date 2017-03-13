@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import HeaderBar from './HeaderBar';
+import HeaderBar from '../shared/HeaderBar';
 import Board from './Board';
 
 class Project extends Component {

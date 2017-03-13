@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-import HeaderBar from '../components/Project/HeaderBar';
+import HeaderBar from '../components/shared/HeaderBar';
 
 import * as sessionActions from '../redux/actions/session';
 import { renderErrorsFor } from '../utils/errors';
