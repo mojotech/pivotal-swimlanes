@@ -1,13 +1,22 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+
 import Settings from '../components/Settings/Settings';
 import Loading from '../components/shared/Loading';
 import { getSettings, updateSettings } from '../utils/settings';
 import $ from 'jquery';
 import _ from 'lodash';
 
+import * as sessionActions from '../redux/actions/session';
+
 const pivotalAPI = 'https://www.pivotaltracker.com/services/v5';
 
 class SettingsContainer extends Component {
+  static propTypes = {
+    logoutUser: PropTypes.func.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -141,9 +150,19 @@ class SettingsContainer extends Component {
         onSettingsChange={(data) => this.saveSettings(data)}
         onRepoQueryChange={(query) => this.searchRepo(query)}
         gitHubUser={this.state.gitHubUser}
-        fetchPivotalProjects={() => this.fetchPivotalProjects()} />
+        fetchPivotalProjects={() => this.fetchPivotalProjects()}
+        logoutUser={this.props.logoutUser}
+        isLoggedIn={this.props.isLoggedIn} />
     );
   }
 };
 
-export default SettingsContainer;
+const mapStateToProps = ({ session }) => ({
+  isLoggedIn: session.currentUser !== null
+});
+
+const mapDispatchToProps = dispatch => ({
+  logoutUser: () => dispatch(sessionActions.logout())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SettingsContainer);

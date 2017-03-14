@@ -4,6 +4,7 @@ import { push } from 'react-router-redux';
 
 export const CURRENT_USER = 'CURRENT_USER';
 export const SESSION_ERROR = 'SESSION_ERROR';
+export const USER_LOGGED_OUT = 'USER_LOGGED_OUT';
 export const SOCKET_CONNECTED = 'SOCKET_CONNECTED';
 export const REGISTRATION_ERROR = 'REGISTRATION_ERROR';
 
@@ -73,6 +74,25 @@ const setUserSocket = (user) => (
   }
 );
 
+export const logout = () => (
+  (dispatch) => {
+    httpDelete('/api/sessions')
+    .then(() => {
+      localStorage.removeItem('swimlanesAuthToken');
+      dispatch(logOutUser());
+      dispatch(push('/login'));
+    })
+    .catch((error) => {
+      if (error.response) {
+        error.response.json()
+        .then((errorJSON) => {
+          dispatch(sessionError(errorJSON.error));
+        });
+      }
+    });
+  }
+);
+
 const setCurrentUser = (user) => (
   {
     type: CURRENT_USER,
@@ -87,5 +107,7 @@ const connectSocket = (socket, channel) => (
     channel
   }
 );
+
+const logOutUser = () => ({ type: USER_LOGGED_OUT });
 
 const sessionError = (error) => ({ type: SESSION_ERROR, error });

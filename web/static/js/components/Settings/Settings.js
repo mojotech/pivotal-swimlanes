@@ -32,7 +32,9 @@ const Settings = ({
   onSettingsChange,
   onRepoQueryChange,
   gitHubUser,
-  fetchPivotalProjects
+  fetchPivotalProjects,
+  logoutUser,
+  isLoggedIn
 }) => {
   const authorizeGitHub = e => {
     e.preventDefault();
@@ -55,7 +57,9 @@ const Settings = ({
         heading='Swimlanes Settings'
         sidebarVisible={false}
         showFilter={false}
-        showSettings={false} />
+        showSettings={false}
+        logoutUser={logoutUser}
+        isLoggedIn={isLoggedIn} />
       <form>
         <h3 className='section-heading'>Pivotal settings</h3>
         <label><strong>Pivotal API Token: </strong></label>
@@ -179,7 +183,9 @@ Settings.propTypes = {
   onRepoQueryChange: PropTypes.func,
   gitHubUser: PropTypes.string,
   fetchPivotalProjects: PropTypes.func,
-  herokuAuthorized: PropTypes.bool
+  herokuAuthorized: PropTypes.bool,
+  logoutUser: PropTypes.func.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired
 };
 
 export default Settings;

@@ -20,6 +20,9 @@ export default (state = defaultState, action) => {
   case actions.SOCKET_CONNECTED:
     return { ...state, socket: action.socket, channel: action.channel };
 
+  case actions.USER_LOGGED_OUT:
+    return defaultState;
+
   case actions.SESSION_ERROR:
     return { ...state, error: action.error };
 

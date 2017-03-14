@@ -37,7 +37,8 @@ class RegistrationContainer extends React.Component {
           heading='Sign Up'
           sidebarVisible={false}
           showFilter={false}
-          showSettings={false} />
+          showSettings={false}
+          isLoggedIn={false} />
         <div className='sign-reg-wrapper'>
           <form id='sign-up-form' className='sign-reg-form' onSubmit={(e) => this.handleSubmit(e)}>
             <div className='field'>
