@@ -18,14 +18,14 @@ const checkConfig = (nextState, replaceState) => (
 
 const handleGitHubAuth = (nextState, replaceState, callback) => {
   let { code, state } = nextState.location.query;
-  let expectedState = getSettings().state;
+  let expectedState = getSettings.state;
   if (state === expectedState) {
     $.ajax({
       url: `${process.env.HOST}/authorize_github?code=${code}`,
       method: 'POST',
       dataType: 'json'
-    }).success(data =>
-      console.log(data)
+    }).done(data =>
+      console.log(data.responseText)
     ).fail(data => { // TODO: Not sure why this is failing
       updateSettings({ gitHubToken: data.responseText });
       callback(replaceState(null, settingsPath));
@@ -36,13 +36,13 @@ const handleGitHubAuth = (nextState, replaceState, callback) => {
 
 const handleHerokuAuth = (nextState, replaceState, callback) => {
   let { code, state } = nextState.location.query;
-  let expectedState = getSettings().state;
+  let expectedState = getSettings.state;
   if (state === expectedState) {
     $.ajax({
       url: `${process.env.HOST}/authorize_heroku?code=${code}`,
       method: 'POST',
       dataType: 'json'
-    }).success(data => {
+    }).done(data => {
       updateSettings({ herokuToken: data.access_token });
       callback(replaceState(null, settingsPath));
     });
