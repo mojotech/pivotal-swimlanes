@@ -1,5 +1,4 @@
 import React from 'react';
-import fetch from 'isomorphic-fetch';
 
 export function renderErrorsFor(errors, ref) {
   if (!errors) return false;
