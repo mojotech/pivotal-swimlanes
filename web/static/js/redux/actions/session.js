@@ -100,6 +100,31 @@ export const update = (id) => (
   }
 );
 
+//currentUser syncs front end to backend on page load
+export const refreshCurrentUser = () => (
+  (dispatch) => {
+    httpGet('/api/current_user')
+    .then((data) => {
+      dispatch(setCurrentUser(data));
+      dispatch(setUserSocket(data));
+      if (data && data.pivotalToken !== null) {
+        dispatch(push('/projects'));
+      } else {
+        dispatch(push('/settings'));
+      }
+    })
+    .catch((error) => {
+      if (error.response) {
+        error.response.json()
+        .then((errorJSON) => {
+          dispatch(sessionError(errorJSON.error));
+          dispatch(push('/login'));
+        });
+      }
+    });
+  }
+);
+
 const setUserSocket = (user) => (
   (dispatch) => {
     const socket = new Socket('/socket', {

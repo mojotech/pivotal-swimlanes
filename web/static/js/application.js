@@ -4,19 +4,32 @@ import { Provider } from 'react-redux';
 import { browserHistory, Router, Route } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import configureStore from './redux/store';
+
+import AuthenticatedContainer from './containers/AuthenticatedContainer';
 import ProjectContainer from './containers/ProjectContainer';
 import RegistrationContainer from './containers/RegistrationContainer';
 import SessionContainer from './containers/SessionContainer';
 import SettingsContainer from './containers/SettingsContainer';
 import { getSettings, updateSettings } from './utils/settings';
+import { refreshCurrentUser } from './redux/actions/session';
 import $ from 'jquery';
-import _ from 'lodash';
 
 const settingsPath = 'settings';
+const loginPath = 'login';
 
-const checkConfig = (nextState, replaceState) => (
-  _.isEmpty(getSettings) ? replaceState(null, settingsPath) : null
-);
+const ensureAuthenticated = (nextState, replace, callback) => {
+  const { dispatch } = store;
+  const { session } = store.getState();
+  const { currentUser } = session;
+
+  if (!currentUser && localStorage.getItem('swimlanesAuthToken')) {
+    dispatch(refreshCurrentUser());
+  } else if (!localStorage.getItem('swimlanesAuthToken')) {
+    replace(loginPath);
+  }
+
+  callback();
+};
 
 const handleGitHubAuth = (nextState, replaceState, callback) => {
   let { code, state } = nextState.location.query;
@@ -58,10 +71,12 @@ const target = document.getElementById('root');
 const node =
   (<Provider store={store}>
       <Router history={history}>
-        <Route path='/projects' component={ProjectContainer} onEnter={checkConfig} />
         <Route path='sign_up' component={RegistrationContainer} />
         <Route path='login' component={SessionContainer} />
-        <Route path='settings' component={SettingsContainer} />
+        <Route path='/' component={AuthenticatedContainer} onEnter={ensureAuthenticated}>
+          <Route path='projects' component={ProjectContainer} />
+          <Route path='settings' component={SettingsContainer} />
+        </Route>
         <Route path='github_authorized' onEnter={handleGitHubAuth} />
         <Route path='heroku_authorized' onEnter={handleHerokuAuth} />
       </Router>
