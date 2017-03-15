@@ -18,6 +18,8 @@ defmodule PivotalSwimlanes.Router do
   scope "/api", PivotalSwimlanes do
     pipe_through :api
 
+    get "/current_user", CurrentUserController, :show
+    put "/current_user/:id", CurrentUserController, :update
     post "/registrations", RegistrationController, :create
     post "/sessions", SessionController, :create
     delete "/sessions", SessionController, :delete

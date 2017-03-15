@@ -33,6 +33,11 @@ defmodule PivotalSwimlanes.User do
     |> generate_encrypted_password
   end
 
+  def update_changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, [:first_name, :last_name, :email, :github_token, :pivotal_token, :pivotal_project_id])
+  end
+
   defp generate_encrypted_password(current_changeset) do
     case current_changeset do
       %Ecto.Changeset{valid?: true, changes: %{password: password}} ->
