@@ -14,7 +14,11 @@ const pivotalAPI = 'https://www.pivotaltracker.com/services/v5';
 class SettingsContainer extends Component {
   static propTypes = {
     logoutUser: PropTypes.func.isRequired,
-    isLoggedIn: PropTypes.bool.isRequired
+    isLoggedIn: PropTypes.bool.isRequired,
+    setUserData: PropTypes.func.isRequired,
+    updateUser: PropTypes.func.isRequired,
+    setUserField: PropTypes.func.isRequired,
+    currentUser: PropTypes.object.isRequired
   };
 
   constructor(props) {
@@ -38,6 +42,7 @@ class SettingsContainer extends Component {
         this.fetchGitHubAccount();
       }
     });
+    this.props.setUserData();
   }
 
   fetchGitHubAccount(){
@@ -152,17 +157,25 @@ class SettingsContainer extends Component {
         gitHubUser={this.state.gitHubUser}
         fetchPivotalProjects={() => this.fetchPivotalProjects()}
         logoutUser={this.props.logoutUser}
-        isLoggedIn={this.props.isLoggedIn} />
+        isLoggedIn={this.props.isLoggedIn}
+        currentUser={this.props.currentUser}
+        onSetData={this.props.setUserData}
+        onFormSubmit={this.props.updateUser}
+        onSetField={this.props.setUserField} />
     );
   }
 };
 
 const mapStateToProps = ({ session }) => ({
-  isLoggedIn: session.currentUser !== null
+  isLoggedIn: session.currentUser !== null,
+  currentUser: session.currentUser
 });
 
 const mapDispatchToProps = dispatch => ({
-  logoutUser: () => dispatch(sessionActions.logout())
+  logoutUser: () => dispatch(sessionActions.logout()),
+  setUserData: () => dispatch(sessionActions.setData()),
+  setUserField: (field, value) => dispatch(sessionActions.setField(field, value)),
+  updateUser: (id) => dispatch(sessionActions.update(id))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SettingsContainer);

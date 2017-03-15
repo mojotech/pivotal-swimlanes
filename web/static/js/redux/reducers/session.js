@@ -6,6 +6,7 @@ import * as actions from '../actions/session';
 
 const defaultState = {
   currentUser: null,
+  userData: {},
   socket: null,
   channel: null,
   regErrors: null,
@@ -16,6 +17,12 @@ export default (state = defaultState, action) => {
   switch (action.type) {
   case actions.CURRENT_USER:
     return { ...state, currentUser: action.currentUser, error: '' };
+
+  case actions.SET_USER_DATA:
+    return { ...state, userData: action.userData};
+
+  case actions.SET_FIELD:
+    return { ...state, userData: { ...state.userData, [action.field]: action.value } };
 
   case actions.SOCKET_CONNECTED:
     return { ...state, socket: action.socket, channel: action.channel };

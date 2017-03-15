@@ -34,7 +34,11 @@ const Settings = ({
   gitHubUser,
   fetchPivotalProjects,
   logoutUser,
-  isLoggedIn
+  isLoggedIn,
+  currentUser,
+  onFormSubmit,
+  onSetData,
+  onSetField
 }) => {
   const authorizeGitHub = e => {
     e.preventDefault();
@@ -51,6 +55,11 @@ const Settings = ({
 
   const repoChangeHandler = _.debounce(onRepoQueryChange, 500);
 
+  const handlePivotalFormSubmit = (e) => {
+    e.preventDefault();
+    onFormSubmit(currentUser.id);
+  };
+
   return (
     <div className='settings-container'>
       <HeaderBar
@@ -60,7 +69,8 @@ const Settings = ({
         showSettings={false}
         logoutUser={logoutUser}
         isLoggedIn={isLoggedIn} />
-      <form>
+
+      <form onSubmit={(e) => handlePivotalFormSubmit(e)}>
         <h3 className='section-heading'>Pivotal settings</h3>
         <label><strong>Pivotal API Token: </strong></label>
          <div className='label-note'>This is found at the bottom of your Pivotal profile.</div>
@@ -68,15 +78,15 @@ const Settings = ({
           type='text'
           className = 'input api-token'
           value={pivotalToken}
-          onChange={e => onSettingsChange({ pivotalToken: e.target.value })}
+          onChange={e => onSetField('pivotal_token', e.target.value)}
           onBlur={fetchPivotalProjects} />
         <br />
         <label><strong>Pivotal Project: </strong></label>
         <br />
         <select
-          value={selectedPivotalProjectId}
+          defaultValue={selectedPivotalProjectId}
           className = 'input'
-          onChange={e => onSettingsChange({ selectedPivotalProjectId: e.target.value })}>
+          onChange={e => onSetField('pivotal_project_id', e.target.value)}>
           <option value='' disabled={_.some(selectedPivotalProjectId)}>
             Select a project
           </option>
@@ -86,6 +96,30 @@ const Settings = ({
             </option>
           )}
         </select>
+        <div className='form-buttons'>
+          <div className='flat-button'>
+            <MuiThemeProvider>
+              <FlatButton
+                label='Save Pivotal Changes'
+                type='submit'
+                backgroundColor='#FF8900'
+                labelStyle={{color:'#FFFFFF' }} />
+            </MuiThemeProvider>
+          </div>
+          <div className='flat-button'>
+            <MuiThemeProvider>
+              <FlatButton
+                label='Cancel'
+                onClick={() => onSetData()}
+                backgroundColor='#ccd1d5'
+                labelStyle={{color:'#000000' }} />
+            </MuiThemeProvider>
+          </div>
+        </div>
+      </form>
+      <br />
+
+      <form>
         <br />
          <h3 className='section-heading'>GitHub settings</h3>
         {gitHubAuthorized ? (
@@ -185,7 +219,11 @@ Settings.propTypes = {
   fetchPivotalProjects: PropTypes.func,
   herokuAuthorized: PropTypes.bool,
   logoutUser: PropTypes.func.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired
+  isLoggedIn: PropTypes.bool.isRequired,
+  currentUser: PropTypes.object.isRequired,
+  onFormSubmit: PropTypes.func.isRequired,
+  onSetData: PropTypes.func.isRequired,
+  onSetField: PropTypes.func.isRequired
 };
 
 export default Settings;
