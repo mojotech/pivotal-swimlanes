@@ -32,7 +32,7 @@ class SettingsContainer extends Component {
   }
 
   fetchGitHubAccount(){
-    const { gitHubToken } = getSettings;
+    const { gitHubToken } = getSettings();
     $.ajax({
       url: `https://api.github.com/user?access_token=${gitHubToken}`,
       method: 'GET'
@@ -50,7 +50,7 @@ class SettingsContainer extends Component {
         selectedPivotalProjectId,
         selectedPivotalProject,
         herokuToken
-      } = getSettings;
+      } = getSettings();
       this.setState({
         pivotalToken,
         gitHubToken,
@@ -64,7 +64,7 @@ class SettingsContainer extends Component {
   }
 
   fetchPivotalProjects() {
-    let { pivotalToken } = getSettings;
+    let { pivotalToken } = getSettings();
     return $.ajax({
       url: `${pivotalAPI}/me`,
       method: 'GET',
@@ -79,7 +79,7 @@ class SettingsContainer extends Component {
 
   saveSettings(changedData) {
     this.setState({ ...this.state, ...changedData });
-    updateSettings({ ...getSettings, ...changedData });
+    updateSettings({ ...getSettings(), ...changedData });
     if (changedData.gitHubAuthorized === false) {
       updateSettings({ gitHubToken: null, selectedRepo: null });
     }
