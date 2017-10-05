@@ -9,7 +9,7 @@ const {
   pivotalToken,
   gitHubToken,
   selectedRepo
-} = getSettings;
+} = getSettings();
 
 export default async function() {
   return new Promise( async function(resolve) {
