@@ -10,7 +10,7 @@
     "es6": true
   },
   "rules": {
-    "camelcase": 2,
+    "camelcase": 0,
     "comma-dangle": 2,
     "dot-notation": 2,
     "eqeqeq": 2,

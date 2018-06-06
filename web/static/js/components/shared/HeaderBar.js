@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 const Cog = require('react-icons/lib/fa/cog');
 const Filter = require('react-icons/lib/fa/filter');
 
-const HeaderBar = ({ heading, showFilter, showSettings }) => {
+const HeaderBar = ({ heading, showFilter, showSettings, logoutUser, isLoggedIn }) => {
   const styles = {
     headerBar: {
       height: 50,
@@ -61,6 +61,12 @@ const HeaderBar = ({ heading, showFilter, showSettings }) => {
     caret: {
       display: 'inline',
       marginLeft: 6
+    },
+    link: {
+      color: '#f6f6f6',
+      fontFamily: "'Open Sans', helvetica, arial, sans-serif",
+      fontSize: 14,
+      marginTop: 18
     }
   };
   return (
@@ -69,6 +75,7 @@ const HeaderBar = ({ heading, showFilter, showSettings }) => {
       <div style={{...styles.heading, ...styles.verticalAlign}}>
         {heading}
       </div>
+
       <div style={{float: 'right'}}>
         {showFilter ? (
           <div>
@@ -87,6 +94,16 @@ const HeaderBar = ({ heading, showFilter, showSettings }) => {
           </div>
         ) : null}
       </div>
+      {isLoggedIn ? (
+      <div style={{float: 'right'}}>
+        <div style={{ ...styles.divider, float: 'left' }} />
+        <Link style={{ ...styles.button }} to='login' onClick={logoutUser}>
+          <div style={{ ...styles.link }}>
+            Log Out
+          </div>
+        </Link>
+      </div>
+    ) : null}
     </div>
   );
 };
@@ -94,7 +111,9 @@ const HeaderBar = ({ heading, showFilter, showSettings }) => {
 HeaderBar.propTypes = {
   heading: PropTypes.string.isRequired,
   showFilter: PropTypes.bool.isRequired,
-  showSettings: PropTypes.bool.isRequired
+  showSettings: PropTypes.bool.isRequired,
+  logoutUser: PropTypes.func,
+  isLoggedIn: PropTypes.bool.isRequired
 };
 
 export default HeaderBar;

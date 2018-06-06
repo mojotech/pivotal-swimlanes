@@ -1,0 +1,34 @@
+.sign-reg-wrapper {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-contents: left;
+  margin-top: 150px;
+
+  .sign-reg-form {
+    border: 1px solid $color-tint;
+    border-radius: $border-radius;
+    display: flex;
+    flex-direction: column;
+    justify-contents: left;
+    padding: 30px;
+
+    .field {
+      margin-right: 30px;
+    }
+  }
+}
+
+.sign-link {
+  color: $color-secondary;
+  font-size: $type-base;
+  margin-top: 15px;
+  text-decoration: none;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+}

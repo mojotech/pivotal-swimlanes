@@ -4,6 +4,7 @@ machine:
 
 dependencies:
   pre:
+    - mv ec512-auth-key.pem.sample ec512-auth-key.pem
     - script/ci/setup.sh
     - npm cache clear
     - npm install -g npm@3.10.3 && npm install
